@@ -1,0 +1,747 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>보이스레일/tech-pioneers</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="05312c6e-4338-4613-b9d5-dd095cb82b0e" class="page sans"><header><h1 class="page-title">보이스레일/tech-pioneers</h1><p class="page-description"></p><table class="properties"><tbody></tbody></table></header><div class="page-body"><div id="61445c7e-7233-47e6-99f3-91c9ce67473e" class="column-list"><div id="49e6ff1e-6044-490b-bb68-dabba1ddfc68" style="width:62.5%" class="column"><p id="c3dcd8e2-3c9b-4cab-ac05-226c7ce90a4b" class="">
+</p></div><div id="f213dad9-3862-41c5-a942-5f7aee6715b2" style="width:37.50000000000001%" class="column"><p id="b6ff6ca2-1b49-480f-b004-8aae55934122" class=""><strong>박주미</strong>, 구민성, 류지수, 한예지<br/><br/></p></div></div><p id="458802c9-fdcf-421b-8346-23073be83d1e" class=""><a href="https://www.ablenews.co.kr/news/articleView.html?idxno=98412">뉴스</a>, <a href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11186812">논문</a> 외 다양한 <a href="http://kodaf.or.kr/bbs/board.php?bo_table=B12&amp;wr_id=158">미디어</a>를 통해 접한 지하철 청음 문제는 시각적으로 역 정보를 파악하기 어려운 상황에서 지하철 안내방송의 소리가 작아 발생하는 불편함입니다. 이는 비장애인도 겪고 있는 문제로, 교통약자에게는 그 영향이 더 큽니다. 시각 장애를 가진 지인을 통해 지하철 청음 문제가 아직까지 해결되지 않았으며 한국장애인단체총연맹에서 이를 해결하기 위해 꾸준하게 노력하고 있음을 확인하였습니다. 그리고 청음 문제 외 시각장애인이 지하철 이용 시 겪는 불편한 점을 알게 되었습니다. </p><p id="f01c667a-af68-4a93-b7c9-cb7c5b929c2c" class="">우리는 이를 모두 해결할 수 있는 아이디어를 제시하였고 긍정적인 의사를 받아 비콘 기술과, 스마트 음량 조절 시스템 등을 통해 교통약자도 편하게 이용할 수 있는 지하철 환경을 만들기로 결심하였습니다. </p><h2 id="e7f0552c-a492-4ec0-9b0e-0e4a7357ba5c" class="block-color-default">목표</h2><ul id="8f3a93b3-0bf8-4a6a-b28d-421f45e1749d" class="bulleted-list"><li style="list-style-type:disc">교통약자가 지하철을 이용하는 동안 겪는 문제 해결<ul id="ef021589-3247-4025-942e-7957b8283c3e" class="bulleted-list"><li style="list-style-type:circle">무선 통신(비콘)을 이용하여 지하철 안내방송 청음 문제 해결</li></ul><ul id="a7a6b46b-9487-4552-bbe0-75c2a73e787e" class="bulleted-list"><li style="list-style-type:circle">전용 앱에서 교통약자가 지하철을 편리하게 이용할 수 있는 기능 지원</li></ul></li></ul><h2 id="eae506e0-b7b8-4cce-bada-064bfc275a53" class="block-color-default">기획서 개요</h2><p id="d35a6371-38fa-497c-89d0-fa90a4e62856" class=""><a href="https://m.blog.naver.com/gri_blog/222837492838">2022년 경기연구원 공식블로그의 설문조사</a>에 따르면, 지하철은 교통약자가 가장 선호하는 대중교통으로, 교통약자의 이동 수단으로서 매우 중요합니다.</p><p id="98944e6e-45b8-49d3-8f8c-a34e5bdb5693" class="">그러나 지하철 안내방송의 청음 문제는 여전히 고쳐지지 않고 있으며 이는 교통약자에게 큰 고난입니다.</p><p id="48c0ee98-d431-459b-aeea-71bc2c94c93b" class=""><code>보이스레일</code>은 주변 소음을 감지하여 스피커의 출력 데시벨을 자동으로 조절하며, 음성유도기의 동작을 통해 교통약자의 탑승 여부를 확인하여 특정 출력 데시벨을 제공합니다.<br/>출입구 위치 음성 안내, 직원 호출 등 교통약자 특화 서비스를 지원하는 전용 앱을 통해 사용자에게 안전하고 편리한 이동 경험까지 제공하는 솔루션입니다.<br/></p><h2 id="a0507a2f-1438-49fe-8b41-235f298dc475" class=""><strong>시각장애인 인터뷰 </strong></h2><p id="ff954baa-b479-4b33-9683-d667b9d4a06c" class="">(진행 - 박주미)</p><p id="7614aa7b-67a0-4221-b9d0-a9eac655d77f" class="">시각장애인과의 인터뷰를 통해 프로젝트의 가치를 검증하였습니다. </p><p id="d82f4275-e2c2-439a-9ed4-1cbd7a7521a6" class="">
+</p><p id="38545c8b-c7e4-4f0c-829a-f1f18407d88d" class="">Q1 : 지하철 안내방송이 안 들리는 문제가 실제로도 문제로 작용하는지?</p><p id="bd734c97-dea3-4c44-9249-0ff651152ac2" class="">A1 : 문제이고 지금도 계속 관련해서 민원을 내는 실정이다.</p><p id="2a9581b2-8182-4a2b-95c0-f751077244e3" class="">
+</p><p id="2796a395-26c3-4203-a9c2-b38d6932c5a6" class="">Q2 : 시각장애인을 위해 현재 이용하고 있는 열차에 따른 다음 역을 알려주는 기능을 제공하는 앱을 구상 중인데 이 아이디어가 실용적인가?</p><p id="7743d77c-8880-4e76-82b2-20d84e67a7bd" class="">A2 : 안내방송 음성을 키우는 것 말고도 앱으로도 제공되면 좋을 것 같다. <br/>추가로 어디 칸에 타고 있는 지에 대한 정보도 제공해 줬으면 좋겠다. 역에 마중 나오는 서비스를 이용하려고 할 때, 스크린 도어에 있는 현재 칸에 대한 점자 정보를 미리 확인하지 못하고 급하게 탄 경우 마중 나오는 서비스를 이용하기 어렵게 된다. <br/></p><p id="fc0f0a71-fd26-4c57-bc00-613b63dba47d" class="">정보를 스마트폰으로 확인할 수 있다면 정말 좋을 것 같다.</p><p id="f0d4df8d-81bc-4505-b478-1d772f35982c" class="">
+</p><p id="4778fa5f-78c2-4028-a935-0231fb96e679" class="">Q3 : 시각장애인이 주로 사용하는 스마트폰 앱이 있는지?</p><p id="e3fb9e2d-9ada-4c08-8b03-9a46f62587b4" class="">A3 : 또타지하철이라는 서울교통공사에서 제공하는 애플리케이션과 카카오 지하철을 많이 이용한다. 그렇지만 또타지하철은 현재 위치를 제공하고 있지 않고 카카오 지하철은 내가 현재 위치를 조작해야 한다.</p><p id="6e342d26-c67c-409d-8a91-7165582fb02d" class="">
+</p><p id="a291f3a8-d88e-4aed-8dbc-5d8a75167abe" class="">인터뷰를 통해 지하철 안내방송 음성 문제와 현재 역 정보가 시각장애인도 문제로 인식하고 있는 부분이라는 것을 알 수 있었습니다. </p><h1 id="a579bbc9-5047-423f-8171-9b8ec7e6ad70" class="">보이스레일: 시각장애인을 위한 비콘 기반 솔루션</h1><h2 id="d85f3f93-9321-45cc-8e5c-dbda202a18a1" class="">프로젝트 개요</h2><p id="21feaf6f-4781-4565-aef5-61f6fa0c1021" class="">iBeacon과 라즈베리 파이, 모바일 어플리케이션을 이용하여 시각 장애인, 지체장애인 등 다양한 교통 약자 승객을 위한 종합적인 서비스 제안을 소개합니다. </p><h3 id="8646586b-6df0-4449-91b4-792e0beefbf6" class="">대상 사용자 정의</h3><p id="cef3138b-ffb0-417f-9769-53bd5b7726fc" class=""><strong>하드웨어</strong></p><p id="7af0292f-bf19-4ba1-b34b-f8c21b1f41e0" class="">지하철 내부 소음에 따라 안내방송을 조절하는 기능은 <strong>지하철을 이용하고 있는 승객이 주 대상자</strong>입니다. 지하철 이용 전 고객을 대상으로 안내방송 음량 조절을 합니다.</p><p id="bab535c1-c0f9-45c2-aaad-c281705d9c10" class=""><strong><br/>소프트웨어<br/></strong></p><p id="99c62a80-14f0-4e93-a5c3-b2b68df57716" class="">장애인 전용 앱으로 <strong>애플리케이션의 주 사용자는 시각 장애인, 지체 장애인</strong>입니다. 기존에 많이 사용되고 있는 카카오맵, 네이버지도와 같은 경우, 현재 역과 현재 칸을 제공하지 않습니다. 지체 장애인 관련 도움 서비스 또한 국한적으로 제공되고 있습니다. 앱을 통해서 장애인의 지하철 사용에 도움을 줍니다.</p><h3 id="60062df6-5fb4-4c6f-bd55-0b3a332760a1" class="">비콘 기반 위치 및 정보 시스템</h3><ul id="436d6415-b017-4aa0-a55d-33f831991480" class="bulleted-list"><li style="list-style-type:disc"><strong>객차 내 비콘 설치:</strong> 각 도시철도 객차 내에 비콘을 설치합니다. 이 비콘을 활용하여 승객은 스마트폰을 이용하여 현재 도시철도가 어느 역에 도착하고 있는지에 대한 정확한 실시간 정보를 제공받을 수 있습니다. 또한 청각장애인의 경우 스마트폰에 뜨는 푸시 알람을 통해 어느 역에 도착하는지 안내받을 수 있습니다.</li></ul><ul id="61dd3536-2abe-4b67-a450-b743acf7320f" class="bulleted-list"><li style="list-style-type:disc"><strong>역사 내 비콘 설치:</strong> 각 도시철도역에 실내 위치 측위를 위한 비콘을 설치합니다. 이 비콘을 이용하여 시각장애인을 위한 길 안내 서비스, 지체장애인을 위한 엘리베이터, 휠체어 리프트 위치 안내 서비스를 제공받을 수 있습니다.</li></ul><h3 id="41d57588-7f19-48fb-8ca2-603b467d5bbc" class="">라즈베리파이를 활용한 적응형 음량 관리</h3><ul id="3ae9efd3-095b-40ac-aeba-2d1b54787977" class="bulleted-list"><li style="list-style-type:disc"><strong>소음 적응형 안내방송 시스템:</strong> 라즈베리 파이를 활용하여 주변 소음 수준에 따라 볼륨을 자동으로 조절하는 안내방송 시스템을 구축합니다. 이는 시각장애인이 객차 내부가 시끄러울 때 어느 역에 도착했는지 알아차리지 못 해 역을 건너뛰는 문제를 해결하기 위한 서비스입니다.</li></ul><h3 id="aafa9a3f-b3ff-45ab-a396-27eb83bdb0bf" class="">종합 모바일 애플리케이션</h3><p id="f89ff5fa-10d6-4393-83ae-44618339f488" class="">우리가 제공하는 다양한 서비스에 접근하기 위한 중심지로서 기능하는 전용 모바일 애플리케이션은 다음과 같습니다:</p><ul id="ef695ef3-9811-45d0-b43a-8c8446d1d21e" class="bulleted-list"><li style="list-style-type:disc"><strong>실시간 열차 및 객차 정보:</strong> 사용자는 열차 시간표, 다음 역 정보 및 구체적인 객차 세부 사항에 대해 음성과 화상 등 다양한 방법으로 정보를 제공받을 수 있습니다.</li></ul><ul id="194c16a6-03b3-4cd7-bb82-064358f169b3" class="bulleted-list"><li style="list-style-type:disc"><strong>접근성 중심의 길찾기:</strong> 역사 내 시설 정보(엘리베이터 위치, 휠체어 리프트 등 교통약자 길찾기 정보 등) 을 제공합니다. 이는 음성으로도 제공되어 시각장애인이 이용하기 편리합니다.</li></ul><ul id="d5c851db-56fd-49d7-9236-a3ce2b086d27" class="bulleted-list"><li style="list-style-type:disc"><strong>즉각적인 지원 기능:</strong> 앱 내 직접 전화 기능을 통해 가까운 역의 지하철 역무원에게 신속하게 도움을 요청할 수 있습니다.</li></ul><ul id="9f62283c-6c27-4d52-be57-4dd88d73d8d4" class="bulleted-list"><li style="list-style-type:disc"><strong>휠체어 리프트 예약 시스템:</strong> 계단에 설치되어 있는 휠체어 리프트는 이용할 때 역무원의 도움이 필요합니다. 사용자가 미리 휠체어 리프트 이용을 위한 역무원을 호출할 수 있게 하여 휠체어 리프트에서의 대기시간을 줄입니다.</li></ul><h2 id="58f5650e-cf9d-4424-bc30-026d0eb922b3" class="">결론</h2><p id="04e3e8c3-e9a0-443c-ae2e-98c3f7e09c99" class="">이 프로젝트는 다양한 장애가 있는 교통약자들에게 지하철 도시철도 시스템이 더 접근하기 쉽고 사용자 친화적으로 만들도록 합니다. 비콘 기술과 스마트 음량 조절 시스템 등을 통합함으로써, 모든 도시철도 이용자가 편리하게 이동할 수 있는 더 포용적이고 환영받는 환경을 만들고자 합니다.</p><h2 id="9a5ed307-f039-4d9c-9cdc-297259bd0dd6" class="">프로젝트 구조, 설계도</h2><figure id="3b0453df-fc34-4881-88ec-06d486497a39" class="image"><a href="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/%25EB%25B6%2580%25EB%25B6%2584%25EB%25B3%2584.png"><img style="width:695px" src="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/%25EB%25B6%2580%25EB%25B6%2584%25EB%25B3%2584.png"/></a></figure><p id="05a0b917-0281-4b65-9769-1d35dc2cb73c" class="">
+</p><figure id="6a25040d-b56f-47fa-91c7-0f7465fd3ae7" class="image"><a href="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Subway.drawio.png"><img style="width:674px" src="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Subway.drawio.png"/></a></figure><h2 id="a28f9887-2086-4ea5-baf4-a41adc57137f" class="">주요 기능 및 특징</h2><h3 id="fa997447-9f6d-491a-9c09-8a0b81bfe269" class="">하드웨어</h3><ul id="6b24208c-85e1-4254-96d2-1bcdf22c0e07" class="bulleted-list"><li style="list-style-type:disc">라즈베리파이를 활용하여 하드웨어를 구성합니다. 다음은 라즈베리파이에 들어가는 주요 기능입니다.</li></ul><p id="3607f566-306a-4e5d-9228-99e2743668be" class="">
+</p><ol type="1" id="1025a661-3368-44a8-b0ae-5657f4191a58" class="numbered-list" start="1"><li>비콘 중앙 제어<ul id="15e5bf97-d0d8-43dc-9a59-2e9ebf9c7afa" class="bulleted-list"><li style="list-style-type:disc">시각장애인이 열차에 탑승하게 되면 해당 열차 번호와 칸 번호를 비콘을 통해 앱으로 전달해 줍니다.</li></ul></li></ol><ol type="1" id="612de82b-9b40-4987-a465-f9611af17063" class="numbered-list" start="2"><li>지하철 내부 소음에 따른 안내방송 소리 조절<ul id="2d1a10cc-fd64-412d-a037-b8d575913c58" class="bulleted-list"><li style="list-style-type:disc">지하철 혼잡도는 시간대, 호선별, 역별로 달라집니다. 소음을 유발하는 인자들은 다양합니다. <br/>그래서 현재 소음 데시벨을 측정하여 안내방송을 사람이 청각적으로 들을 수 있는 수준으로 키우는 기능을 수행합니다.<br/></li></ul><ul id="244fd8ae-0914-42dd-9ba2-9510b22bf6df" class="bulleted-list"><li style="list-style-type:disc">안내방송 소리가 너무 커서 민원이 발생하기도 하므로, 소음이 줄어들 때는 안내방송 소리를 줄입니다.</li></ul></li></ol><p id="4a48fce8-9ee2-488e-900f-1342e4d28391" class="">
+</p><h3 id="7107281a-f7af-46c0-8cc5-b0c555e4a54b" class="">소프트웨어</h3><ul id="015d0a80-db3b-4f92-8bce-120351e8cde8" class="bulleted-list"><li style="list-style-type:disc">애플리케이션을 활용하여 소프트웨어를 구성합니다. 다음은 앱에 들어가는 주요 기능입니다.</li></ul><p id="696c2142-a1d3-4bd5-bbfb-849fdf154878" class="">
+</p><ol type="1" id="415001bd-e4eb-44c2-981d-322d575717a7" class="numbered-list" start="1"><li>비콘을 통해 현재 타고 있는 열차 정보를 받아오는 기능<ul id="46a99e80-f3a0-4049-b1a8-b2cc2eeb6a6a" class="bulleted-list"><li style="list-style-type:disc">다음 역에 대한 정보를 현재 열차를 기반으로 받아볼 수 있습니다. </li></ul></li></ol><ol type="1" id="6ed77989-4763-428c-9ea8-f1b1394e4fc4" class="numbered-list" start="2"><li>비콘을 통해 현재 타고 있는 칸 정보를 받아오는 기능<ul id="e2d37795-d959-40a1-95a0-41f833e1b3d1" class="bulleted-list"><li style="list-style-type:disc">시각장애인이 마중 나오는 서비스를 쉽게 이용할 수 있도록 칸 정보를 받아볼 수 있습니다.</li></ul></li></ol><ol type="1" id="85814ca8-fa05-4dc7-9ae5-bec7153515f3" class="numbered-list" start="3"><li>시각장애인 전용 길 찾기 서비스<ul id="9bf5ead7-25ea-46f2-8788-e3b13d722908" class="bulleted-list"><li style="list-style-type:disc">지하철역 엘리베이터 위치 정보 등 도움 시설 정보 표기 및 TTS 기능을 제공합니다.</li></ul></li></ol><ol type="1" id="ad9e6507-83bb-409f-b4b0-2a59329d20d4" class="numbered-list" start="4"><li>시각장애인 안내 도우미, 직원, 사회 복무 요원 등에게 전화 빠르게 도움을 청할 수 있는 기능<ul id="e3c30f83-e917-45e6-ba75-ab448e962e62" class="bulleted-list"><li style="list-style-type:disc">각 역의 관련 내선 번호를 통해 통화할 수 있습니다.</li></ul></li></ol><ol type="1" id="a374657b-52f6-434b-ba1d-eccd20eb0707" class="numbered-list" start="5"><li>도움 요청 기능<ul id="0d79602b-d4eb-440b-9a4b-ecdefd24ad57" class="bulleted-list"><li style="list-style-type:disc">도착 시간을 역 사무실과 공유하여 역무원이 장애인 도착에 맞추어 미리 준비할 수 있도록 예약 기능을 제공합니다.</li></ul></li></ol><ol type="1" id="bfd5b2ff-5744-44d7-ab34-779043216620" class="numbered-list" start="6"><li>안내방송 연동 서비스<ul id="3e36c5b2-5f4e-428f-92b0-ae35197fd00f" class="bulleted-list"><li style="list-style-type:disc">도착할 역 안내방송과 역무원의 안내방송을 앱을 통해서 실시간으로 들을 수 있습니다.</li></ul></li></ol><ol type="1" id="5f2a1e91-936e-415c-a487-3e1f3281b4a5" class="numbered-list" start="7"><li>지하철 안내방송 청취</li></ol><h3 id="d175cb43-5dc1-4c48-be66-e124cb587595" class="">기술 스택</h3><table id="2b2c4515-b0a8-4582-9bc0-a0cda9b9f656" class="simple-table"><tbody><tr id="ad381a51-cc8b-4684-88f1-1b77fe6c490e"><td id="TQRj" class="" style="width:349px">프론트엔드</td><td id="mVTd" class="" style="width:349px">React-Native, Typescript</td></tr><tr id="58ac508f-d4ec-45e1-98d9-191f981945d0"><td id="TQRj" class="" style="width:349px">백엔드</td><td id="mVTd" class="" style="width:349px">스프링부트, Java</td></tr><tr id="fb2bdd71-1115-43c6-86ab-0c4c99bc9a8a"><td id="TQRj" class="" style="width:349px">하드웨어</td><td id="mVTd" class="" style="width:349px">ARDUINO IDE, Embedded C++</td></tr><tr id="565f7d24-5447-4f3e-9993-de7bd113c17a"><td id="TQRj" class="" style="width:349px">백엔드 배포</td><td id="mVTd" class="" style="width:349px">AWS EC2, AWS Elastic Beanstalk</td></tr></tbody></table><h3 id="07c51af2-b44f-474f-a627-8b21503f5163" class="">웹 접근성 지침</h3><p id="1a862a54-5c57-4235-bb31-bbb411f7d0ff" class=""><a href="https://www.rra.go.kr/ko/reference/kcsList_view.do?nb_seq=5247&amp;nb_type=6">한국형 웹 콘텐츠 접근성 지침 2.2(Korean Web Content accessibility guidelines 2.2)</a>는 방송통신표준심의회 심의를 거쳐 제작/배포된 문서이고, 비교적 최근에 지침이 개정되었습니다.(2022.12.28 개정)</p><p id="c3a8db54-245e-494f-b501-9c83bb2dec72" class="">어플리케이션의 주 사용자가 장애인이라는 점, 비장애인뿐만 아니라 모든 사람이 평등하고 손쉽게 앱을 사용할 수 있어야 한다는 점을 고려해 웹 접근성 지침에 기반해 앱을 개발하고자 합니다.</p><p id="9b1a3fa1-23ba-438c-a7b1-65c7862cedfb" class="">
+</p><p id="6eb0f4a1-3819-4d4e-bdb8-9e3c0efa537c" class="">웹 접근성 지침에 기반해 고려할 이용자 유형은 다음과 같습니다.</p><ul id="2b57d31f-bc66-4491-b725-c620db223acb" class="bulleted-list"><li style="list-style-type:disc">시각을 통해 정보를 인지할 수 없는 시각장애가 있는 경우</li></ul><ul id="34dbe3cb-133d-47f2-920f-02def02e7661" class="bulleted-list"><li style="list-style-type:disc">청각을 통해 음향 정보를 인지하지 못하는 청각장애가 있는 경우</li></ul><ul id="774d71f0-deec-4f11-b9c5-044f32ad7623" class="bulleted-list"><li style="list-style-type:disc">신체의 움직임에 제한이 있는 지체 장애가 있는 경우</li></ul><ul id="c739a1d8-838c-4373-9e25-78778fdfc5ad" class="bulleted-list"><li style="list-style-type:disc">읽기나 문장 이해력에 제한이 있는 언어 또는 지적장애 등이 있는 경우</li></ul><ul id="4d2b485c-75a4-4133-9b91-123ae862454b" class="bulleted-list"><li style="list-style-type:disc">키보드나 마우스를 사용할 수 없는 장애가 있는 경우</li></ul><ul id="aadee888-157f-41fa-95a0-1c3f48929142" class="bulleted-list"><li style="list-style-type:disc">시각, 청각 또는 손을 사용하고 있어 필요로 하는 일을 할 수 없는 경우: 운전 중이거나 소음이 많은 곳에서 일하는 경우 등 웹 사용자가 처한 환경에 따라 제한받는 경우</li></ul><h2 id="f56ee78b-6b3c-4379-bcf8-292801a6aeac" class="block-color-default">목표 수립 및 전략</h2><h2 id="6ec423ab-d3d2-4c88-a0c5-e9127973adec" class="">전략 수립</h2><h3 id="6ad5d009-08f6-4746-8b76-f8a5b4712476" class="">기술적 전략</h3><p id="956319f4-4f69-403f-96cf-d368dec654f6" class=""> 블루투스 비콘을 센서로 사용한다는 기술적 전략이 있습니다.</p><p id="f1e880d5-317f-4b14-9014-97c8dea117f9" class="">블루투스 비콘은 근거리 통신 기술로, 주변의 디바이스들과 데이터를 주고받을 수 있는 무선 센서입니다. 비콘은 다음과 같은 장점과 지하철 환경을 기반으로 기술적 전략을 수립하고 있습니다.</p><ul id="6db241f5-aa68-4d37-89af-1722828598c7" class="bulleted-list"><li style="list-style-type:disc"><strong>저전력 소비</strong><ul id="e4dbf2b9-f3dd-4fad-9b30-ae3def73c712" class="bulleted-list"><li style="list-style-type:circle">블루투스 비콘은 저전력 블루투스(Bluetooth Low Energy, BLE)를 사용하여 동작하므로, 배터리 수명이 오래 지속됩니다. 이는 긴 시간 동안 서비스를 제공해야 하는 지하철 서비스에 적절한 센서이며 큰 장점을 지니고 있습니다.</li></ul></li></ul><ul id="ac868cd7-4049-47fb-bec6-446b659f3a5f" class="bulleted-list"><li style="list-style-type:disc"><strong>정확한 위치 인식</strong><ul id="53eed3ae-963c-4681-9db2-c5b7f899bd9c" class="bulleted-list"><li style="list-style-type:circle">블루투스 비콘은 높은 정확도로 디바이스의 위치를 감지할 수 있습니다. 지하철 역과 칸을 식별해야 하는 기능을 구현할 때에 이러한 장점을 가진 비콘을 사용함으로써 정확성을 높이는 데 긍정적 영향을 얻을 수 있습니다.</li></ul></li></ul><ul id="0cc3b955-a93a-430e-8396-f36fe6c853f2" class="bulleted-list"><li style="list-style-type:disc"><strong>비용 효율적</strong><ul id="3e386283-8c86-4e8c-880c-c235b65644da" class="bulleted-list"><li style="list-style-type:circle">비교적 낮은 구축 비용으로 블루투스 비콘을 도입할 수 있습니다. 이로 인해 실현 가능성을 높이고 여러 지하철 역들에 기능을 제공하도록 구현할 수 있습니다.</li></ul></li></ul><ul id="fa02e154-7b1e-4756-bca8-fc516c5a6a8e" class="bulleted-list"><li style="list-style-type:disc"><strong>지하철 환경</strong><ul id="920a6f29-04ae-4060-bccf-a83733a91498" class="bulleted-list"><li style="list-style-type:circle">비콘은 지하철 칸마다 설치되어 있어, 높은 활용성 및 실현 가능성을 지니고 있다는 것이 전략으로 작용할 수 있습니다.</li></ul></li></ul><h2 id="165d898e-eeca-4c8a-89ec-04282956b422" class="">기능 목표</h2><ul id="9133e3d2-250d-41b5-85ae-da55af766e6e" class="bulleted-list"><li style="list-style-type:disc">지하철 안내방송 음량 조절 시스템 등 시각장애인을 위한 지하철 서비스를 안정적으로 구현 및 제공하는 것이 핵심 목표입니다.</li></ul><h2 id="0540ce43-1be3-4304-932e-c60237bee63b" class="">세부 목표</h2><p id="c4efc7dd-33b3-4150-8f16-0a851abab9ae" class="">아래와 같은 목표들을 세부 목표 및 기능으로 설정하였습니다.</p><ul id="8b7d4f7b-4cc8-4a8b-a51e-6d74b4280fdb" class="bulleted-list"><li style="list-style-type:disc">음성 안내 서비스</li></ul><ul id="f664d41c-097b-4fbe-9b84-eae04f6d9545" class="bulleted-list"><li style="list-style-type:disc">비콘을 통해 현재 탑승 역&amp; 칸 정보를 받아오는 기능</li></ul><ul id="a1449495-ab8b-49db-9b33-47c3df0acd3b" class="bulleted-list"><li style="list-style-type:disc">시각장애인 전용 길찾기 서비스</li></ul><ul id="bd6bc3ee-5c9e-405d-bb75-67572d674e79" class="bulleted-list"><li style="list-style-type:disc">도움 요청 기능</li></ul><ul id="1765cfaa-581d-4293-9b39-a8764ff91668" class="bulleted-list"><li style="list-style-type:disc">휠체어 리프트 예약 서비스</li></ul><h2 id="31bd9769-48a4-418d-a847-285d3ee4ff9f" class="">성공 기준 및 평가 지표</h2><p id="251860d5-c10b-4c17-a99f-56ff4136e8a9" class="">  <code>보이스레일</code>의 기능 별 성공 기준은 다음과 같이 구성하였습니다.</p><p id="bba540dd-50f2-4ee7-9f33-7f0e21fa6470" class=""> </p><ul id="40eaf335-c214-47c7-8b2a-2bdfef2a29e4" class="bulleted-list"><li style="list-style-type:disc">음성 안내 서비스<p id="7cdb5ec1-e819-4bdf-9755-7224d77b21c3" class=""> 본 서비스의 개발에서 실시간 도착 정보를 얻기 위해 ‘서울열린데이터광장’에서 제공하는 API 중 ‘서울시 지하철 실시간 도착 정보’와 ‘서울시 지하철 실시간 열차 위치 정보’를 사용할 예정입니다. 또한 열차 상태는 0:진입, 1:도착, 2:출발, 3:전역으로 데이터 값을 받아 처리할 것입니다. 해당 서비스의 성공 기준으로는 API값에 따라 음성 안내 서비스가 정상적으로 작동하는 지를 사용하여 판단할 예정입니다.</p><p id="38353a69-294e-4e33-9694-dc0ac1f500ac" class="">
+</p></li></ul><ul id="803c152c-0af9-4234-905c-277efdc33ae9" class="bulleted-list"><li style="list-style-type:disc">비콘을 통해 현재 탑승 역&amp; 칸 정보를 받아오는 기능<p id="738552fa-5ccd-4d2d-9e24-8d83fa0c5f0b" class="">비콘 센서가 정상적으로 작동하는 지를 확인하고, 센서 데이터의 정확성을 확인하여 성공 기준을 판단할 예정입니다.</p></li></ul><p id="b9df5a8f-171b-42c9-abdc-2a7ef67ba58e" class="">
+</p><ul id="903766a9-d50d-423e-9332-67399e4ab137" class="bulleted-list"><li style="list-style-type:disc">시각장애인 전용 길찾기 서비스<p id="d491b190-627e-4b3e-9a9e-320d1c0ea0fa" class="">현재 위치를 파악하는 데이터의 정확성을 확인하고, 길 찾기 정확성을 확인하여 성공 기준을 판단할 예정입니다.</p></li></ul><p id="eedeec03-6ec2-42b9-9222-7a91667ad86d" class="">
+</p><ul id="608042ef-ac8b-408d-a39f-f1b3e04d2f2b" class="bulleted-list"><li style="list-style-type:disc">도움 요청 기능<p id="527816ea-0589-4e6f-a9ef-07d6c94286f2" class="">시각장애인 안내 도우미, 직원, 사회 복무 요원 등에게 전화를 통해 빠르게 도움을 청할 수 있도록 교통 약자 편의 시설 별 전화번호가 올바르게 설정되어있는지 확인하고 전화 걸기 기능을 확인하여 성공 기준을 판단할 예정입니다.</p><p id="25b77c44-b61d-4e7e-aeb1-c81f9216202b" class="">
+</p></li></ul><ul id="4bff490c-6f9c-4c87-b5c8-078f912b2752" class="bulleted-list"><li style="list-style-type:disc">휠체어 리프트 예약 서비스<p id="53bf5d3e-002b-44a9-97c8-2f16897ad2ea" class="">도착 시간 정보가 공유 되는 지를 확인하고 예약 시스템이 정상적으로 작동하는 지를 확인하여 성공 기준을 판단할 예정입니다.</p></li></ul><p id="771896e7-7112-4fbd-9e65-76978c5583f2" class="">
+</p><p id="3868f895-452d-435d-ad7c-f3f2e857cb9c" class=""><code>보이스레일</code>의 평가 지표는 성공 기준을 기반으로 다음과 같이 구성하였습니다.</p><table id="79e37a5b-7702-4a5b-b3f0-30ab44d1e81a" class="simple-table"><thead class="simple-table-header"><tr id="605f4038-65dd-44f0-aa6f-9958ffe1dc0e"><th id="\jn@" class="simple-table-header-color simple-table-header" style="width:217.33333333333334px">대분류</th><th id="zm[H" class="simple-table-header-color simple-table-header" style="width:217.33333333333334px">중분류</th><th id=";n;C" class="simple-table-header-color simple-table-header" style="width:217.33333333333334px">측정 요소</th></tr></thead><tbody><tr id="4e008e69-a781-46f8-8374-eef6aeb32254"><td id="\jn@" class="" style="width:217.33333333333334px">음성 안내 서비스 </td><td id="zm[H" class="" style="width:217.33333333333334px">• 지하철 안내방송<br/>• 음량 조절 시스템<br/></td><td id=";n;C" class="" style="width:217.33333333333334px">• 실시간 지하철 도착 정보 정확성 확인<br/>• 지하철 역 안내방송 음성 정상 작동 확인<br/>• 소음 수준 측정<br/>• 음량 조절 기능 확인<br/></td></tr><tr id="26b0a5fc-6eef-42ee-ae26-d3b7d8d5bbd3"><td id="\jn@" class="" style="width:217.33333333333334px">비콘을 통해 현재 탑승역&amp; 칸 정보를 받아오는 기능</td><td id="zm[H" class="" style="width:217.33333333333334px"></td><td id=";n;C" class="" style="width:217.33333333333334px">• 비콘 센서 정상 작동 확인<br/>• 센서 데이터 정확성 확인<br/></td></tr><tr id="86929ab5-99ba-4f27-9c93-21f5c454fda3"><td id="\jn@" class="" style="width:217.33333333333334px">시각장애인 전용 길찾기 서비스</td><td id="zm[H" class="" style="width:217.33333333333334px"></td><td id=";n;C" class="" style="width:217.33333333333334px">• 현재 위치 파악 센서 데이터 정확성 확인<br/>• 길 찾기 정확성 확인<br/></td></tr><tr id="ab938434-808c-4f0b-92b9-e21eaa9526fe"><td id="\jn@" class="" style="width:217.33333333333334px">도움 요청 기능</td><td id="zm[H" class="" style="width:217.33333333333334px"></td><td id=";n;C" class="" style="width:217.33333333333334px">• 교통 약자 편의 시설 별 전화번호 확인<br/>• 전화 걸기 기능 확인<br/></td></tr><tr id="9a77c4f2-85be-49aa-a5f6-2a6d8eae5eed"><td id="\jn@" class="" style="width:217.33333333333334px">휠체어 리프트 예약 서비스</td><td id="zm[H" class="" style="width:217.33333333333334px"></td><td id=";n;C" class="" style="width:217.33333333333334px">• 도착 시간 정확성 확인<br/>• 예약 시스템 확인<br/></td></tr></tbody></table><h2 id="6d8e9211-e718-4973-b3df-d764f0722b68" class="">경쟁사 분석<br/><br/></h2><p id="6d3486dc-3707-47d2-aa41-b8c9305170e6" class=""><strong>하드웨어</strong></p><p id="2a7be69b-de9d-44b0-9bbc-e435968998ba" class="">지하철 안내방송 음량 조절을 따로 제공하고 있는 업체가 존재하지 않습니다. 조사 결과, 현재 문제로만 인식되는 실정이고 이것을 구체적으로 해결하기 위한 방안이 제공되지 않은 상태입니다. </p><p id="61756429-99db-41ed-87d3-31e4caa682bd" class="">즉, 경쟁사가 존재하지 않는 상태입니다.</p><p id="e7327246-3321-4439-8650-ae3e5e898ee0" class="">
+</p><p id="f5de130f-36a8-4a2c-bc2d-f147d2ad7146" class=""><strong>소프트웨어</strong></p><p id="d49f0822-b8a8-4f41-9782-13fd58af3bd8" class="">시각장애인이 자주 사용하는 앱인 또타지하철과 카카오 지하철에 대해 분석하였습니다.</p><p id="08b91aa3-fee8-4fe5-a9ac-be7ca1c879b3" class="">비교적 시각장애인 친화적인 기능이 다수 구현돼 있는 앱이 또타지하철이라, 또타지하철을 집중적으로 분석하였습니다.</p><h2 id="ec881307-0f20-42fa-a98b-325f76e118cf" class="">기존 제품과의 차별성</h2><p id="69e6248c-fd9b-4ab4-ab9b-91d33b6d9935" class="">
+</p><ul id="c4b38dbf-747a-4ff4-967e-1081ce460da0" class="bulleted-list"><li style="list-style-type:disc"> <code>보이스레일</code>은 시각장애인의 지하철 이용을 돕는 서비스로, 애플리케이션을 통해 실시간 지하철 정보를 음성으로 제공하며 시각장애인을 비롯한 교통 약자의 지하철 이용을 위한 다양한 기능을 지니고 있다는 특징이 있습니다.</li></ul><p id="6236fe10-74a4-461c-b54b-dc067ccd3571" class="">
+</p><ul id="5db3fd38-d120-4d86-a8ad-6742eeb42506" class="bulleted-list"><li style="list-style-type:disc"> 현재 네이버 지도, 카카오맵 등 실시간 지하철 정보를 제공해주는 애플리케이션들은 존재하지만 시각장애인을 위한 전용 지하철 애플리케이션은 상용화되어 있지 않아 미흡한 실정입니다. 이때 <code>보이스레일</code>은 시각장애인을 대상으로 다양한 서비스 및 기능을 제공한다는 점에서 기존 상용 서비스와 차별성을 가지고 있습니다. </li></ul><p id="821af08c-3321-4858-aae9-6aa8e49a39e7" class="">
+</p><ul id="5c1c561d-788e-4e6b-8724-0db45defb3d1" class="bulleted-list"><li style="list-style-type:disc"> 교통 약자 기능을 제공하는 기존 제품과 <code>보이스레일</code>을 비교하여 기존 제품과의 차별성을 도출하였습니다. 이를 위해 교통 약자를 위한 기능을 지원하고 있는 애플리케이션 &lt;또타지하철&gt;을 한예지 팀원이 직접 사용하여 <code>보이스레일</code>과 비교하였습니다. <p id="c4b10b26-4eac-4283-8345-5cd218c5dfdc" class=""><strong><br/>또타지하철<br/></strong></p><ul id="1769bbe7-88ba-4220-87e9-826c73a86d7a" class="bulleted-list"><li style="list-style-type:circle">교통약자 모드 지원<ul id="6a2e67d3-cad8-4281-8aad-0351535d4781" class="bulleted-list"><li style="list-style-type:square">전동휠체어 안전 승하차 → 위치 제공, 전화로 도움받을 수 있음</li></ul><ul id="c46e9369-e606-4a3a-a675-beae2db52f7d" class="bulleted-list"><li style="list-style-type:square">승강기고장 알림</li></ul><ul id="6030006d-40ba-48e0-a48e-613b1c6374d6" class="bulleted-list"><li style="list-style-type:square">전동휠체어 급속 충전기 → 위치 제공, 전화로 도움받을 수 있음</li></ul><ul id="f01d4756-5e32-459f-871e-3b81bfad0e75" class="bulleted-list"><li style="list-style-type:square">수어 영상 전화기 → 이동 경로에 대한 자세한 안내 사항 확인 가능</li></ul><ul id="59794c51-c40f-440a-adbf-75e7485461d7" class="bulleted-list"><li style="list-style-type:square">휠체어 리프트 서비스 → 역별 휠체어 리프트 서비스 제공</li></ul></li></ul><p id="10ea8bf9-16a1-48f3-a6f4-be3711285ab4" class="">
+</p><p id="523d2162-6488-47e3-a64e-a086e18df595" class=""><strong>교통약자 모드 View</strong></p><div id="3e9d195d-b93e-442c-98ac-006252ff742a" class="column-list"><div id="c4e562ce-6bca-4d19-ab37-a268518e3c71" style="width:50%" class="column"><figure id="30d1a61f-144f-47b6-8d77-1b1d18c14ea6" class="image"><a href="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Screenshot_20240205-183351_Seoul_Subway.jpg"><img style="width:240px" src="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Screenshot_20240205-183351_Seoul_Subway.jpg"/></a></figure></div><div id="efafa214-43cf-4cdd-9582-7c969abdb8bd" style="width:50%" class="column"><figure id="e240c27b-ea6b-40b0-a9a7-c93fd4fb66fa" class="image"><a href="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Screenshot_20240205-183518_Seoul_Subway.jpg"><img style="width:240px" src="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Screenshot_20240205-183518_Seoul_Subway.jpg"/></a></figure></div></div><p id="09863c11-19c5-4869-8450-7fb2fde49857" class="">
+</p><div id="16d37f54-a55c-405c-b2ff-e929529bb304" class="column-list"><div id="0723755b-f638-41f7-8e57-50df1710b8a1" style="width:50%" class="column"><figure id="c251c338-0346-49ad-a835-4a6c2bd3cadb" class="image"><a href="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Screenshot_20240205-183543_Seoul_Subway.jpg"><img style="width:240px" src="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Screenshot_20240205-183543_Seoul_Subway.jpg"/></a></figure></div><div id="e47e59b0-9a26-4ae8-83a3-1ea607608b2e" style="width:50%" class="column"><figure id="6e6c0e08-2433-4eb7-965c-ca7f99ddce02" class="image"><a href="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Screenshot_20240205-183548_Seoul_Subway.jpg"><img style="width:240px" src="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Screenshot_20240205-183548_Seoul_Subway.jpg"/></a></figure></div></div><p id="d754dfcf-cb15-4551-9ba0-d7fcfcb4f3a4" class="">
+</p><div id="af888513-ba96-4725-8e73-e0a4fb36a1bd" class="column-list"><div id="77aa1364-dfc3-4629-b286-91a33e501b52" style="width:50%" class="column"><figure id="c7d00d29-f990-4447-ac85-bb2f2a33a7fb" class="image"><a href="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Screenshot_20240205-183555_Seoul_Subway.jpg"><img style="width:240px" src="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Screenshot_20240205-183555_Seoul_Subway.jpg"/></a></figure><p id="b0f63ab8-a99e-42df-b63a-ad245e83046d" class="">
+</p></div><div id="8d91568e-044d-479d-8c6a-227ad26191ca" style="width:50%" class="column"><figure id="ecf34e76-105d-4de9-ab03-bdda088ac013" class="image"><a href="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Screenshot_20240205-183653_Seoul_Subway.jpg"><img style="width:240px" src="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Screenshot_20240205-183653_Seoul_Subway.jpg"/></a></figure><p id="d70df509-3403-402f-b800-8bf1da905b65" class="">
+</p></div></div><p id="b8fb9aa1-b0ce-44e2-82d4-d46ed3785212" class=""><strong>또타지하철 ‘도착 알림’ 사용 후기</strong></p><ul id="6cc874e0-6513-45a8-97ed-cee6b2885524" class="bulleted-list"><li style="list-style-type:circle">5번 정도 시도하였을 때 한 번 도착 알림이 정상적으로 오는 것을 확인 (해당 기능을 지원하는 역이라고 나와 있었지만 정상적으로 동작하지 않은 역들이 많았음)</li></ul><ul id="87a53f28-aa05-4f7e-a21a-3e02ccc54a3c" class="bulleted-list"><li style="list-style-type:circle">출발 시간을 직접 설정할 수 없으며 가장 가까운 다음 지하철 시간으로 설정됨</li></ul><ul id="b41a1b84-4bf8-49fc-9ef8-795008ee91e6" class="bulleted-list"><li style="list-style-type:circle">현재 위치(탑승 지하철역 &amp; 칸)를 파악하는 기능 없음</li></ul><ul id="000820bf-7d49-4231-ac08-999abd0515ac" class="bulleted-list"><li style="list-style-type:circle">진동 횟수를 조절하는 등의 알람 조절 기능 없으며, 1번의 푸시 알람을 제공</li></ul><figure id="f53a3f4b-c661-4d0e-86f8-1f6f9eb6fe8d" class="image"><a href="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Untitled.png"><img style="width:1080px" src="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Untitled.png"/></a></figure></li></ul><p id="453f712c-8b48-4fef-a28c-d22e38652d1d" class="">
+</p><h2 id="53896fcb-9c48-4c67-a951-33ac5fc9bb84" class="">기존 제품과의 차별성 분석 결과</h2><table id="384fdbbe-a55f-406c-8e70-b04cb7d6f90c" class="simple-table"><thead class="simple-table-header"><tr id="c19b2d8b-2683-4071-86dd-5a257e17594c"><th id="S}fK" class="simple-table-header-color simple-table-header" style="width:143.109375px">핵심 기능</th><th id="LvsA" class="simple-table-header-color simple-table-header" style="width:205.109375px"><code>보이스레일</code></th><th id="MrL&gt;" class="simple-table-header-color simple-table-header" style="width:230.12301635742188px">또타지하철</th><th id="z`VD" class="simple-table-header-color simple-table-header" style="width:230.12301635742188px">카카오맵</th></tr></thead><tbody><tr id="f694b9ed-dbb9-4cf9-b4f6-7edc91d9070e"><th id="S}fK" class="simple-table-header-color simple-table-header" style="width:143.109375px"><mark class="highlight-default">도착 역 알림 기능</mark></th><td id="LvsA" class="" style="width:205.109375px">• 도착역을 포함한 모든 정차역에 대한 지하철 안내방송을 음성으로 제공한다.<br/>• 지하철 내부 소음에 따라 안내 소리 음량을 자동으로 조절하는 기능을 제공한다.<br/></td><td id="MrL&gt;" class="" style="width:230.12301635742188px">• 출발역과 도착역을 설정한 뒤 도착 역에 진입하면 푸시 알림을 보내주는 기능이다.<br/>• 진동 횟수를 조절하는 등의 알림 조절 기능은 없으며, 1번의 푸시 알림을 제공한다.<br/>• 환승역에서는 알림을 제공하지 않는다.<br/>• 출발 시간은 따로 설정할 수 없으며 가장 가까운 다음 지하철 시간으로 설정된다.<br/>• 해당 기능을 지원하는 역이 한정적이다.<br/></td><td id="z`VD" class="" style="width:230.12301635742188px">X</td></tr><tr id="aa235504-8df7-45ee-9cec-afff56b14ecf"><th id="S}fK" class="simple-table-header-color simple-table-header" style="width:143.109375px"><mark class="highlight-default">현재 타고 있는 열차 &amp; 칸 정보 제공 기능 </mark></th><td id="LvsA" class="" style="width:205.109375px">• 비콘을 사용한 기능으로, 비콘은 지하철 칸 마다 설치되어있어 활용성이 높은 기능이다.<br/>• 현재 탑승 칸에 대한 정보를 제공 받아 이동 지원 서비스를 이용하는데 도움을 얻을 수 있다.<br/></td><td id="MrL&gt;" class="" style="width:230.12301635742188px">X</td><td id="z`VD" class="" style="width:230.12301635742188px">X</td></tr><tr id="9850f548-73c9-48dc-b43e-573912bbbd58"><th id="S}fK" class="simple-table-header-color simple-table-header" style="width:143.109375px"><mark class="highlight-default">리프트 사용을 돕는 기능</mark></th><td id="LvsA" class="" style="width:205.109375px">• 교통 약자의 역 도착 시간을 역사무실과 공유하여 역무원이 도착에 맞추어 미리 리프트 탑승을 준비할 수 있도록 하는 기능을 제공한다.<br/>• 예약 기능 제공한다.<br/></td><td id="MrL&gt;" class="" style="width:230.12301635742188px">• 휠체어 리프트 서비스 관련 전화번호를 제공한다.<br/>• 직접 전화를 걸어 도움을 받는 방식으로 구현되어 있다.<br/></td><td id="z`VD" class="" style="width:230.12301635742188px">X</td></tr></tbody></table><h2 id="5228123f-bf4d-4524-919b-831e837b7d21" class="">기대 효과</h2><p id="2ed209ad-51a8-4a20-b239-767bec995b07" class="">
+</p><ul id="379e32d8-0ade-4dc8-834b-4593d5935e7b" class="bulleted-list"><li style="list-style-type:disc">시각장애인의 대중교통 이용 관련 문헌 조사 결과, 지하철 이용의 문제로 ‘안내 정보 앱 부제’가 조사되었습니다. <code>보이스레일</code>은 시각장애인의 지하철 이용을 돕는 전용 애플리케이션으로, 안내 정보의 앱 부제를 해결할 수 있는 방안으로 작용할 수 있습니다. 이에 따라 지하철 이용의 문제를 해결하고 시각장애인의 지하철 이용에 직접적인 도움이 될 수 있다는 기대 효과를 지니고 있습니다.</li></ul><p id="e67ae350-e039-4fef-a1f7-0b37d70f78f6" class="">
+</p><ul id="bb11b534-cdf9-4337-af93-d470ab0495ee" class="bulleted-list"><li style="list-style-type:disc">국토교통부의 2021년도 교통약자 이동편의 실태조사 보고서 자료에 따르면 국내 교통약자의 수는 1,551만 명으로 전체 인구의 약 30%를 차지하고 있는 것으로 나타났습니다. 교통 약자의 지하철 이용을 돕는 서비스를 개발함으로써 교통 약자의 전반적인 지하철 이용에 편의성과 접근성을 향상 시킬 수 있다는 기대 효과를 지니고 있습니다.</li></ul><p id="1159c375-1d87-40ec-b15a-0f82a5c72ad7" class="">
+</p><ul id="35046fdf-fb93-4598-87a2-9a1fd1a6c087" class="bulleted-list"><li style="list-style-type:disc">지하철은 소음이 많은 환경으로, 명확한 안내 소리를 들을 수 없는 상황의 경우 불편함을 느낄 수 있습니다. 이때 소음에 따라 소리 음량을 자동으로 조절하는 기능을 통해 이러한 불편함을 해결할 수 있어 다양한 사용자에게서 높은 기대 가치를 지니고 있습니다.</li></ul><p id="eae4d101-e3af-43e2-aebb-53baaaf4a85c" class=""><div class="indented"><p id="1f1e0fd7-fde5-4bf0-b9ae-ff425dfc611a" class="">[참고 문헌] 邱晓玥, 김현정. “시각장애인의 대중교통 이용 현황 및 주요 교통수단의 문제점 조사”</p><p id="8f30401e-9e92-4767-8789-2ca9aa0f69d8" class=""><a href="https://www.dbpia.co.kr/pdf/pdfView.do?nodeId=NODE11186812">https://www.dbpia.co.kr/pdf/pdfView.do?nodeId=NODE11186812</a></p></div></p><h2 id="4b74ced3-f86d-469d-875f-c41677448933" class="block-color-default"> <strong>핵심 팀 구성원 소개 및 업무 내용</strong></h2><div id="3eb8728a-6170-4a3f-b4ee-c226fda6a44d" class="column-list"><div id="e8db4461-6a7e-4e7c-85cd-1b6b134edbfe" style="width:16.666666666666664%" class="column"><p id="1c242599-65be-40ae-bba0-b6add91ec8b7" class="">박주미<div class="indented"><p id="11c773b4-b539-4950-ab73-8713dc8b77ed" class="">
+</p></div></p></div><div id="261ab289-e430-498d-b2c1-78a1c30be158" style="width:8.333333333333332%" class="column"><p id="517f7098-ee86-4291-bb4c-2da3b5094a47" class="">팀장</p></div><div id="ea8330bc-64c7-47a3-9874-67c39b8b6437" style="width:75.00000000000001%" class="column"><ul id="febf8524-1df0-4453-9b75-bec3173506cc" class="bulleted-list"><li style="list-style-type:disc">모바일 웹 디자인</li></ul><ul id="6b28d348-9d97-4197-913a-6859a185788e" class="bulleted-list"><li style="list-style-type:disc">DB ERD 설계</li></ul><ul id="17d92502-8d9f-4af9-b79d-fa94b251df8f" class="bulleted-list"><li style="list-style-type:disc">API Docs 작성</li></ul><ul id="8796df0d-4fc0-480a-9177-fff1062ece94" class="bulleted-list"><li style="list-style-type:disc">API 개발</li></ul></div></div><div id="7da75698-abb5-4a2a-8da7-4f32500c97c3" class="column-list"><div id="17eddd42-64e9-49c8-be74-988de0a1d69c" style="width:16.666666666666664%" class="column"><p id="9f7da28a-042a-498a-bcc5-933b1efdb217" class="">구민성</p></div><div id="b21758a2-77f7-4ec1-b4b2-69557fb23d92" style="width:8.333333333333334%" class="column"><p id="c3be2daf-057e-41cc-8f7d-86da958b9a23" class="">팀원</p></div><div id="1a8ea470-f3b6-4d3a-924e-6b60670c802c" style="width:75%" class="column"><ul id="c945c645-3649-4d36-9536-de3ff4ceed0f" class="bulleted-list"><li style="list-style-type:disc">모바일 웹 디자인</li></ul><ul id="7f8a0a00-b831-4664-b522-77d1f40eaf26" class="bulleted-list"><li style="list-style-type:disc">라즈베리 파이 세팅</li></ul><ul id="c2105d55-b649-40d8-a0bc-b8aa58719418" class="bulleted-list"><li style="list-style-type:disc">ESP32 비콘 펌웨어</li></ul><ul id="aad60467-c69f-41da-b709-9aa3dbd85d76" class="bulleted-list"><li style="list-style-type:disc">하드웨어 패키징</li></ul></div></div><div id="3550685c-2e5a-4d7e-80e1-710ce3c5c134" class="column-list"><div id="3e9c2084-995c-43c8-a5b3-f5b75cbb73b4" style="width:16.666666666666664%" class="column"><p id="85c07072-25b5-4543-80cd-d61578f4801f" class="">류지수</p><p id="7c3cb85e-c6a7-4238-aff8-a6788d70d446" class="">
+</p></div><div id="13358e5e-f617-4c35-b89a-fc383ad33115" style="width:8.333333333333332%" class="column"><p id="79c7486d-f017-4a04-8c18-41590673e84e" class="">팀원</p></div><div id="cde69186-7a5e-42d2-99f0-5f977fe00cc1" style="width:75.00000000000003%" class="column"><ul id="00262a28-9ee7-4dec-ac40-6a370baaf9ce" class="bulleted-list"><li style="list-style-type:disc">모바일 웹 디자인</li></ul><ul id="da3210e5-ea75-4b15-b72b-c79c036c2533" class="bulleted-list"><li style="list-style-type:disc">모바일 웹 UI 제작</li></ul><ul id="c8bca885-8aaa-4742-b275-9af820e35900" class="bulleted-list"><li style="list-style-type:disc">비콘 통신 </li></ul><ul id="5ce8bb64-4714-43c2-ace5-20145d32bd42" class="bulleted-list"><li style="list-style-type:disc">API 연결</li></ul><ul id="56ca3803-4e0e-4607-b13f-152a1d03702b" class="bulleted-list"><li style="list-style-type:disc">프론트엔드 배포</li></ul></div></div><div id="d3b5a856-d2bb-49af-b9b4-e7549b4e038b" class="column-list"><div id="2704bdfd-8dda-4ac0-b10a-d573d6777436" style="width:16.666666666666664%" class="column"><p id="b0bb3972-98dd-4e33-a550-a69adaba2948" class="">한예지</p><p id="07623ee5-2979-4536-aef3-7ac7e30bbad7" class="">
+</p></div><div id="1ceffbec-e7c4-4fef-80b0-fe007326097a" style="width:8.333333333333336%" class="column"><p id="4400a682-1747-4e4f-98ef-e95b32ddcd6e" class="">팀원</p><p id="2e4d2069-e69f-4b0d-918d-e27664e9325d" class="">
+</p></div><div id="89828532-c96d-4d10-a6f8-c01df78d88ae" style="width:75.00000000000003%" class="column"><ul id="9a1a5357-ef28-4567-9a21-dd3516eeb19a" class="bulleted-list"><li style="list-style-type:disc">모바일 웹 디자인</li></ul><ul id="4f45396d-3122-4b36-82a2-df9f29aa570e" class="bulleted-list"><li style="list-style-type:disc">프론트엔드 라즈베리파이 통신</li></ul><ul id="22359839-b9af-4538-b66a-21fc4c805419" class="bulleted-list"><li style="list-style-type:disc">백앤드 배포</li></ul></div></div><h2 id="69c80be0-59f6-47ab-91a0-3535e534dcfe" class="">일정표</h2><figure id="de062ac3-3473-411a-9657-7ae0d81d7417" class="image"><a href="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Untitled%201.png"><img style="width:672px" src="%E1%84%87%E1%85%A9%E1%84%8B%E1%85%B5%E1%84%89%E1%85%B3%E1%84%85%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AF%20tech-pioneers%2005312c6e43384613b9d5dd095cb82b0e/Untitled%201.png"/></a></figure><h2 id="e6ef6d44-e531-430d-b2ac-1f162d1c589c" class="block-color-default"> <strong>시연 계획 </strong></h2><h3 id="4ef8423c-c2c2-40df-9d11-88af4557306e" class=""><strong>지하철 환경 구현</strong></h3><p id="303d27f3-9d51-4daf-b272-47266e2cbd81" class="">소음 환경 구현<div class="indented"><ul id="26004e52-1092-44ae-9b0e-9e424cc48138" class="bulleted-list"><li style="list-style-type:disc">다양한 데시벨의 사운드소스를 준비하여 소음 환경 구현<ul id="90c77213-b772-489a-aaea-ec4ddaea14a3" class="bulleted-list"><li style="list-style-type:circle">50 ~ 90 (dB), 총 5가지의 소스 준비</li></ul><ul id="45f96ce1-eeea-41b5-abef-09e27948732b" class="bulleted-list"><li style="list-style-type:circle">각 소음 별로 스피커의 출력 데시별 측정 <ul id="b98df07b-a55e-40fe-bad0-bdcfbaf78175" class="bulleted-list"><li style="list-style-type:square">소음에 따라 스피커의 음향이 자동으로 변하는지 확인</li></ul><ul id="ed2f07c1-334c-4a4c-aa7f-45a9cf2a7d20" class="bulleted-list"><li style="list-style-type:square">소음측정기(Sound Meter) 어플 사용</li></ul></li></ul><ul id="013dacc1-36b0-45dc-a07f-bb9b7b967ca8" class="bulleted-list"><li style="list-style-type:circle">음성유도기를 소지하고 있는 사람이 범위 안으로 들어왔을 때 스피커의 출력 데시벨 측정</li></ul></li></ul><ul id="a93fe66f-cdc0-43bd-bbca-58a8b8bb0df8" class="bulleted-list"><li style="list-style-type:disc">어플리케이션 기능 테스트시트를 순차적으로 진행합니다.</li></ul><p id="c15e34a2-7b16-4ca1-b592-f7b6f9575bd8" class="">
+</p></div></p><h2 id="ec651499-540c-4937-afae-f0a8d447bef5" class="block-color-default"> <strong>협업 규칙</strong></h2><p id="ff533ca5-bbcc-4402-9140-345553d7a0f7" class="">협업과 프로젝트 효율성을 높이기 위해 tech-pioneers는 작업 진행도 관리 툴로 깃허브 칸반 보드를 선택했으며 다양한 개발 규칙을 설정하였습니다.</p><p id="b6d9436a-602f-46f0-96b6-f6b5540522e8" class="">
+</p><ol type="1" id="20ff9db4-5b30-4c1a-9b54-77c7541e60d6" class="numbered-list" start="1"><li>깃허브 칸반 보드<ul id="01b6a375-d35e-4e2d-a509-b855d138a4c3" class="bulleted-list"><li style="list-style-type:disc">팀원 사이의 업무 진행 상황 및 프로젝트 진행 상황을 시각적으로 파악하기 쉽습니다. </li></ul><ul id="6fe2dacf-777c-46f8-9a81-e0da46b6acfd" class="bulleted-list"><li style="list-style-type:disc">개발 전, 개별 작업 카드를 작성하는 과정에서 기능별 요구사항, 우선순위, 작업기간 등을 정의하며 작업의 투명성을 높입니다.  </li></ul><ul id="bbaf656a-7962-4af1-b5dc-613ff704e778" class="bulleted-list"><li style="list-style-type:disc">프로젝트 레포지토리와 연동을 통해 코드 관련 작업을 효과적으로 관리합니다.<br/><br/></li></ul></li></ol><ol type="1" id="22a465ec-4168-48f6-95d2-5dfeeafbdfca" class="numbered-list" start="2"><li>컨벤션 설정<p id="88630b31-5c89-44d1-8353-2b66c42a6bdf" class="">tech-pioneers가 설정한 규칙은 다음과 같습니다.</p><ul id="f8945c38-595f-4ef6-b8d9-c89a7943a679" class="bulleted-list"><li style="list-style-type:disc">브랜치명<br/>프로젝트의 일관성을 높이고 브랜치명 충돌을 방지하기 위해 통일된 브랜치명을 사용합니다.<br/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="d3844394-b746-47d2-a208-873e4ece6dcf" class="code"><code class="language-JavaScript">타입/세부내용
+타입/#이슈번호/세부내용</code></pre></li></ul><ul id="3f1310b8-e6e8-4d64-9a87-f0fb16dcb9b9" class="bulleted-list"><li style="list-style-type:disc">브랜치 전략 <p id="c9bc376a-398b-44df-ba4e-d9253a924434" class="">tech-pioneers의 Git-flow 전략</p><ul id="b4ac1b75-777b-4920-83fa-d760af5cbb21" class="bulleted-list"><li style="list-style-type:circle">사용할 브랜치 : master, develop, feature, hotfix </li></ul><ul id="3c77b6cd-832b-44c6-921c-2d5f511238c5" class="bulleted-list"><li style="list-style-type:circle">feature 브랜치에서 작업 브랜치를 생성한 후 기능이 완성되면 feature 브랜치에 Pull request를 생성합니다.</li></ul><ul id="f18ee8d5-189b-42c6-ba3f-4b66f2cdd8a2" class="bulleted-list"><li style="list-style-type:circle">feature에 대한 기능 구현 및 테스트를 완료하면 develop 브랜치에 Pull request를 생성합니다.</li></ul></li></ul><ul id="ced4ae25-95ff-4dfd-8ff5-001051509d42" class="bulleted-list"><li style="list-style-type:disc">Pull request 규칙<ul id="15e22b98-007d-4606-a88b-7e8138f78b1d" class="bulleted-list"><li style="list-style-type:circle">PR 생성자를 제외한 다른 팀원은 생성된 PR에 대한 코드 리뷰 및 피드백을 진행합니다.</li></ul><ul id="24ba5d28-145d-4385-97b9-83a15bbb7950" class="bulleted-list"><li style="list-style-type:circle">PR은 최소 1명의 팀원이 리뷰 승인을 한 후에 merge합니다.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="0c7bacea-9b97-42bb-8e7a-413f2cafb266" class="code"><code class="language-JavaScript">&lt;!-- PR 제목 --&gt;
+타입 : #이슈번호/내용
+
+## 🚅 PR 한 줄 요약
+
+PR을 한줄로 요약해주세요.
+
+## 🧑‍💻 PR 세부 내용
+
+수정/추가한 내용을 적어주세요.
+
+## 📸 스크린샷
+
+스크린샷을 첨부해주세요.</code></pre></li></ul><ul id="b5a1a0b2-32d6-4b05-b888-fdc49341f57e" class="bulleted-list"><li style="list-style-type:disc">커밋 메세지<ul id="37811738-52f5-4d10-b2c4-8bbc49e24c10" class="bulleted-list"><li style="list-style-type:circle">작업 중 코드 변경 사항 및 디버깅을 유용하게 하기 위함으로 아래 규칙을 따릅니다. </li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="b1e5fa5a-4add-46a1-8f2f-e22e0b4b26b2" class="code"><code class="language-JavaScript">		
+feat : 새로운 기능 추가
+fix : 버그 수정
+docs : 문서 수정
+style : 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우
+refactor : 코드 리펙토링
+test : 테스트 코드, 리펙토링 테스트 코드 추가
+chore : 빌드 업무 수정, 패키지 매니저 수정</code></pre><p id="25bb67c2-6995-4df0-915a-c836818b4a38" class="">
+</p></li></ul></li></ol><ol type="1" id="e82d7282-7f2e-496f-800c-e30d78395723" class="numbered-list" start="3"><li>문제 해결 및 이슈 관리<ul id="09b8a841-ccee-4253-b649-cb44e0c4b744" class="bulleted-list"><li style="list-style-type:disc">새로운 기능 제안 및 버그 발생 등에 대해 이슈를 생성합니다.</li></ul><ul id="6df7a0bc-59c3-452e-8af3-6cbef762ca5b" class="bulleted-list"><li style="list-style-type:disc">코멘트와 멘션을 통해 팀원들과 해당 이슈에 대해 토론합니다.<ul id="f02dc068-3dfa-4c6e-bdcc-6a1e1a48ad24" class="bulleted-list"><li style="list-style-type:circle">긴급한 이슈의 경우 추가 회의를 진행합니다.</li></ul><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="1ebf2c71-40cf-4eba-bfc2-5341ee8f7fcc" class="code"><code class="language-JavaScript">## 🚅 Issue 한 줄 요약
+
+이슈를 한줄로 요약해주세요.
+
+## 🤷 Issue 세부 내용
+
+무슨 이슈인가요?
+
+## ✨ 기대 결과
+
+어떤 결과물을 원하시나요?
+
+## 📸 스크린샷
+
+이슈에 해당하는 부분을 보여주세요.</code></pre><p id="4feac6b4-6d47-473c-8a6b-2f0c6f02b5b9" class="">
+</p></li></ul></li></ol><ol type="1" id="5ceee5be-ab20-4ec1-b986-7d960b1fe8a3" class="numbered-list" start="4"><li>회의 일정 <ul id="9aecafd2-07bc-445c-9188-6bb2a566f4f6" class="bulleted-list"><li style="list-style-type:disc">화요일 오후 7시에 정기 회의를 진행합니다. <ul id="0e482e70-14bc-4285-953b-60c12ed8db87" class="bulleted-list"><li style="list-style-type:circle">장소 : 디스코드 음성 채널</li></ul><ul id="213d9979-9a70-4b3e-b85e-3313c95f43dd" class="bulleted-list"><li style="list-style-type:circle">회의 시간 : 최대 1시간 </li></ul><ul id="e6429d46-b06c-4f25-ad3c-853649c49e6e" class="bulleted-list"><li style="list-style-type:circle">오프라인 회의가 필요할 경우 미리 공유합니다.</li></ul></li></ul><ul id="ca3505d4-b4b3-4396-a688-e4fae29f4bd6" class="bulleted-list"><li style="list-style-type:disc">불가피한 사유가 있을 경우 디스코드를 통해 팀원에게 미리 공유합니다.</li></ul><ul id="d57768f0-d032-41bf-9d58-ddb5b4ed9779" class="bulleted-list"><li style="list-style-type:disc">회의록은 모든 팀원이 돌아가며 작성합니다.<br/><br/></li></ul></li></ol><ol type="1" id="af1a1508-afcf-4711-9525-3d75d3f8d2f7" class="numbered-list" start="5"><li>프로젝트 보고서 <ul id="ba1b6f38-dca9-45ce-a5f7-74c1e03a8827" class="bulleted-list"><li style="list-style-type:disc">Github.io 페이지를 통해 주기적으로 개발일지를 작성합니다.</li></ul><ul id="7ad1bff1-0ac8-43b7-9ab2-1b881a9cd6af" class="bulleted-list"><li style="list-style-type:disc">개발 과정에서 발생한 모든 트러블슈팅을 기록합니다.</li></ul><ul id="d0ce65ef-362a-4da9-8dda-e638fa5c9441" class="bulleted-list"><li style="list-style-type:disc">일주일에 최소 1회 작성</li></ul></li></ol><h2 id="8a24f064-be5c-4750-be24-df58c886ffbc" class="">지원 경비 사용 계획서</h2><h3 id="c3c6acbe-13a8-41d8-93fc-2ff82e32d2b2" class="">하드웨어 구성요소</h3><table id="636faf92-be80-4d08-bee4-67c0fee1eb37" class="simple-table"><thead class="simple-table-header"><tr id="741d025b-a142-49c2-ae0e-cfe0bf21d82f"><th id="]Rkq" class="simple-table-header-color simple-table-header">모델명</th><th id="Q\}l" class="simple-table-header-color simple-table-header" style="width:149px">단가</th><th id="o]TS" class="simple-table-header-color simple-table-header">수량</th><th id="gXlC" class="simple-table-header-color simple-table-header">링크</th><th id="=oYQ" class="simple-table-header-color simple-table-header">용도</th></tr></thead><tbody><tr id="1cc37b62-d56e-4eb7-83f3-8f30fa768a74"><td id="]Rkq" class="">라즈베리파이4(8GB) + 공식 케이스 + 5V 4A 아답터 + 방열판</td><td id="Q\}l" class="" style="width:149px">112,500원</td><td id="o]TS" class="">1</td><td id="gXlC" class=""><a href="https://www.devicemart.co.kr/goods/view?no=12718639">https://www.devicemart.co.kr/goods/view?no=12718639</a></td><td id="=oYQ" class="">필요 사유: 음량 자동 조절장치 겸 iBeacon제어용</td></tr><tr id="194752c1-09fc-47e1-a2e2-2a4a234afb00"><td id="]Rkq" class="">[SMG] micro SD 메모리 카드 64GB [SZH-SD001]</td><td id="Q\}l" class="" style="width:149px">7,500원</td><td id="o]TS" class="">1</td><td id="gXlC" class=""><a href="https://www.devicemart.co.kr/goods/view?no=12781197">https://www.devicemart.co.kr/goods/view?no=12781197</a></td><td id="=oYQ" class="">라즈베리 파이 OS 구동 및 데이터 저장용</td></tr><tr id="11f8c7af-22ae-49c5-b855-a9c1cd59ceae"><td id="]Rkq" class="">[NEXI] [사운드모듈/Virtual 5.1 채널/USB 2.0] NX-USOUND2 [NX394]</td><td id="Q\}l" class="" style="width:149px">2,200원</td><td id="o]TS" class="">1</td><td id="gXlC" class=""><a href="https://www.devicemart.co.kr/goods/view?no=1333444">https://www.devicemart.co.kr/goods/view?no=1333444</a></td><td id="=oYQ" class="">음량 자동 조절장치를 위한 소음 측정용</td></tr><tr id="1f89f0bf-ba4b-47c8-98ce-d92096ac780d"><td id="]Rkq" class="">[Coms] 단상용/클립형 노래방 마이크 (AUX 3.5 Plug)[BT045]</td><td id="Q\}l" class="" style="width:149px">12,100원</td><td id="o]TS" class="">1</td><td id="gXlC" class=""><a href="https://www.devicemart.co.kr/goods/view?no=10888028">https://www.devicemart.co.kr/goods/view?no=10888028</a></td><td id="=oYQ" class="">음량 자동 조절장치를 위한 소음 측정용 마이크</td></tr><tr id="b905143c-40d9-4ab5-8495-1c49e68a9d05"><td id="]Rkq" class="">[Happy House] ESP32 DevKitC WROOM-32D V4 CH9102X 개발보드 [CMC]</td><td id="Q\}l" class="" style="width:149px">7,000원</td><td id="o]TS" class="">1</td><td id="gXlC" class=""><a href="https://www.devicemart.co.kr/goods/view?no=15314103">https://www.devicemart.co.kr/goods/view?no=15314103</a></td><td id="=oYQ" class="">실내 위치 측위 및 전동차 내 사용자 스마트폰 데이터 전송을 위한 비콘</td></tr><tr id="94d58c42-9965-4520-b778-41c5646da1d8"><td id="]Rkq" class="">[Coms] G Power 일반 보조배터리 5000mAh / C타입 게이밍 보조배터리 [SR224]</td><td id="Q\}l" class="" style="width:149px">9,100원</td><td id="o]TS" class="">11</td><td id="gXlC" class=""><a href="https://www.devicemart.co.kr/goods/view?no=12539590">https://www.devicemart.co.kr/goods/view?no=12539590</a></td><td id="=oYQ" class="">라즈베리 파이, iBeacon 전원 공급용</td></tr><tr id="5c67df54-e419-4552-b096-915b9a0aba13"><td id="]Rkq" class="">[Coms] 전용공간 2채널 스마트폰 3D 입체 사운드/USB전원/ 3W x 2 / G [Cn]</td><td id="Q\}l" class="" style="width:149px">13,100원</td><td id="o]TS" class="">1</td><td id="gXlC" class=""><a href="https://www.devicemart.co.kr/goods/view?no=10889105">https://www.devicemart.co.kr/goods/view?no=10889105</a></td><td id="=oYQ" class="">안내방송 가변 음량 조절장치 안내방송 스피커</td></tr><tr id="ab5ff8a1-1300-4578-85dd-4d55038ce4a9"><td id="]Rkq" class=""><strong>총 예산 합계</strong></td><td id="Q\}l" class="" style="width:149px">317,500원</td><td id="o]TS" class=""></td><td id="gXlC" class=""></td><td id="=oYQ" class=""></td></tr></tbody></table></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
