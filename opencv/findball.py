@@ -13,9 +13,7 @@ ap.add_argument("-b", "--buffer", type=int, default=64,
     help="max buffer size")
 args = vars(ap.parse_args())
 
-
 # 노랑색을 검출하기 위한 상한값, 하한값 경계 정의
-#colorLower = (0, 100, 100)  
 colorLower = (0, 138, 138)  
 colorUpper = (40, 255, 255) 
  
@@ -47,11 +45,13 @@ while True:
     mask = cv2.erode(mask, None, iterations=2)
     mask = cv2.dilate(mask, None, iterations=2)
 
+    # Canny Edge Detection을 사용하여 에지 검출
+    edges = cv2.Canny(mask, 50, 150)
+
     # 마스크 내의 윤곽선 찾기 및 현재 (x, y) 초기화
-    cnts = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL,
+    cnts = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL,
         cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
-    #cnts = cnts[0] if imutils.is_cv2() else cnts[1]
     center = None
 
     # 하나의 윤곽선이 발견된 경우
@@ -60,6 +60,7 @@ while True:
         c = max(cnts, key=cv2.contourArea)
         ((x, y), radius) = cv2.minEnclosingCircle(c)
         M = cv2.moments(c)
+        if M["m00"] == 0 : break
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
         if radius > 10:
