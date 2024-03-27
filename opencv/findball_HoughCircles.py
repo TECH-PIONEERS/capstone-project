@@ -1,5 +1,6 @@
 '''
-원 검출 코드 추가
+원 검출위한 HoughCircles 추가
+HoughCircles 파라미터 값 수정 필요
 '''
 from collections import deque
 from imutils.video import VideoStream
