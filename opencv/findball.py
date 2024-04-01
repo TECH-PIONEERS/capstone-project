@@ -60,7 +60,7 @@ while True:
         c = max(cnts, key=cv2.contourArea)
         ((x, y), radius) = cv2.minEnclosingCircle(c)
         M = cv2.moments(c)
-        if M["m00"] == 0 : break
+        #if M["m00"] == 0 : break
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
         if radius > 10:
