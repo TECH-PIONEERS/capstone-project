@@ -24,6 +24,8 @@ vs = cv2.VideoCapture(0)
 # 카메라나 비디오 파일을 시작하기 위한 중단 시간 부여
 time.sleep(2.0)
 
+golfball_size = 10
+
 while True:
     # 현재 프레임 잡기
     _, frame = vs.read()
@@ -63,7 +65,7 @@ while True:
         #if M["m00"] == 0 : break
         center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
 
-        if radius > 10:
+        if radius > golfball_size:
             cv2.circle(frame, (int(x), int(y)), int(radius),
                 (0, 255, 255), 2)
             cv2.circle(frame, center, 5, (0, 0, 255), -1)
