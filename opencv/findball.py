@@ -19,7 +19,9 @@ colorUpper = (40, 255, 255)
  
 pts = deque(maxlen=args["buffer"])
     
-vs = cv2.VideoCapture(0)
+url = "http://192.168.10.114:4747/video"
+ 
+vs = cv2.VideoCapture(url)
 
 # 카메라나 비디오 파일을 시작하기 위한 중단 시간 부여
 time.sleep(2.0)
