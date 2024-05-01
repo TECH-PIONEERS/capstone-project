@@ -35,10 +35,11 @@ def main():
     while True:
         frame = picam2.capture_array()
 
-        frame = camera_calibration(frame)
+        cali_result = camera_calibration(frame)
         
         # 프레임 출력
         cv2.imshow("Webcam", frame)
+        cv2.imshow("cali", cali_result)
         
         # 'q' 키를 누르면 루프 종료
         if cv2.waitKey(1) & 0xFF == ord('q'):
