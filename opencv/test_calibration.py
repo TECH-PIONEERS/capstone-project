@@ -3,12 +3,20 @@ import numpy as np
 from picamera2 import Picamera2
 
 def camera_calibration(image):
+    fx = 297.454574
+    fy = 297.454574
+    cx = 300.000000
+    cy = 200.000000
+    k1 = -0.237153
+    k2 = 0.025004
+    p1 = -0.008951
+    p2 = -0.010148
 
     # 카메라 매트릭스와 왜곡 계수 정의
-    mtx = np.array([[1223.742488, 0, 941.000000],
-                    [0, 1223.742488, 710.000000],
+    mtx = np.array([[fx, 0, cx],
+                    [0, fy, cy],
                     [0, 0, 1]])
-    dist = np.array([[-0.410419, 0.150130, 0.014093, -0.001272]])
+    dist = np.array([[k1, k2, p1, p2]])
 
     # 입력 이미지의 크기 가져오기
     h, w = image.shape[:2]
