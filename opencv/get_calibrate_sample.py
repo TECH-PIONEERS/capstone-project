@@ -23,7 +23,7 @@ def main():
     cv2.destroyAllWindows()
 
 def capture_image(frame,i):
-    image_name = f"image/img{i+1}.jpg"
+    image_name = f"image/jmg{i+1}.jpg"
     cv2.imwrite(image_name, frame)
     print("Captured image saved as capture.jpg")
 
