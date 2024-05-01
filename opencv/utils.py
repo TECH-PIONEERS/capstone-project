@@ -1,3 +1,41 @@
+import numpy as np
+import cv2
+
+def camera_calibration(image):
+    # 카메라 보정 함수 
+    # image는 picam2.capture_array()로 받아온 frame
+    
+    # 최종 버전: v3
+    fx = 297.677019
+    fy = 297.677019
+    cx = 300.000000
+    cy = 200.000000
+    k1 = -0.266982
+    k2 = 0.056298
+    p1 = -0.030921
+    p2 = -0.005686
+
+    # 카메라 매트릭스와 왜곡 계수 정의
+    mtx = np.array([[fx, 0, cx],
+                    [0, fy, cy],
+                    [0, 0, 1]])
+    dist = np.array([[k1, k2, p1, p2]])
+
+    # 입력 이미지의 크기 가져오기
+    h, w = image.shape[:2]
+
+    # 최적의 새 카메라 매트릭스 계산
+    newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
+
+    # 이미지를 새 카메라 매트릭스에 맞게 왜곡 보정
+    dst = cv2.undistort(image, mtx, dist, None, newcameramtx)
+
+    # ROI(관심 영역) 추출
+    #x, y, w, h = roi
+    #dst = dst[y:y+h, x:x+w]
+
+    return dst
+
 def pixel_to_cm(height):
     print(200/height) #단위(mm)
     return 200/height
