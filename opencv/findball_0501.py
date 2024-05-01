@@ -8,9 +8,9 @@ import imutils
 import time
 import utils 
 
-
 flag = 0
 start_x, start_y, end_x, end_y = 0, 0, 0, 0
+previous_frame = None
 
 def get_xy(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONUP:
@@ -61,7 +61,9 @@ while True:
     # 프레임을 잡지 못하면 비디오 종료
     if frame is None:
         print('no frame')
-        break
+        frame = previous_frame  # 이전 프레임을 사용
+    else:
+        previous_frame = frame
 
     cap = utils.camera_calibration(frame)
 

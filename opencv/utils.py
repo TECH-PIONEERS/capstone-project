@@ -31,8 +31,8 @@ def camera_calibration(image):
     dst = cv2.undistort(image, mtx, dist, None, newcameramtx)
 
     # ROI(관심 영역) 추출
-    #x, y, w, h = roi
-    #dst = dst[y:y+h, x:x+w]
+    x, y, w, h = roi
+    dst = dst[y:y+h, x:x+w]
 
     return dst
 
