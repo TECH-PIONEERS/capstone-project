@@ -9,7 +9,7 @@ import cv2
 import imutils
 import time
 import utils 
-import threading
+import threading 
 
 flag = 0
 start_x, start_y, end_x, end_y = 0, 0, 0, 0
@@ -25,7 +25,7 @@ def check_circles_out_of_screen(circles, SCREEN_WIDTH):
             if not utils.is_beeping:
                 beep_thread = threading.Thread(target=utils.generate_alert_beep)
                 beep_thread.start()
-                print("Running high beep")
+                print("Running alert beep")
 
 def get_xy(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONUP:

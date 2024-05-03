@@ -12,10 +12,31 @@ def generate_alert_beep():
     global is_beeping
     if not is_beeping:
         is_beeping = True   
-        generate_long_beep()
-        generate_high_beep()
-        generate_high_beep()
-        generate_high_beep()
+        # generate_long_beep(alert=True)
+        pygame.init()
+        pygame.mixer.init()
+        beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
+        beep_sound.play()
+        time.sleep(1)
+        # generate_high_beep(alert=True)
+        pygame.init()
+        pygame.mixer.init()
+        beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
+        beep_sound.play()
+        time.sleep(1)
+        # generate_high_beep(alert=True)
+        pygame.init()
+        pygame.mixer.init()
+        beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
+        beep_sound.play()
+        time.sleep(1)
+        # generate_high_beep(alert=True)
+        pygame.init()
+        pygame.mixer.init()
+        beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
+        beep_sound.play()
+        time.sleep(1)
+
         is_beeping = False
 
 def generate_long_beep():
@@ -26,9 +47,9 @@ def generate_long_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
         beep_sound.play()
-        time.sleep(2)
+        time.sleep(1)
         is_beeping = False
-    
+
 def generate_high_beep():
     global is_beeping
     if not is_beeping:
@@ -50,6 +71,7 @@ def generate_low_beep():
         beep_sound.play()
         time.sleep(1)
         is_beeping = False
+
 
 def camera_calibration(image):
     # 카메라 보정 함수 
