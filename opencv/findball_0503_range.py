@@ -18,8 +18,8 @@ previous_frame = None
 # 원의 외곽선이 범위를 벗어나면 경고 문구 출력하는 함수
 def check_circles_out_of_screen(circles, SCREEN_WIDTH, SCREEN_HEIGHT):
     # 경계 범위 설정
-    BOUNDARY_X = SCREEN_WIDTH // 50 # 화면 너비의 50%
-    BOUNDARY_Y = SCREEN_HEIGHT // 50 # 화면 높이의 50%
+    BOUNDARY_X = SCREEN_WIDTH // 2 # 화면 너비의 50%
+    BOUNDARY_Y = SCREEN_HEIGHT // 2 # 화면 높이의 50%
     for (x, y, r) in circles:
         if x - r < BOUNDARY_X or y - r < BOUNDARY_Y or x + r > SCREEN_WIDTH - BOUNDARY_X or y + r > SCREEN_HEIGHT - BOUNDARY_Y:
             print("Circle is going out of screen boundary!")
