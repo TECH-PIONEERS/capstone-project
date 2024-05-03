@@ -15,17 +15,12 @@ flag = 0
 start_x, start_y, end_x, end_y = 0, 0, 0, 0
 previous_frame = None
 
-# 화면 사이즈 설정
-SCREEN_WIDTH = 640
-SCREEN_HEIGHT = 400
-
-# 경계 범위 설정
-BOUNDARY_X = 400
-BOUNDARY_Y = 400
-
 # 원의 외곽선이 범위를 벗어나면 경고 문구 출력하는 함수
-def check_circles_out_of_screen(circles):
-    for (x, y, r) in circles[0]:
+def check_circles_out_of_screen(circles, SCREEN_WIDTH, SCREEN_HEIGHT):
+    # 경계 범위 설정
+    BOUNDARY_X = SCREEN_WIDTH // 50 # 화면 너비의 50%
+    BOUNDARY_Y = SCREEN_HEIGHT // 50 # 화면 높이의 50%
+    for (x, y, r) in circles:
         if x - r < BOUNDARY_X or y - r < BOUNDARY_Y or x + r > SCREEN_WIDTH - BOUNDARY_X or y + r > SCREEN_HEIGHT - BOUNDARY_Y:
             print("Circle is going out of screen boundary!")
 
@@ -67,7 +62,7 @@ colorUpper = (40, 255, 255)
 pts = deque(maxlen=args["buffer"])
     
 picam2 = Picamera2()
-picam2.preview_configuration.main.size=(SCREEN_WIDTH,SCREEN_HEIGHT)
+picam2.preview_configuration.main.size=(640, 400)
 picam2.preview_configuration.main.format = "RGB888"
 picam2.start()
 
@@ -90,6 +85,9 @@ while True:
     if flag == 2:
         frame = cap[start_y:end_y, start_x:end_x]
         # cv2.setMouseCallback('Frame', get_xy)
+
+        SCREEN_WIDTH = end_x - start_x
+        SCREEN_HEIGH = end_y - start_y
         
         blurred = cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -108,8 +106,6 @@ while True:
 
         if circles is not None:
             circles = np.round(circles[0, :]).astype("int")
-            # 원의 외곽선이 지정된 범위를 벗어나면 경고 문구를 출력
-            check_circles_out_of_screen(circles)
             for (x, y, r) in circles:
                 cv2.circle(frame, (x, y), r, (0, 255, 0), 4)
                 cv2.rectangle(frame, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
@@ -118,6 +114,9 @@ while True:
                 center = (x, y)
                 print(center)
                 pts.appendleft(center)
+            
+            # 원의 외곽선이 지정된 범위를 벗어나면 경고 문구를 출력
+            check_circles_out_of_screen(circles, SCREEN_WIDTH, SCREEN_HEIGH)
 
         # # 이전 중심과 현재 중심을 연결하는 선을 그림
         for i in range(1, len(pts)):
