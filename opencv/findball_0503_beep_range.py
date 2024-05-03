@@ -22,9 +22,10 @@ def check_circles_out_of_screen(circles, SCREEN_WIDTH):
     for (x, y, r) in circles:
         if x - r < BOUNDARY_X:
             print("Circle is going out of screen boundary!")
-            beep_thread = threading.Thread(target=utils.generate_alert_beep)
-            beep_thread.start()
-            print("Running high beep")
+            if not utils.is_beeping:
+                beep_thread = threading.Thread(target=utils.generate_alert_beep)
+                beep_thread.start()
+                print("Running high beep")
 
 def get_xy(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONUP:

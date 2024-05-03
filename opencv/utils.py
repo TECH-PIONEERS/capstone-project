@@ -4,18 +4,30 @@ import threading
 import pygame
 import time
 
+# 경고음이 울리고 있는지 여부를 나타내는 변수
+global is_beeping
+is_beeping = False
+
 def generate_alert_beep():
-    generate_long_beep()
-    generate_high_beep()
-    generate_high_beep()
-    generate_high_beep()
+    global is_beeping
+    if not is_beeping:
+        is_beeping = True   
+        generate_long_beep()
+        generate_high_beep()
+        generate_high_beep()
+        generate_high_beep()
+        is_beeping = False
 
 def generate_long_beep():
-    pygame.init()
-    pygame.mixer.init()
-    beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
-    beep_sound.play()
-    time.sleep(2)
+    global is_beeping
+    if not is_beeping:
+        is_beeping = True   
+        pygame.init()
+        pygame.mixer.init()
+        beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
+        beep_sound.play()
+        time.sleep(2)
+        is_beeping = False
     
 def generate_high_beep():
     pygame.init()
