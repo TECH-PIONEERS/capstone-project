@@ -1,4 +1,4 @@
-from picamera2 import Picamera
+from picamera2 import Picamera2
 from collections import deque
 from imutils.video import VideoStream
 import numpy as np
@@ -50,7 +50,7 @@ colorUpper = (40, 255, 255)
  
 pts = deque(maxlen=args["buffer"])
     
-picam2 = Picamera()
+picam2 = Picamera2()
 picam2.resolution = (640, 480)
 rawCapture = picam2.PiRGBArray(picam2, size=(640, 480))
 

@@ -34,7 +34,7 @@ def get_position(event, x, y, flags, params):
             end_y = y
             flag = 2  # flag를 2로 설정하여 crop할 좌표를 모두 선택한 상태로 변경
             utils.pixel_to_cm(end_y-start_y)
-            cv2.destroyWindow('cap')  # 마우스 클릭 이벤트를 위한 창 닫기
+            # cv2.destroyWindow('cap')  # 마우스 클릭 이벤트를 위한 창 닫기
     return 
 
 ap = argparse.ArgumentParser()
@@ -51,30 +51,29 @@ colorUpper = (40, 255, 255)
 pts = deque(maxlen=args["buffer"])
     
 picam2 = Picamera2()
-picam2.preview_configuration.main.size=(600,400)
-picam2.preview_configuration.main.format="RGB888"
+picam2.preview_configuration.main.size=(640,400)
+picam2.preview_configuration.main.format = "RGB888"
 picam2.start()
 
 while True:
-    frame = picam2.capture_array()
+    cap = picam2.capture_array()
 
     # 프레임을 잡지 못하면 비디오 종료
-    if frame is None:
+    if cap is None:
         print('no frame')
-        frame = previous_frame  # 이전 프레임을 사용
+        cap = previous_frame  # 이전 프레임을 사용
     else:
-        previous_frame = frame
+        previous_frame = cap
 
-    cap = utils.camera_calibration(frame)
+    cap = utils.camera_calibration(cap)
 
     # 프레임 크기 조정, 블러 처리, HSV 색 공간으로 변환
-    cap = imutils.resize(cap, width=600)
     cv2.namedWindow('cap')
     cv2.setMouseCallback('cap', get_position)
     
     if flag == 2:
         frame = cap[start_y:end_y, start_x:end_x]
-        cv2.setMouseCallback('Frame', get_xy)
+        # cv2.setMouseCallback('Frame', get_xy)
         
         blurred = cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -83,10 +82,10 @@ while True:
         mask = cv2.erode(mask, None, iterations=2)
         mask = cv2.dilate(mask, None, iterations=2)
 
-        # Canny Edge Detection을 사용하여 에지 검출
+        # # Canny Edge Detection을 사용하여 에지 검출
         edges = cv2.Canny(mask, 50, 150)
 
-        # Hough 변환을 사용하여 원 검출
+        # # Hough 변환을 사용하여 원 검출
         circles = cv2.HoughCircles(edges, cv2.HOUGH_GRADIENT, dp=1, minDist=20,
                                 param1=70, param2=30, minRadius=5, maxRadius=300)
 
@@ -98,9 +97,10 @@ while True:
 
                 # 원 중심 좌표와 반지름을 이용하여 중심 계산
                 center = (x, y)
+                print(center)
                 pts.appendleft(center)
 
-        # 이전 중심과 현재 중심을 연결하는 선을 그림
+        # # 이전 중심과 현재 중심을 연결하는 선을 그림
         for i in range(1, len(pts)):
             if pts[i - 1] is None or pts[i] is None:
                 continue
