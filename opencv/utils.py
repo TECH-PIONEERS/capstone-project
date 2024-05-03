@@ -1,5 +1,35 @@
 import numpy as np
 import cv2
+import threading
+import pygame
+import time
+
+def generate_alert_beep():
+    generate_long_beep()
+    generate_high_beep()
+    generate_high_beep()
+    generate_high_beep()
+
+def generate_long_beep():
+    pygame.init()
+    pygame.mixer.init()
+    beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
+    beep_sound.play()
+    time.sleep(2)
+    
+def generate_high_beep():
+    pygame.init()
+    pygame.mixer.init()
+    beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
+    beep_sound.play()
+    time.sleep(1)
+
+def generate_low_beep():
+    pygame.init()
+    pygame.mixer.init()
+    beep_sound = pygame.mixer.Sound("sound/low_beep.wav")
+    beep_sound.play()
+    time.sleep(1)
 
 def camera_calibration(image):
     # 카메라 보정 함수 
