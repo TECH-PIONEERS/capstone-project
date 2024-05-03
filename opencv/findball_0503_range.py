@@ -1,5 +1,4 @@
-# 공 외곽선이 특정 범위 벗어났을 경우 경고 문구 출력하는 코드
-# 화면 사이즈: 640x400
+# 공 외곽선이 화면의 1/3 벗어났을 경우 경고 문구 출력하는 코드
 
 from picamera2 import Picamera2
 from collections import deque
@@ -16,12 +15,11 @@ start_x, start_y, end_x, end_y = 0, 0, 0, 0
 previous_frame = None
 
 # 원의 외곽선이 범위를 벗어나면 경고 문구 출력하는 함수
-def check_circles_out_of_screen(circles, SCREEN_WIDTH, SCREEN_HEIGHT):
+def check_circles_out_of_screen(circles, SCREEN_WIDTH):
     # 경계 범위 설정
-    BOUNDARY_X = SCREEN_WIDTH // 2 # 화면 너비의 50%
-    BOUNDARY_Y = SCREEN_HEIGHT // 2 # 화면 높이의 50%
+    BOUNDARY_X = SCREEN_WIDTH // 3 # 화면 너비의 1/3
     for (x, y, r) in circles:
-        if x - r < BOUNDARY_X or y - r < BOUNDARY_Y or x + r > SCREEN_WIDTH - BOUNDARY_X or y + r > SCREEN_HEIGHT - BOUNDARY_Y:
+        if x - r < BOUNDARY_X:
             print("Circle is going out of screen boundary!")
 
 def get_xy(event, x, y, flags, param):
@@ -87,7 +85,6 @@ while True:
         # cv2.setMouseCallback('Frame', get_xy)
 
         SCREEN_WIDTH = end_x - start_x
-        SCREEN_HEIGH = end_y - start_y
         
         blurred = cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -116,7 +113,7 @@ while True:
                 pts.appendleft(center)
             
             # 원의 외곽선이 지정된 범위를 벗어나면 경고 문구를 출력
-            check_circles_out_of_screen(circles, SCREEN_WIDTH, SCREEN_HEIGH)
+            check_circles_out_of_screen(circles, SCREEN_WIDTH)
 
         # # 이전 중심과 현재 중심을 연결하는 선을 그림
         for i in range(1, len(pts)):
