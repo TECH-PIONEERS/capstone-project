@@ -18,7 +18,7 @@ while True:
         data1 = ser1.readline().strip()
         print("data 0 Received:", data)
         print("data 1 Received:", data1)
-    time.sleep(2)  
+    #time.sleep(2)  
 # except KeyboardInterrupt:
 #     print("Keyboard Interrupt detected. Exiting...")
 # finally:
