@@ -27,6 +27,12 @@ def check_circles_out_of_screen(circles, SCREEN_WIDTH):
                 beep_thread.start()
                 print("Running alert beep")
 
+def 골과공정렬(y):
+    if(y >= 66 and y <76):
+        print("골 과 공 정렬")
+    else:
+        print("골 과 공 정렬되지않음")
+
 # 공 x좌표가 107보다 작을 때 골이라고 판단하는 함수
 def goal(y):
     # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
@@ -134,10 +140,10 @@ while True:
                 pts.appendleft(center)
                 if x <= 120:
                     goal(y)
+                골과공정렬(y)
             
             # 원의 외곽선이 지정된 범위를 벗어나면 경고 문구를 출력
             check_circles_out_of_screen(circles, SCREEN_WIDTH)
-
         # # 이전 중심과 현재 중심을 연결하는 선을 그림
         # for i in range(1, len(pts)):
         #     if pts[i - 1] is None or pts[i] is None:
