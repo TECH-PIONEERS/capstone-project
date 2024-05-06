@@ -60,8 +60,8 @@ args = vars(ap.parse_args())
 
 # 노랑색을 검출하기 위한 상한값, 하한값 경계 정의
 colorLower = (0, 138, 138)  
-colorUpper = (40, 255, 255) 
- 
+colorUpper = (50, 255, 255) 
+
 pts = deque(maxlen=args["buffer"])
     
 picam2 = Picamera2()
@@ -99,12 +99,13 @@ while True:
         mask = cv2.dilate(mask, None, iterations=2)
 
         # Canny Edge Detection을 사용하여 에지 검출
-        edges = cv2.Canny(mask, 50, 150)
+        edges = cv2.Canny(mask, 30, 150)
+        # edges = cv2.Canny(mask, 50, 150)
 
         # # Hough 변환을 사용하여 원 검출
         circles = cv2.HoughCircles(edges, cv2.HOUGH_GRADIENT, dp=1, minDist=20,
-                                param1=70, param2=30, minRadius=5, maxRadius=300)
-
+                                param1=70, param2=30, minRadius=1, maxRadius=300)
+        # circles = cv2.HoughCircles(edges, cv2.HOUGH_GRADIENT, dp=1, minDist=20, param1=70, param2=30, minRadius=5, maxRadius=300)
 
         if circles is not None:
             circles = np.round(circles[0, :]).astype("int")
