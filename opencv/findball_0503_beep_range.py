@@ -15,8 +15,8 @@ flag = 0
 start_x, start_y, end_x, end_y = 0, 0, 0, 0
 previous_frame = None
 
-# 원의 외곽선이 범위를 벗어나면 경고 문구 출력하는 함수
-def check_circles_out_of_screen(circles, SCREEN_WIDTH):
+# 원이 범위를 벗어나면 경고 문구 출력하는 함수
+def ballOutOfRangeAlert(circles, SCREEN_WIDTH):
     # 경계 범위 설정
     BOUNDARY_X = SCREEN_WIDTH // 3 # 화면 너비의 1/3
     for (x, y, r) in circles:
@@ -26,6 +26,11 @@ def check_circles_out_of_screen(circles, SCREEN_WIDTH):
                 beep_thread = threading.Thread(target=utils.generate_alert_beep)
                 beep_thread.start()
                 print("Running alert beep")
+            if not utils.isBallOutOfRange:
+                utils.isBallOutOfRange = True
+        elif utils.isBallOutOfRange is True:
+            utils.isBallOutOfRange = False
+
 
 def 골과공정렬(y):
     if(y >= 66 and y <76):
@@ -143,7 +148,7 @@ while True:
                 골과공정렬(y)
             
             # 원의 외곽선이 지정된 범위를 벗어나면 경고 문구를 출력
-            check_circles_out_of_screen(circles, SCREEN_WIDTH)
+            ballOutOfRangeAlert(circles, SCREEN_WIDTH)
         # # 이전 중심과 현재 중심을 연결하는 선을 그림
         # for i in range(1, len(pts)):
         #     if pts[i - 1] is None or pts[i] is None:

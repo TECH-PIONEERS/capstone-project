@@ -8,6 +8,10 @@ import time
 global is_beeping
 is_beeping = False
 
+#공이 IR positioning camera 범위를 벗어났는지 나타내는 플래그 (공이 범위 벗어나면 True)
+global isBallOutOfRange
+isBallOutOfRange = False
+
 def generate_alert_beep():
     global is_beeping
     if not is_beeping:

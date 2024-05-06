@@ -6,7 +6,7 @@ import numpy as np
 #colorUpper = (120, 213, 187) 
 
 colorLower = (0, 138, 138)  
-colorUpper = (50, 255, 255) 
+colorUpper = (80, 255, 255) 
 
 # 이미지 로드
 image = cv2.imread('302_ball_1.png')
