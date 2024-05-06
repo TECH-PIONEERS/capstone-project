@@ -32,6 +32,8 @@ def goal(y):
     # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
     if (y >= 40 and y <= 80):
         print("goal")
+    else:
+        print("miss")
 
 def get_xy(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONUP:
