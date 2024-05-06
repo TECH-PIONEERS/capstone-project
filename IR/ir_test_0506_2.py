@@ -33,19 +33,12 @@ def draw():
             output = list(map(int, myString.split(',')))
             #print(myString)  # display the incoming string
             print(output)
-            print(calculate_led_distance(output, camera_angle, camera_resolution))
+            print(calculate_led_distance(output[0] - output[2], camera_angle, camera_resolution))
             #xx, yy, ww, zz, xxx, yyy, www, zzz = output
 
 
 
-def calculate_led_distance(led_coordinates, camera_angle, camera_resolution):
-    # 0번 LED와 1번 LED의 x, y 좌표 추출
-    x0, y0 = led_coordinates[0], led_coordinates[1]
-    x1, y1 = led_coordinates[2], led_coordinates[3]
-    
-    # LED 간격 계산
-    led_gap = x1 - x0
-    
+def calculate_led_distance(led_gap, led_index, camera_angle, camera_resolution):
     # 카메라의 시야각을 라디안으로 변환
     camera_angle_rad = math.radians(camera_angle)
     
@@ -55,8 +48,13 @@ def calculate_led_distance(led_coordinates, camera_angle, camera_resolution):
     # 물체와 카메라 사이의 거리 계산
     object_distance = visible_object_width / (2 * math.tan(camera_angle_rad / 2))
     
-    return object_distance
+    # LED의 카메라로부터의 거리 계산
+    led_distance = object_distance - led_index * led_gap
+    
+    return led_distance
+
 
 setup()
 draw()
+
 
