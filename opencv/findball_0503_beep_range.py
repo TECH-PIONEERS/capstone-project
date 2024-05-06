@@ -65,7 +65,7 @@ ap.add_argument("-b", "--buffer", type=int, default=64,
 args = vars(ap.parse_args())
 
 # 노랑색을 검출하기 위한 상한값, 하한값 경계 정의
-colorLower = (0, 181, 181)  
+colorLower = (0, 138, 138)  
 colorUpper = (150, 250, 250) 
 # colorLower = (0, 138, 138)  
 # colorUpper = (50, 255, 255)
