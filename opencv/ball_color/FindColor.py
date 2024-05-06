@@ -15,7 +15,7 @@ def get_RBG_in_image(event, x, y, flags, param):
     return 
 
 
-origin_image = cv2.imread('ball.png')
+origin_image = cv2.imread('302_ball_1.png')
 
 param = {
     'image' : origin_image
