@@ -72,7 +72,6 @@ def generate_low_beep():
         time.sleep(1)
         is_beeping = False
 
-
 def camera_calibration(image):
     # 카메라 보정 함수 
     # image는 picam2.capture_array()로 받아온 frame

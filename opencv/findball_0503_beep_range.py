@@ -27,6 +27,12 @@ def check_circles_out_of_screen(circles, SCREEN_WIDTH):
                 beep_thread.start()
                 print("Running alert beep")
 
+# 공 x좌표가 107보다 작을 때 골이라고 판단하는 함수
+def goal(y):
+    # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
+    if (y >= 40 and y <= 80):
+        print("goal")
+
 def get_xy(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONUP:
         print(x,y)
@@ -124,6 +130,8 @@ while True:
                 center = (x, y)
                 print(center)
                 pts.appendleft(center)
+                if x <= 120:
+                    goal(y)
             
             # 원의 외곽선이 지정된 범위를 벗어나면 경고 문구를 출력
             check_circles_out_of_screen(circles, SCREEN_WIDTH)
