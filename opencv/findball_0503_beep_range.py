@@ -59,8 +59,15 @@ ap.add_argument("-b", "--buffer", type=int, default=64,
 args = vars(ap.parse_args())
 
 # 노랑색을 검출하기 위한 상한값, 하한값 경계 정의
-colorLower = (0, 138, 138)  
-colorUpper = (50, 255, 255) 
+colorLower = (0, 181, 181)  
+colorUpper = (150, 250, 250) 
+# colorLower = (0, 138, 138)  
+# colorUpper = (50, 255, 255)
+# colorLower = (64, 50, 255)
+# colorUpper = (64, 0, 255)
+# colorLower = (41, 0, 150)
+# colorUpper = (64, 50, 255)
+
 
 pts = deque(maxlen=args["buffer"])
     
@@ -104,7 +111,7 @@ while True:
 
         # # Hough 변환을 사용하여 원 검출
         circles = cv2.HoughCircles(edges, cv2.HOUGH_GRADIENT, dp=1, minDist=20,
-                                param1=70, param2=30, minRadius=1, maxRadius=300)
+                                param1=70, param2=30, minRadius=1, maxRadius=200)
         # circles = cv2.HoughCircles(edges, cv2.HOUGH_GRADIENT, dp=1, minDist=20, param1=70, param2=30, minRadius=5, maxRadius=300)
 
         if circles is not None:
@@ -122,11 +129,11 @@ while True:
             check_circles_out_of_screen(circles, SCREEN_WIDTH)
 
         # # 이전 중심과 현재 중심을 연결하는 선을 그림
-        for i in range(1, len(pts)):
-            if pts[i - 1] is None or pts[i] is None:
-                continue
-            thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
-            cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
+        # for i in range(1, len(pts)):
+        #     if pts[i - 1] is None or pts[i] is None:
+        #         continue
+        #     thickness = int(np.sqrt(args["buffer"] / float(i + 1)) * 2.5)
+        #     cv2.line(frame, pts[i - 1], pts[i], (0, 0, 255), thickness)
 
         # 프레임 보여주기
         cv2.imshow("Frame", frame)

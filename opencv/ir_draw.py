@@ -63,7 +63,7 @@ def get_position(event, x, y, flags, params):
 
 def draw():
     global myString
-    myString = myPort.readline().decode().strip()
+    myString = myPort.readline().decode().rstrip()
     print(myString)
     if myString:
         output = list(map(int, myString.split(',')))
@@ -93,7 +93,6 @@ picam2.start()
 
 while True:
     cap = picam2.capture_array()
-    draw()
     # 프레임을 잡지 못하면 비디오 종료
     if cap is None:
         print('no frame')
@@ -110,6 +109,7 @@ while True:
     if flag == 2:
         frame = cap[start_y:end_y, start_x:end_x]
         # cv2.setMouseCallback('Frame', get_xy)
+        draw()
 
         SCREEN_WIDTH = end_x - start_x
         
