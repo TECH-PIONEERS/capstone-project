@@ -65,7 +65,7 @@ colorUpper = (40, 255, 255)
 pts = deque(maxlen=args["buffer"])
     
 picam2 = Picamera2()
-picam2.preview_configuration.main.size=(600, 400)
+picam2.preview_configuration.main.size=(640, 400)
 picam2.preview_configuration.main.format = "RGB888"
 picam2.start()
 
@@ -102,10 +102,9 @@ while True:
         edges = cv2.Canny(mask, 50, 150)
 
         # # Hough 변환을 사용하여 원 검출
-        # circles = cv2.HoughCircles(edges, cv2.HOUGH_GRADIENT, dp=1, minDist=20,
-        #                         param1=70, param2=30, minRadius=5, maxRadius=300)
-        circles = cv2.HoughCircles(edges, cv2.HOUGH_GRADIENT, dp=1, minDist=1,
-                                param1=70, param2=30, minRadius=1, maxRadius=300)
+        circles = cv2.HoughCircles(edges, cv2.HOUGH_GRADIENT, dp=1, minDist=20,
+                                param1=70, param2=30, minRadius=5, maxRadius=300)
+
 
         if circles is not None:
             circles = np.round(circles[0, :]).astype("int")

@@ -71,7 +71,7 @@ def draw():
         cv2.circle(frame, (output[2], output[3]), 2, (255, 255, 0), 4)
 
 
-setup();
+setup()
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video",
