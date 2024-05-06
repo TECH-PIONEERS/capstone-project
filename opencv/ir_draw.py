@@ -93,7 +93,7 @@ picam2.start()
 
 while True:
     cap = picam2.capture_array()
-
+    draw()
     # 프레임을 잡지 못하면 비디오 종료
     if cap is None:
         print('no frame')
@@ -126,7 +126,6 @@ while True:
         # # Hough 변환을 사용하여 원 검출
         circles = cv2.HoughCircles(edges, cv2.HOUGH_GRADIENT, dp=1, minDist=20,
                                 param1=70, param2=30, minRadius=5, maxRadius=300)
-
 
         if circles is not None:
             circles = np.round(circles[0, :]).astype("int")
