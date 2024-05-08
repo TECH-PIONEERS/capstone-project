@@ -50,11 +50,11 @@ def goal(y):
         print("miss")
         return False
 
-def get_xy(event, x, y, flags, param):
+def get_xy(event, x, y):
     if event == cv2.EVENT_LBUTTONUP:
         print(x,y)
 
-def get_position(event, x, y, flags, params):
+def get_position(event, x, y):
     global start_x 
     global start_y 
     global end_x 
@@ -93,8 +93,10 @@ colorUpper = (150, 250, 250)
 pts = deque(maxlen=args["buffer"])
     
 picam2 = Picamera2()
+picam2.video_configuration.controls.FrameRate = 60.0
 picam2.preview_configuration.main.size=(640, 480)
 picam2.preview_configuration.main.format = "RGB888"
+
 picam2.start()
 
 while True:
