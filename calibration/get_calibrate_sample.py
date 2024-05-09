@@ -3,7 +3,7 @@ from picamera2 import Picamera2
 
 def main():
     picam2 = Picamera2()
-    picam2.preview_configuration.main.size=(600,400)
+    picam2.preview_configuration.main.size=(640,480)
     picam2.preview_configuration.main.format="RGB888"
     picam2.start()
     i=0
@@ -23,7 +23,7 @@ def main():
     cv2.destroyAllWindows()
 
 def capture_image(frame,i):
-    image_name = f"image/jmg{i+1}.jpg"
+    image_name = f"image/zmg{i+1}.jpg"
     cv2.imwrite(image_name, frame)
     print("Captured image saved as capture.jpg")
 
