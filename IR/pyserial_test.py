@@ -13,7 +13,7 @@ while True:
     # data = ser.readline()
     # data1 = ser1.readline()
     # print(data)
-    if ser.in_waiting > 0 and ser1.in_waiting > 0:
+    # if ser.in_waiting > 0 and ser1.in_waiting > 0:
         data = ser.readline().strip()
         data1 = ser1.readline().strip()
         print("data 0 Received:", data)
