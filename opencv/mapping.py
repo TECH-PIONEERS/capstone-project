@@ -24,6 +24,7 @@ myPort1 = serial.Serial('/dev/ttyUSB1', 19200)
 time.sleep(2) 
 
 def is_valid_string(input_string):
+    if input_string[0] == ',': return False
     for char in input_string:
         if not (char.isdigit() or char == ','):
             return False
