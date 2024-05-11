@@ -164,14 +164,13 @@ while True:
             output1 = list(map(float, myString1.split(',')))
             output = list(map(int, output))
             output1 = list(map(int, output1))
-            print(f"output 0 : {output}")
-            print(f"output 1 : {output1}")
     
     if flag == 3:
         frame = cap[start_y:end_y, start_x:end_x]
         # cv2.setMouseCallback('Frame', get_xy)
         SCREEN_WIDTH = end_x - start_x
         if(len(output1) > 0):
+            print(utils.scale_value(output1[0]))
             cv2.circle(frame,(utils.scale_value(output1[0]), (end_y-start_y)//2 ), 5, (255,0,0), -1)
         blurred = cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
