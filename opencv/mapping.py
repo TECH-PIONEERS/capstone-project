@@ -24,11 +24,17 @@ myPort1 = serial.Serial('/dev/ttyUSB1', 19200)
 time.sleep(2) 
 
 def is_valid_string(input_string):
-    if input_string[0] == ',': return False
+    if len(input_string) > 0 and input_string[0] == ',': return False
+    before = ''
     for char in input_string:
         if not (char.isdigit() or char == ','):
             return False
-    return True
+        if before == ',' and char == ',':
+            return False
+        before = char
+    if before != ',':
+        return True
+    else: return False
 
 def setup():
     # Clear serial buffer
@@ -49,7 +55,7 @@ def ir_data():
                 output1 = list(map(float, myString1.split(',')))
                 output = list(map(int, output))
                 output1 = list(map(int, output1))
-                print(f"output 0 : {output}")
+                # print(f"output 0 : {output}")
                 print(f"output 1 : {output1}")
 
 flag = 0
@@ -161,18 +167,19 @@ while True:
         if is_valid_string(myString) and is_valid_string(myString1):
             print(myString)
             print(myString1)
+            
             output = list(map(float, myString.split(',')))
             output1 = list(map(float, myString1.split(',')))
             output = list(map(int, output))
             output1 = list(map(int, output1))
-    
+
     if flag == 3:
         frame = cap[start_y:end_y, start_x:end_x]
         # cv2.setMouseCallback('Frame', get_xy)
         SCREEN_WIDTH = end_x - start_x
         if(len(output1) > 0):
-            print(utils.scale_value(output1[0]))
-            cv2.circle(frame,(utils.scale_value(output1[0]), (end_y-start_y)//2 ), 5, (255,0,0), -1)
+            print(output1[0]//4)
+            cv2.circle(frame,(output1[0]//4+180, (end_y-start_y)//2 ), 5, (255,0,255), -1)
         blurred = cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
     
@@ -205,7 +212,7 @@ while True:
             # ballOutOfRangeAlert(circles, SCREEN_WIDTH)
 
             pts.appendleft(center)
-
+    # setup()
         # 프레임 보여주기
         cv2.imshow("Frame", frame)
     else:
