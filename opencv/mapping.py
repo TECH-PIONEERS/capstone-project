@@ -10,6 +10,46 @@ import imutils
 import time
 import utils 
 import threading 
+import serial
+import cv2
+import numpy as np
+import time
+
+lf = b'\n'  # Linefeed in ASCII
+myString = None
+myString1 = None
+
+myPort = serial.Serial('/dev/ttyUSB0', 19200)
+myPort1 = serial.Serial('/dev/ttyUSB1', 19200)
+time.sleep(2) 
+
+def is_valid_string(input_string):
+    for char in input_string:
+        if not (char.isdigit() or char == ','):
+            return False
+    return True
+
+def setup():
+    # Clear serial buffer
+    myPort.reset_input_buffer()
+    myPort1.reset_input_buffer()
+
+def ir_data():
+    global myString, myString1
+    while True:
+        myString = myPort.readline().decode().rstrip()
+        myString1 = myPort1.readline().decode().rstrip()
+        
+        if myString or myString1:
+            if is_valid_string(myString) and is_valid_string(myString1):
+                # print(myString)
+                # print(myString1)
+                output = list(map(float, myString.split(',')))
+                output1 = list(map(float, myString1.split(',')))
+                output = list(map(int, output))
+                output1 = list(map(int, output1))
+                print(f"output 0 : {output}")
+                print(f"output 1 : {output1}")
 
 flag = 0
 start_x, start_y, end_x, end_y, goal_x, goal_y = 0, 0, 0, 0, 0, 0
@@ -113,11 +153,26 @@ while True:
     cv2.namedWindow('cap')
     cv2.setMouseCallback('cap', get_position)
     
+    myString = myPort.readline().decode("latin-1").rstrip()
+    myString1 = myPort1.readline().decode("latin-1").rstrip()
+        
+    if myString or myString1:
+        if is_valid_string(myString) and is_valid_string(myString1):
+            print(myString)
+            print(myString1)
+            output = list(map(float, myString.split(',')))
+            output1 = list(map(float, myString1.split(',')))
+            output = list(map(int, output))
+            output1 = list(map(int, output1))
+            print(f"output 0 : {output}")
+            print(f"output 1 : {output1}")
+    
     if flag == 3:
         frame = cap[start_y:end_y, start_x:end_x]
         # cv2.setMouseCallback('Frame', get_xy)
         SCREEN_WIDTH = end_x - start_x
-        
+        if(len(output1) > 0):
+            cv2.circle(frame,(output1[0]-50, (end_y-start_y)//2 ), 5, (255,0,0), -1)
         blurred = cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
     
@@ -160,4 +215,5 @@ while True:
     if key == ord("q"):
         break
 
+setup()
 cv2.destroyAllWindows()
