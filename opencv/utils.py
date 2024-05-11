@@ -146,7 +146,7 @@ def find_foot(a1, b1, a2, b2, a3, b3):
 # x_foot, y_foot = find_foot(a1, b1, a2, b2, a3, b3)
 # print("Foot coordinates:", (x_foot, y_foot))
 
-def scale_value(value, min_in, max_in, min_out, max_out):
+def scale_value(value, min_in=0, max_in=1023, min_out=0, max_out=128):
     # 입력 값(value)을 입력 범위에서 0과 1 사이의 비율로 변환
     scaled = (value - min_in) / (max_in - min_in)
     # 비율에 대응하는 출력 범위에서의 값을 반환
