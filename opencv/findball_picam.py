@@ -54,7 +54,7 @@ def get_xy(event, x, y):
     if event == cv2.EVENT_LBUTTONUP:
         print(x,y)
 
-def get_position(event, x, y):
+def get_position(event, x, y, flags, params):
     global start_x 
     global start_y 
     global end_x 
@@ -77,7 +77,9 @@ def get_position(event, x, y):
         elif flag == 2:
             goal_x = x
             goal_y = y
+            flag = 3
     return 
+golfball_size = 3
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video",
@@ -91,26 +93,22 @@ colorLower = (0, 138, 138)
 colorUpper = (150, 250, 250) 
 
 pts = deque(maxlen=args["buffer"])
-    
 picam2 = Picamera2()
 picam2.video_configuration.controls.FrameRate = 60.0
 picam2.preview_configuration.main.size=(640, 480)
 picam2.preview_configuration.main.format = "RGB888"
-
 picam2.start()
 
 while True:
     cap = picam2.capture_array()
 
-    # 프레임을 잡지 못하면 비디오 종료
     if cap is None:
-        print('no frame')
-        cap = previous_frame  # 이전 프레임을 사용
+            print('no frame')
+            cap = previous_frame  # 이전 프레임을 사용
     else:
         previous_frame = cap
 
     cap = utils.camera_calibration(cap)
-
     # 프레임 크기 조정, 블러 처리, HSV 색 공간으로 변환
     cv2.namedWindow('cap')
     cv2.setMouseCallback('cap', get_position)
@@ -130,27 +128,28 @@ while True:
         # Canny Edge Detection을 사용하여 에지 검출
         edges = cv2.Canny(mask, 30, 150)
 
-        # # Hough 변환을 사용하여 원 검출
-        circles = cv2.HoughCircles(edges, cv2.HOUGH_GRADIENT, dp=1, minDist=20,
-                                param1=70, param2=30, minRadius=1, maxRadius=200)
-        # circles = cv2.HoughCircles(edges, cv2.HOUGH_GRADIENT, dp=1, minDist=20, param1=70, param2=30, minRadius=5, maxRadius=300)
+        cnts = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        cnts = imutils.grab_contours(cnts)
 
-        if circles is not None:
-            circles = np.round(circles[0, :]).astype("int")
-            for (x, y, r) in circles:
-                cv2.circle(frame, (x, y), r, (0, 255, 0), 4)
-                cv2.rectangle(frame, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
-
+        if len(cnts) > 0:
+            c = max(cnts, key=cv2.contourArea)
+            ((x, y), radius) = cv2.minEnclosingCircle(c)
+            M = cv2.moments(c)
+            if M["m00"] == 0 : M["m00"] = 1
+            center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
                 # 원 중심 좌표와 반지름을 이용하여 중심 계산
-                center = (x, y)
-                print(center)
-                pts.appendleft(center)
+            if radius > golfball_size:
+                cv2.circle(frame, (int(x), int(y)), int(radius),
+                    (0, 255, 255), 2)
+                cv2.circle(frame, center, 5, (0, 0, 255), -1)
                 if x <= goal_y + 30:
                     goal(y)
-                골과공정렬(y)
-            
+                    골과공정렬(y)
+            print(center)
             # 원의 외곽선이 지정된 범위를 벗어나면 경고 문구를 출력
-            ballOutOfRangeAlert(circles, SCREEN_WIDTH)
+            # ballOutOfRangeAlert(circles, SCREEN_WIDTH)
+
+            pts.appendleft(center)
 
         # 프레임 보여주기
         cv2.imshow("Frame", frame)
