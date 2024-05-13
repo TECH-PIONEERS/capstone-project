@@ -130,6 +130,7 @@ def get_position(event, x, y, flags, params):
     global flag
     global goal_x
     global goal_y
+    print(222)
     if event == cv2.EVENT_LBUTTONDOWN:
         print("Clicked at (x={}, y={})".format(x, y))
         if flag == 0:
@@ -146,109 +147,104 @@ def get_position(event, x, y, flags, params):
             goal_x = x
             goal_y = y
             flag = 3
-    return
+    return 
+golfball_size = 3
 
-def main():
+ap = argparse.ArgumentParser()
+ap.add_argument("-v", "--video",
+    help="path to the (optional) video file")
+ap.add_argument("-b", "--buffer", type=int, default=64,
+    help="max buffer size")
+args = vars(ap.parse_args())
+
+# 노랑색을 검출하기 위한 상한값, 하한값 경계 정의
+colorLower = (0, 138, 138)  
+colorUpper = (150, 250, 250) 
+
+pts = deque(maxlen=args["buffer"])
+picam2 = Picamera2()
+picam2.video_configuration.controls.FrameRate = 60.0
+picam2.preview_configuration.main.size=(640, 480)
+picam2.preview_configuration.main.format = "RGB888"
+picam2.start()
+
+process = multiprocessing.Process(target=ir_process)
+process.start()
+
+while True:
     global ouput, output1
-    golfball_size = 3
 
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-v", "--video",
-        help="path to the (optional) video file")
-    ap.add_argument("-b", "--buffer", type=int, default=64,
-        help="max buffer size")
-    args = vars(ap.parse_args())
+    cap = picam2.capture_array()
 
-    # 노랑색을 검출하기 위한 상한값, 하한값 경계 정의
-    colorLower = (0, 138, 138)  
-    colorUpper = (150, 250, 250) 
+    if cap is None:
+            print('no frame')
+            cap = previous_frame  # 이전 프레임을 사용
+    else:
+        previous_frame = cap
 
-    pts = deque(maxlen=args["buffer"])
-    picam2 = Picamera2()
-    picam2.video_configuration.controls.FrameRate = 60.0
-    picam2.preview_configuration.main.size=(640, 480)
-    picam2.preview_configuration.main.format = "RGB888"
-    picam2.start()
+    # cap = utils.camera_calibration(cap)
+    # 프레임 크기 조정, 블러 처리, HSV 색 공간으로 변환
+    cv2.namedWindow('cap')
+    cv2.setMouseCallback('cap', get_position)
 
-    process = multiprocessing.Process(target=ir_process)
-    process.start()
+    if flag == 3:
+        frame = cap[start_y:end_y, start_x:end_x]
+        # cv2.setMouseCallback('Frame', get_xy)
+        SCREEN_WIDTH = end_x - start_x
+        SCREEN_HEIGHT = end_y - start_y
+        if(len(output1) > 0):
+            # print(output1[0]//4)
+            cv2.circle(frame,(output1[0]//4, (end_y-start_y)//2 ), 5, (255,0,255), -1)
+        if(len(output) > 1):
+            cv2.circle(frame,((end_x-start_x)//2, SCREEN_HEIGHT-(output[0])//4 ), 5, (255,255,255), -1)
+        if(len(output) > 3):
+            cv2.circle(frame,((end_x-start_x)//2, SCREEN_HEIGHT-(output[2])//4 ), 5, (255,0,0), -1)
+                
+        blurred = cv2.GaussianBlur(frame, (11, 11), 0)
+        hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
+    
+        mask = cv2.inRange(hsv, colorLower, colorUpper)
+        mask = cv2.erode(mask, None, iterations=2)
+        mask = cv2.dilate(mask, None, iterations=2)
 
-    while True:
-        cap = picam2.capture_array()
+        # Canny Edge Detection을 사용하여 에지 검출
+        edges = cv2.Canny(mask, 30, 150)
 
-        if cap is None:
-                print('no frame')
-                cap = previous_frame  # 이전 프레임을 사용
-        else:
-            previous_frame = cap
+        cnts = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        cnts = imutils.grab_contours(cnts)
 
-        # cap = utils.camera_calibration(cap)
-        # 프레임 크기 조정, 블러 처리, HSV 색 공간으로 변환
-        cv2.namedWindow('cap')
-        cv2.setMouseCallback('cap', get_position)
+        if len(cnts) > 0:
+            c = max(cnts, key=cv2.contourArea)
+            ((x, y), radius) = cv2.minEnclosingCircle(c)
+            M = cv2.moments(c)
+            if M["m00"] == 0 : M["m00"] = 1
+            center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+                # 원 중심 좌표와 반지름을 이용하여 중심 계산
+            if radius > golfball_size:
+                cv2.circle(frame, (int(x), int(y)), int(radius),
+                    (0, 255, 255), 2)
+                cv2.circle(frame, center, 5, (0, 0, 255), -1)
+                if x <= goal_y + 30:
+                    goal(y)
+                    골과공정렬(y)
+            print(center)
+            # 원의 외곽선이 지정된 범위를 벗어나면 경고 문구를 출력
+            # ballOutOfRangeAlert(circles, SCREEN_WIDTH)
 
-        if flag == 3:
-            frame = cap[start_y:end_y, start_x:end_x]
-            # cv2.setMouseCallback('Frame', get_xy)
-            SCREEN_WIDTH = end_x - start_x
-            SCREEN_HEIGHT = end_y - start_y
-            if(len(output1) > 0):
-                # print(output1[0]//4)
-                cv2.circle(frame,(output1[0]//4, (end_y-start_y)//2 ), 5, (255,0,255), -1)
-            if(len(output) > 1):
-                cv2.circle(frame,((end_x-start_x)//2, SCREEN_HEIGHT-(output[0])//4 ), 5, (255,255,255), -1)
-            if(len(output) > 3):
-                cv2.circle(frame,((end_x-start_x)//2, SCREEN_HEIGHT-(output[2])//4 ), 5, (255,0,0), -1)
-                    
-            blurred = cv2.GaussianBlur(frame, (11, 11), 0)
-            hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
-        
-            mask = cv2.inRange(hsv, colorLower, colorUpper)
-            mask = cv2.erode(mask, None, iterations=2)
-            mask = cv2.dilate(mask, None, iterations=2)
+            pts.appendleft(center)
+        # setup()
+        # 프레임 보여주기
+        cv2.imshow("Frame", frame)
+    else:
+        cv2.imshow('cap', cap)
+    
+    if cv2.waitKey(1) > 0:
+        break
+    
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord("q"):
+        break
 
-            # Canny Edge Detection을 사용하여 에지 검출
-            edges = cv2.Canny(mask, 30, 150)
-
-            cnts = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-            cnts = imutils.grab_contours(cnts)
-
-            if len(cnts) > 0:
-                c = max(cnts, key=cv2.contourArea)
-                ((x, y), radius) = cv2.minEnclosingCircle(c)
-                M = cv2.moments(c)
-                if M["m00"] == 0 : M["m00"] = 1
-                center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                    # 원 중심 좌표와 반지름을 이용하여 중심 계산
-                if radius > golfball_size:
-                    cv2.circle(frame, (int(x), int(y)), int(radius),
-                        (0, 255, 255), 2)
-                    cv2.circle(frame, center, 5, (0, 0, 255), -1)
-                    if x <= goal_y + 30:
-                        goal(y)
-                        골과공정렬(y)
-                print(center)
-                # 원의 외곽선이 지정된 범위를 벗어나면 경고 문구를 출력
-                # ballOutOfRangeAlert(circles, SCREEN_WIDTH)
-
-                pts.appendleft(center)
-            # setup()
-            # 프레임 보여주기
-            cv2.imshow("Frame", frame)
-        else:
-            cv2.imshow('cap', cap)
-        
-        if cv2.waitKey(1) > 0:
-            break
-        
-        key = cv2.waitKey(1) & 0xFF
-        if key == ord("q"):
-            break
-
-    setup()
-    process.terminate()
-    cv2.destroyAllWindows()
-
-
-if __name__ == "__main__":
-    main()
+setup()
+process.terminate()
+cv2.destroyAllWindows()
