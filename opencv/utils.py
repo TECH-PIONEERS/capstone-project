@@ -152,3 +152,33 @@ def scale_value(value, min_in=0, max_in=1023, min_out=0, max_out=512):
     scaled = (value - min_in) // (max_in - min_in)
     # 비율에 대응하는 출력 범위에서의 값을 반환
     return min_out + (max_out - min_out) * scaled
+
+def goal(goal_y,y):
+    # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
+    if(y >= (goal_y-10) and y < (goal_y+10)):
+        print("goal")
+        return True
+    else:
+        print("miss")
+        return False
+
+def 골과공정렬(goal_y, y):
+    if(y >= (goal_y-5) and y < (goal_y+5)):
+        print("골 과 공 정렬")
+        return True
+    else:
+        print("골 과 공 정렬되지않음")
+        return False
+
+def is_valid_string(input_string):
+    if len(input_string) > 0 and input_string[0] == ',': return False
+    before = ''
+    for char in input_string:
+        if not (char.isdigit() or char == ','):
+            return False
+        if before == ',' and char == ',':
+            return False
+        before = char
+    if before != ',':
+        return True
+    else: return False
