@@ -14,6 +14,7 @@ import serial
 import cv2
 import numpy as np
 import time
+import multiprocessing 
 
 lf = b'\n'  # Linefeed in ASCII
 myString = None
@@ -22,6 +23,26 @@ myString1 = None
 myPort = serial.Serial('/dev/ttyUSB0', 115200)
 myPort1 = serial.Serial('/dev/ttyUSB1', 115200)
 time.sleep(2) 
+
+global output
+global output1
+
+def ir_process():   
+    while True:
+        global ouput, output1
+        myString = myPort.readline().decode("latin-1").rstrip()
+        myString1 = myPort1.readline().decode("latin-1").rstrip()
+
+        if myString or myString1:
+            if is_valid_string(myString) and is_valid_string(myString1):
+                print(myString1)
+                
+                output = list(map(float, myString.split(',')))
+                output1 = list(map(float, myString1.split(',')))
+                output = list(map(int, output))
+                print(f'ouput {output}')
+                output1 = list(map(int, output1))
+    
 
 def is_valid_string(input_string):
     if len(input_string) > 0 and input_string[0] == ',': return False
@@ -109,6 +130,7 @@ def get_position(event, x, y, flags, params):
     global flag
     global goal_x
     global goal_y
+    print(222)
     if event == cv2.EVENT_LBUTTONDOWN:
         print("Clicked at (x={}, y={})".format(x, y))
         if flag == 0:
@@ -146,7 +168,12 @@ picam2.preview_configuration.main.size=(640, 480)
 picam2.preview_configuration.main.format = "RGB888"
 picam2.start()
 
+process = multiprocessing.Process(target=ir_process)
+process.start()
+
 while True:
+    global ouput, output1
+
     cap = picam2.capture_array()
 
     if cap is None:
@@ -159,20 +186,6 @@ while True:
     # 프레임 크기 조정, 블러 처리, HSV 색 공간으로 변환
     cv2.namedWindow('cap')
     cv2.setMouseCallback('cap', get_position)
-    
-    myString = myPort.readline().decode("latin-1").rstrip()
-    myString1 = myPort1.readline().decode("latin-1").rstrip()
-    
-    if myString or myString1:
-        if is_valid_string(myString) and is_valid_string(myString1):
-            print(myString1)
-            
-            output = list(map(float, myString.split(',')))
-            output1 = list(map(float, myString1.split(',')))
-            output = list(map(int, output))
-            print(f'ouput {output}')
-            output1 = list(map(int, output1))
-
 
     if flag == 3:
         frame = cap[start_y:end_y, start_x:end_x]
@@ -233,4 +246,5 @@ while True:
         break
 
 setup()
+process.terminate()
 cv2.destroyAllWindows()

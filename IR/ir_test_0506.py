@@ -9,8 +9,8 @@ myString1 = None
 
 # Open the serial port
 # Replace '/dev/ttyUSB0' with your actual serial port
-myPort = serial.Serial('/dev/ttyUSB0', 19200)
-myPort1 = serial.Serial('/dev/ttyUSB1', 19200)
+myPort = serial.Serial('/dev/ttyUSB0', 115200)
+myPort1 = serial.Serial('/dev/ttyUSB1',115200)
 time.sleep(2)  # Wait for serial connection to establish
 
 def setup():
