@@ -65,7 +65,7 @@ def get_position(event, x, y, flags, params):
             flag = 3
     return 
 
-def stream_opencv:
+def stream_opencv(conn):
     ap = argparse.ArgumentParser()
     ap.add_argument("-v", "--video",
         help="path to the (optional) video file")
@@ -82,7 +82,6 @@ def stream_opencv:
 
     while True:
         cap = picam2.capture_array()
-
         if cap is None:
             print('no frame')
             cap = previous_frame  # 이전 프레임을 사용
@@ -98,7 +97,10 @@ def stream_opencv:
             SCREEN_HEIGHT = end_y - start_y
 
             if conn.poll():
-                output, output1 = conn.recv()
+                res = conn.recv()
+                output = res[0]
+                output1 = res[1]
+                print(f'{output} {output1}')
                 if(len(output1) > 0):
                     cv2.circle(frame,(output1[0]//4, (end_y-start_y)//2 ), 5, (255,0,255), -1)
                 if(len(output) > 1):
@@ -147,24 +149,20 @@ def get_serial(conn):
     time.sleep(2) 
     myPort.reset_input_buffer()
     myPort1.reset_input_buffer()
-
     while True:
         myString = myPort.readline().decode("latin-1").rstrip()
         myString1 = myPort1.readline().decode("latin-1").rstrip()
-
         if myString or myString1:
             if utils.is_valid_string(myString) and utils.is_valid_string(myString1):
                 output = list(map(int, list(map(float, myString.split(',')))))
                 output1 = list(map(int, list(map(float, myString1.split(',')))))
-                conn.send(ouput, output1)
-                conn.close()
+                conn.send([output, output1])
 
 if __name__ == '__main__':
     parent_conn, child_conn = Pipe()
-
     p1 = Process(target=stream_opencv, args=(parent_conn,))
     p2 = Process(target=get_serial, args=(child_conn,))
-    p1.start()
     p2.start()
+    p1.start()
     p1.join()
     p2.join()

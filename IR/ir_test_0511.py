@@ -78,5 +78,5 @@ def draw():
                 cv2.imshow('Image', img)
                 cv2.waitKey(1)
 
-# setup()
+setup()
 draw()

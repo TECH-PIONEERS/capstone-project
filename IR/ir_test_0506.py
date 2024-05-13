@@ -2,6 +2,9 @@ import serial
 import cv2
 import numpy as np
 import time
+import argparse
+from collections import deque
+from picamera2 import Picamera2
 
 lf = b'\n'  # Linefeed in ASCII
 myString = None
@@ -13,6 +16,16 @@ myPort = serial.Serial('/dev/ttyUSB0', 115200)
 myPort1 = serial.Serial('/dev/ttyUSB1',115200)
 time.sleep(2)  # Wait for serial connection to establish
 
+ap = argparse.ArgumentParser()
+ap.add_argument("-v", "--video",
+    help="path to the (optional) video file")
+ap.add_argument("-b", "--buffer", type=int, default=64,
+    help="max buffer size")
+args = vars(ap.parse_args())
+
+vs = cv2.VideoCapture('http://192.168.50.190:4747/video')
+
+
 def setup():
     # Clear serial buffer
     myPort.reset_input_buffer()
@@ -21,6 +34,12 @@ def setup():
 def draw():
     global myString, myString1
     while True:
+        _, cap = vs.read()
+        if cap is None:
+            print('no frame')
+            break
+        cv2.namedWindow('cap')
+        
         myString = myPort.readline().decode().rstrip()
         myString1 = myPort1.readline().decode().rstrip()
         if myString or myString1:
@@ -66,6 +85,7 @@ def draw():
                 cv2.circle(img, (y4, x4), 10, (0, 255, 255), -1)  # Green circle at (x2, y2)
 
             # Show the image
+            # cv2.imshow('cap', cap)
             cv2.imshow('Image', img)
             cv2.waitKey(1)
 
