@@ -69,6 +69,7 @@ def get_position(event, x, y, flags, params):
     return 
 
 def stream_opencv(conn):
+    global previous_direction
     ap = argparse.ArgumentParser()
     ap.add_argument("-v", "--video",
         help="path to the (optional) video file")
@@ -129,25 +130,10 @@ def stream_opencv(conn):
                 M = cv2.moments(c)
                 if M["m00"] == 0 : M["m00"] = 1
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                
-                if previous_pos[0] == -999 or previous_pos[1] == -999 : 
-                    previous_pos[0] = center[0]
-                    previous_pos[1] = center[1]
-                else:
-                    previous_pos[0] = center[0]
-                    previous_pos[1] = center[1]
-                    
-                if previous_direction == -999 : 
-                    previous_direction = utils.calculate_direction(center , previous_pos)
-                else:
-                    current_direction = utils.calculate_direction(center, previous_pos)
-                    방향전환 = utils.detect_direction_change(current_direction, previous_direction)
-                    print(f'공의 방향 {방향전환}')
-                    
                     # 원 중심 좌표와 반지름을 이용하여 중심 계산
                 if radius > golfball_size:
                     cv2.circle(frame, (int(x), int(y)), int(radius),
-                        (0, 255, 255), 2)
+                        (0, 0, 255), 2)
                     cv2.circle(frame, center, 5, (0, 0, 255), -1)
                     if x <= goal_y + 30:
                         utils.goal(goal_y,y)
@@ -163,8 +149,6 @@ def stream_opencv(conn):
     cv2.destroyAllWindows()
 
 def get_serial(conn):
-    # myPort = serial.Serial('/dev/ttyUSB1', 2400,timeout=0.2)
-    # myPort1 = serial.Serial('/dev/ttyUSB0', 2400, timeout=0.2)
     myPort = serial.Serial('/dev/ttyUSB1', 9600,timeout=0.1)
     myPort1 = serial.Serial('/dev/ttyUSB0', 9600, timeout=0.1)
     time.sleep(0.5) 
@@ -174,12 +158,9 @@ def get_serial(conn):
         myString = myPort.readline().decode("latin-1").rstrip()
         myString1 = myPort1.readline().decode("latin-1").rstrip()
         if myString or myString1:
-            # if utils.is_valid_string(myString) and utils.is_valid_string(myString1):
-            #     output = list(map(int, list(map(float, myString.split(',')))))
-            #     output1 = list(map(int, list(map(float, myString1.split(',')))))
             o1_bool, output = utils.is_valid_string(myString)
             o2_bool, output1 = utils.is_valid_string(myString1)
-            if o1_bool and o2_bool:
+            if o1_bool or o2_bool:
                 conn.send([output, output1])
         
         
