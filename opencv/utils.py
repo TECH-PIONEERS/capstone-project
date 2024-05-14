@@ -16,28 +16,23 @@ isBallOutOfRange = False
 def generate_alert_beep():
     global is_beeping
     if not is_beeping:
-        is_beeping = True   
-        # generate_long_beep(alert=True)
         pygame.init()
         pygame.mixer.init()
+        is_beeping = True
+   
+        # generate_long_beep(alert=True)
         beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
         beep_sound.play()
         time.sleep(1)
         # generate_high_beep(alert=True)
-        pygame.init()
-        pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
         beep_sound.play()
         time.sleep(1)
         # generate_high_beep(alert=True)
-        pygame.init()
-        pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
         beep_sound.play()
         time.sleep(1)
         # generate_high_beep(alert=True)
-        pygame.init()
-        pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
         beep_sound.play()
         time.sleep(1)
