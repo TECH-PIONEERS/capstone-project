@@ -103,7 +103,7 @@ def stream_opencv(conn):
                 output1 = res[1]
                 print(f'{output} {output1}')
                 if(len(output1) > 0):
-                    cv2.circle(frame,(output1[0]//4, (end_y-start_y)//2 ), 5, (255,0,255), -1)
+                    cv2.circle(frame,(output1[0]//4+100, (end_y-start_y)//2 ), 5, (255,0,255), -1)
                 if(len(output) > 1):
                     cv2.circle(frame,((end_x-start_x)//2, SCREEN_HEIGHT-(output[0])//4 ), 5, (255,255,255), -1)
                 if(len(output) > 3):
@@ -126,6 +126,7 @@ def stream_opencv(conn):
                 M = cv2.moments(c)
                 if M["m00"] == 0 : M["m00"] = 1
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+                print(center)
                     # 원 중심 좌표와 반지름을 이용하여 중심 계산
                 if radius > golfball_size:
                     cv2.circle(frame, (int(x), int(y)), int(radius),
@@ -152,6 +153,7 @@ def get_serial(conn):
     time.sleep(0.5) 
     myPort.reset_input_buffer()
     myPort1.reset_input_buffer()
+    previous_output, previous_output1 = [], []
     while True:
         myString = myPort.readline().decode("latin-1").rstrip()
         myString1 = myPort1.readline().decode("latin-1").rstrip()
@@ -161,10 +163,12 @@ def get_serial(conn):
             #     output1 = list(map(int, list(map(float, myString1.split(',')))))
             o1_bool, output = utils.is_valid_string(myString)
             o2_bool, output1 = utils.is_valid_string(myString1)
-            if o1_bool and o2_bool:
+            if o1_bool or o2_bool:
                 conn.send([output, output1])
+                previous_output, previous_output1 = output, output1
         
-        
+        else:
+            conn.send([previous_output, previous_output1])
 
 if __name__ == '__main__':
     parent_conn, child_conn = Pipe()
