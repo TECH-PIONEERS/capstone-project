@@ -1,6 +1,7 @@
 // Wii Remote IR sensor  test sample code  by kako http://www.kako.com
 // modified output for Wii-BlobTrack program by RobotFreak http://www.letsmakerobots.com/user/1433
 // modified for https://dfrobot.com by Lumi, Jan. 2014
+//측면 카메라 센서 번호 1
 
 #include <Wire.h>
 
