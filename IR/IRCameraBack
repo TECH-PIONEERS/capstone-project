@@ -1,7 +1,7 @@
 // Wii Remote IR sensor  test sample code  by kako http://www.kako.com
 // modified output for Wii-BlobTrack program by RobotFreak http://www.letsmakerobots.com/user/1433
 // modified for https://dfrobot.com by Lumi, Jan. 2014
-
+//후면 카메라 센서 번호 0
 #include <Wire.h>
 
 int IRsensorAddress = 0xB0;
@@ -81,7 +81,7 @@ void loop()
     Ix[3] += (s & 0x30) <<4;
     Iy[3] += (s & 0xC0) <<2;
 
-    Serial.print("2");
+    Serial.print("0");
 
     for(i=0; i<4; i++)
     {
