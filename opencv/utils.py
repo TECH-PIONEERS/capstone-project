@@ -188,18 +188,9 @@ def is_valid_string(input_string):
         return True, arr
     else: return False, arr
 
-def calculate_direction(current_pos, previous_pos):
-    dx = current_pos[0] - previous_pos[0]
-    dy = current_pos[1] - previous_pos[1]
+def return_ball_direction_change(previous_pos, current_pos):
+    if previous_pos > current_pos:
+        return 'bottom'
+    else:
+        return 'up'
     
-    angle = math.atan2(dy, dx)
-    
-    angle_degrees = math.degrees(angle)
-    print(f'공 각도 {angle_degrees}')
-    return angle_degrees
-
-# def detect_direction_change(current_direction, previous_direction, threshold=20):
-#     if abs(current_direction - previous_direction) >= threshold:
-#         return True
-#     else:
-#         return False
