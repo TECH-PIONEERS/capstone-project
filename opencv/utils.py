@@ -171,14 +171,23 @@ def 골과공정렬(goal_y, y):
         return False
 
 def is_valid_string(input_string):
-    if len(input_string) > 0 and input_string[0] == ',': return False
+    if len(input_string) > 0 and input_string[0] == ',': return False, arr
     before = ''
+    num = ''
+    arr = []
     for char in input_string:
         if not (char.isdigit() or char == ','):
-            return False
+            return False, arr
         if before == ',' and char == ',':
-            return False
+            return False, arr
+        if char.isdigit():
+            num += char
+        elif char == ',':
+            num = int(float(num))
+            arr.append(num)
+            num = ''
         before = char
     if before != ',':
-        return True
-    else: return False
+        # return True
+        return True, arr
+    else: return False, arr
