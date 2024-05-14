@@ -26,7 +26,7 @@ void Write_2bytes(byte d1, byte d2)
 void setup()
 {
     slaveAddress = IRsensorAddress >> 1;   // This results in 0x21 as the address to pass to TWI
-    Serial.begin(19200);
+    Serial.begin(9600);
     pinMode(ledPin, OUTPUT);      // Set the LED pin as output
     Wire.begin();
     // IR sensor initialize
@@ -36,8 +36,9 @@ void setup()
     Write_2bytes(0x08,0xC0); delay(10);
     Write_2bytes(0x1A,0x40); delay(10);
     Write_2bytes(0x33,0x33); delay(10);
-    delay(100);
+    delay(70);
 }
+
 void loop()
 {
     ledState = !ledState;
@@ -101,5 +102,5 @@ void loop()
         Serial.print(",");
     }
     Serial.println("");
-    delay(15);
+    delay(70);
 }
