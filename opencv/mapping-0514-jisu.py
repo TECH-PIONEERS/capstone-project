@@ -24,7 +24,7 @@ previous_frame = None
 colorLower = (0, 138, 138)  
 colorUpper = (150, 250, 250) 
 previous_pos = [-999, -999]
-previous_direction = -999
+previous_direction = ''
 
 # 원이 범위를 벗어나면 경고 문구 출력하는 함수
 def ballOutOfRangeAlert(circles, SCREEN_WIDTH):
@@ -130,6 +130,22 @@ def stream_opencv(conn):
                 M = cv2.moments(c)
                 if M["m00"] == 0 : M["m00"] = 1
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+                
+                if previous_pos[0] == -999 or previous_pos[1] == -999 : 
+                    previous_pos[0] = center[0]
+                    previous_pos[1] = center[1]
+                else:
+                    if previous_direction == '':
+                        previous_direction = utils.return_ball_direction_change(previous_pos[1], center[1])
+                    else:
+                        current_direction = utils.return_ball_direction_change(previous_pos[1], center[1])
+                        if previous_direction !== current_direction:
+                            print('방향 바뀜')
+                    current_direction = previous_direction
+                    previous_pos[0] = center[0]
+                    previous_pos[1] = center[1]
+                    
+                    
                     # 원 중심 좌표와 반지름을 이용하여 중심 계산
                 if radius > golfball_size:
                     cv2.circle(frame, (int(x), int(y)), int(radius),
