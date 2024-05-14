@@ -198,8 +198,8 @@ def calculate_direction(current_pos, previous_pos):
     print(f'공 각도 {angle_degrees}')
     return angle_degrees
 
-def detect_direction_change(current_direction, previous_direction, threshold=20):
-    if abs(current_direction - previous_direction) >= threshold:
-        return True
-    else:
-        return False
+# def detect_direction_change(current_direction, previous_direction, threshold=20):
+#     if abs(current_direction - previous_direction) >= threshold:
+#         return True
+#     else:
+#         return False
