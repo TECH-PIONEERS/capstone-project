@@ -139,7 +139,7 @@ def stream_opencv(conn):
                         previous_direction = utils.return_ball_direction_change(previous_pos[1], center[1])
                     else:
                         current_direction = utils.return_ball_direction_change(previous_pos[1], center[1])
-                        if previous_direction !== current_direction:
+                        if previous_direction != current_direction:
                             print('방향 바뀜')
                     current_direction = previous_direction
                     previous_pos[0] = center[0]
