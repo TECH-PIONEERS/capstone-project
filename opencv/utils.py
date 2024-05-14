@@ -3,6 +3,7 @@ import cv2
 import threading
 import pygame
 import time
+import math
 
 
 # 경고음이 울리고 있는지 여부를 나타내는 변수
@@ -191,3 +192,13 @@ def is_valid_string(input_string):
         # return True
         return True, arr
     else: return False, arr
+
+def calculate_direction(current_pos, previous_pos):
+    dx = current_pos[0] - previous_pos[0]
+    dy = current_pos[1] - previous_pos[1]
+    
+    angle = math.atan2(dy, dx)
+    
+    angle_degrees = math.degrees(angle)
+    print(f'공 각도 {angle_degrees}')
+    return angle_degrees
