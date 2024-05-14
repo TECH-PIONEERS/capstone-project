@@ -1,6 +1,7 @@
 // Wii Remote IR sensor  test sample code  by kako http://www.kako.com
 // modified output for Wii-BlobTrack program by RobotFreak http://www.letsmakerobots.com/user/1433
 // modified for https://dfrobot.com by Lumi, Jan. 2014
+//측면 카메라 센서 번호 1
 
 #include <Wire.h>
 
@@ -81,6 +82,8 @@ void loop()
     Ix[3] += (s & 0x30) <<4;
     Iy[3] += (s & 0xC0) <<2;
 
+    Serial.print("1");
+
     for(i=0; i<4; i++)
     {
       if (Ix[i] < 1000)
@@ -102,5 +105,5 @@ void loop()
         Serial.print(",");
     }
     Serial.println("");
-    delay(70);
+    delay(100);
 }

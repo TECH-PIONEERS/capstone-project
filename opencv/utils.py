@@ -3,6 +3,7 @@ import cv2
 import threading
 import pygame
 import time
+import math
 
 
 # 경고음이 울리고 있는지 여부를 나타내는 변수
@@ -16,28 +17,23 @@ isBallOutOfRange = False
 def generate_alert_beep():
     global is_beeping
     if not is_beeping:
-        is_beeping = True   
-        # generate_long_beep(alert=True)
         pygame.init()
         pygame.mixer.init()
+        is_beeping = True
+   
+        # generate_long_beep(alert=True)
         beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
         beep_sound.play()
         time.sleep(1)
         # generate_high_beep(alert=True)
-        pygame.init()
-        pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
         beep_sound.play()
         time.sleep(1)
         # generate_high_beep(alert=True)
-        pygame.init()
-        pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
         beep_sound.play()
         time.sleep(1)
         # generate_high_beep(alert=True)
-        pygame.init()
-        pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
         beep_sound.play()
         time.sleep(1)
@@ -195,3 +191,13 @@ def is_valid_string(input_string):
         # return True
         return True, arr
     else: return False, arr
+
+def calculate_direction(current_pos, previous_pos):
+    dx = current_pos[0] - previous_pos[0]
+    dy = current_pos[1] - previous_pos[1]
+    
+    angle = math.atan2(dy, dx)
+    
+    angle_degrees = math.degrees(angle)
+    print(f'공 각도 {angle_degrees}')
+    return angle_degrees
