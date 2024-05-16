@@ -4,15 +4,15 @@ from picamera2 import Picamera2
 
 def camera_calibration(image):
     # v5
-    fx = 9033.303  
-    fy = 1873.838
-    cx = 283.196
-    cy = 222.432
-    k1 = -8.203179
-    k2 = -302.529516
-    p1 = -0.133649
-    p2 = -0.001363
-    
+    fx = 335.827093
+    fy = 335.827093
+    cx = 300.000000
+    cy = 200.000000
+    k1 = -0.354948
+    k2 = 0.102152
+    p1 = -0.041716
+    p2 = -0.002760
+
     # 카메라 매트릭스와 왜곡 계수 정의
     mtx = np.array([[fx, 0, cx],
                     [0, fy, cy],
@@ -36,7 +36,7 @@ def camera_calibration(image):
 
 def main():
     picam2 = Picamera2()
-    picam2.preview_configuration.main.size=(600,400)
+    picam2.preview_configuration.main.size=(640,480)
     picam2.preview_configuration.main.format="RGB888"
     picam2.start()
 

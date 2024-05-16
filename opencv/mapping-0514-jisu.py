@@ -22,7 +22,7 @@ flag = 0
 start_x, start_y, end_x, end_y, goal_x, goal_y = 0, 0, 0, 0, 0, 0
 previous_frame = None
 # colorLower = (0, 138, 138) 
-colorLower = (0, 161, 161) 
+colorLower = (5, 152, 152) 
 colorUpper = (150, 250, 250) 
 previous_pos = [-999, -999]
 previous_direction = ''
@@ -151,7 +151,7 @@ def stream_opencv(conn):
                 if radius > golfball_size:
                     cv2.circle(frame, (int(x), int(y)), int(radius),
                         (255, 0, 0), 2)
-                    cv2.circle(frame, center, 2, (0, 0, 255), -1)
+                    cv2.circle(frame, center, 2, (255, 0, 0), -1)
                     if x <= goal_y + 30:
                         utils.goal(goal_y,y)
 
