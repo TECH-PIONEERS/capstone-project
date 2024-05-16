@@ -3,16 +3,16 @@ import numpy as np
 from picamera2 import Picamera2
 
 def camera_calibration(image):
-    # v3
-    fx = 297.677019
-    fy = 297.677019
-    cx = 300.000000
-    cy = 200.000000
-    k1 = -0.266982
-    k2 = 0.056298
-    p1 = -0.030921
-    p2 = -0.005686
-
+    # v5
+    fx = 9033.303  
+    fy = 1873.838
+    cx = 283.196
+    cy = 222.432
+    k1 = -8.203179
+    k2 = -302.529516
+    p1 = -0.133649
+    p2 = -0.001363
+    
     # 카메라 매트릭스와 왜곡 계수 정의
     mtx = np.array([[fx, 0, cx],
                     [0, fy, cy],
