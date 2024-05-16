@@ -13,7 +13,6 @@ def camera_calibration(image):
     p1 = 0.001761
     p2 = -0.000953
 
-
     # 카메라 매트릭스와 왜곡 계수 정의
     mtx = np.array([[fx, 0, cx],
                     [0, fy, cy],
