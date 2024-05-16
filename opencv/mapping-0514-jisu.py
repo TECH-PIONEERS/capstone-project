@@ -21,9 +21,11 @@ golfball_size = 3
 flag = 0
 start_x, start_y, end_x, end_y, goal_x, goal_y = 0, 0, 0, 0, 0, 0
 previous_frame = None
-# colorLower = (0, 138, 138) 
+# colorLower = (0, 138, 138) # tuning required! 
 colorLower = (5, 152, 152) 
 colorUpper = (150, 250, 250) 
+# colorLower = (40, 0, 200) setting for red
+# colorUpper = (117, 117, 250) 
 previous_pos = [-999, -999]
 previous_direction = ''
 
@@ -94,6 +96,7 @@ def stream_opencv(conn):
         else:
             previous_frame = cap
 
+        cap = utils.camera_calibration(cap)
         cv2.namedWindow('cap')
         cv2.setMouseCallback('cap', get_position)
 
@@ -108,11 +111,11 @@ def stream_opencv(conn):
                 output1 = res[1]
                 print(f'{output} {output1}')
                 if(len(output1) > 0):
-                    cv2.circle(frame,(output1[0]//4, (end_y-start_y)//2 ), 5, (255,0,255), -1)
-                if(len(output) > 1):
-                    cv2.circle(frame,((end_x-start_x)//2, SCREEN_HEIGHT-(output[0])//4 ), 5, (255,255,255), -1)
-                if(len(output) > 3):
-                    cv2.circle(frame,((end_x-start_x)//2, SCREEN_HEIGHT-(output[2])//4 ), 5, (255,0,0), -1)
+                    cv2.circle(frame,(SCREEN_HEIGHT - output1[0]//4,  (end_y-start_y)//2 ), 5, (255,0,255), -1)
+                    if(len(output) > 1):
+                        cv2.circle(frame,(( SCREEN_HEIGHT - output1[0]//4 - 30, (output[0])//4 )), 5, (0,127,255), -1)
+                    if(len(output) > 3):
+                        cv2.circle(frame,(( SCREEN_HEIGHT - output1[0]//4 - 30, (output[2])//4 )), 5, (255,0,0), -1)
                     
             blurred = cv2.GaussianBlur(frame, (11, 11), 0)
             hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
