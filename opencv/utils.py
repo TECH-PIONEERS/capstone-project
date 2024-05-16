@@ -191,7 +191,7 @@ def is_valid_string(input_string):
         return True, arr
     else: return False, arr
 
-def return_ball_direction_change(previous_pos, current_pos, threshold=50):
+def return_ball_direction_change(previous_pos, current_pos, threshold=30):
     if abs(current_pos - previous_pos) >= threshold:
         if previous_pos < current_pos:
             print('bottom')

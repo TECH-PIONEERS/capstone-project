@@ -23,9 +23,9 @@ def main():
     cv2.destroyAllWindows()
 
 def capture_image(frame,i):
-    image_name = f"image/zmg{i+1}.jpg"
+    image_name = f"image3/zmg{i+1}.jpg"
     cv2.imwrite(image_name, frame)
-    print("Captured image saved as capture.jpg")
+    print(f"capture {i+1}")
 
 if __name__ == "__main__":
     main()

@@ -9,8 +9,8 @@ myString1 = None
 
 # Open the serial port
 # Replace '/dev/ttyUSB0' with your actual serial port
-myPort = serial.Serial('/dev/ttyUSB0', 19200)
-myPort1 = serial.Serial('/dev/ttyUSB1', 19200)
+myPort = serial.Serial('/dev/ttyUSB1', 9600)
+myPort1 = serial.Serial('/dev/ttyUSB0', 9600)
 time.sleep(2)  # Wait for serial connection to establish
 
 def is_valid_string(input_string):
