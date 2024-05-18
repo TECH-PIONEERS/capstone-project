@@ -198,4 +198,7 @@ def return_ball_direction_change(previous_pos, current_pos, threshold=30):
         elif previous_pos > current_pos:
             print('up')
             return 'up'
-    
+
+def get_ball_head_distance(ball_pos, head_pos, cm):
+    가로거리차이 = abs(ball_pos[0]-head_pos[0]) * cm
+    return f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다' 
