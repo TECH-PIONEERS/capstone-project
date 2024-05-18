@@ -13,7 +13,6 @@ import serial
 import cv2
 import numpy as np
 import time
-import utilsp3
 
 lf = b'\n'  # Linefeed in ASCII
 myString = None
@@ -22,19 +21,23 @@ golfball_size = 3
 flag = 0
 start_x, start_y, end_x, end_y, goal_x, goal_y = 0, 0, 0, 0, 0, 0
 previous_frame = None
-colorLower = (0, 138, 138)  
+# colorLower = (0, 138, 138) # tuning required! 
+colorLower = (5, 152, 152) 
 colorUpper = (150, 250, 250) 
+# colorLower = ( 0, 0, 200) # setting for red
+# colorUpper = ( 60, 10, 255) # GBR
+previous_pos = [-999, -999]
+previous_direction = ''
 
 # tts_process는 global flag에 따라 비프음 및 TTS 출력하는 프로세스
-# 출력을 위한 프로세스는 상황마다 시작되고 종료된다.
 def tts_process():
     while True:
-        if utilsp3.is_beeping is False:
-            if utilsp3.isBallOutOfRange is True: # 원이 범위를 벗어나면 경고음 출력
-                beep_process = Process(target=utilsp3.generate_alert_beep)
-                beep_process.start() # 시작
+        if utils.is_beeping is False:
+            if flag == 999: #퍼터 값이 없을 경우
+                beep_thread = threading.Thread(target=utils.generate_alert_beep)
+                beep_thread.start()
                 print("Running alert beep")
-                beep_process.join() # 종료
+                beep_thread.join()
 
 def get_position(event, x, y, flags, params):
     global start_x 
@@ -63,6 +66,7 @@ def get_position(event, x, y, flags, params):
     return 
 
 def stream_opencv(conn):
+    global previous_direction
     ap = argparse.ArgumentParser()
     ap.add_argument("-v", "--video",
         help="path to the (optional) video file")
@@ -78,13 +82,13 @@ def stream_opencv(conn):
     picam2.start()
 
     while True:
+
         cap = picam2.capture_array()
         if cap is None:
             print('no frame')
             cap = previous_frame  # 이전 프레임을 사용
         else:
             previous_frame = cap
-
 
         cap = utils.camera_calibration(cap)
         cv2.namedWindow('cap')
@@ -94,17 +98,26 @@ def stream_opencv(conn):
             frame = cap[start_y:end_y, start_x:end_x]
             SCREEN_WIDTH = end_x - start_x
             SCREEN_HEIGHT = end_y - start_y
+
             if conn.poll():
                 res = conn.recv()
                 output = res[0]
                 output1 = res[1]
-                print(f'{output} {output1}')
+                # print(f'{output} {output1}')
                 if(len(output1) > 0):
-                    cv2.circle(frame,(output1[0]//4+100, (end_y-start_y)//2 ), 5, (255,0,255), -1)
-                if(len(output) > 1):
-                    cv2.circle(frame,((end_x-start_x)//2, SCREEN_HEIGHT-(output[0])//4 ), 5, (255,255,255), -1)
-                if(len(output) > 3):
-                    cv2.circle(frame,((end_x-start_x)//2, SCREEN_HEIGHT-(output[2])//4 ), 5, (255,0,0), -1)
+                    # print(output1[0]//4 -80)
+                    if output1[0]//4 -80 <= -80:
+                        continue
+                    elif output1[0]//4 -80 <= 15:
+                        calibration = 0.43
+                    elif output1[0]//4 -80 <= 60:
+                        calibration = 0.42
+                    else: 
+                        calibration = 0.41
+                    if(len(output) > 1):
+                        cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.4)), 5, (0,0,255), -1)
+                    if(len(output) > 3):
+                        cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.4)), 5, (255,0,255), -1)
                     
             blurred = cv2.GaussianBlur(frame, (11, 11), 0)
             hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -119,19 +132,34 @@ def stream_opencv(conn):
 
             if len(cnts) > 0:
                 c = max(cnts, key=cv2.contourArea)
-                ((x, y), radius) = cv2.minEnclosingCircle(c) # 원의 중심의 x, y
+                ((x, y), radius) = cv2.minEnclosingCircle(c)
                 M = cv2.moments(c)
                 if M["m00"] == 0 : M["m00"] = 1
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                print(center)
+                
+                if previous_pos[0] == -999 or previous_pos[1] == -999 : 
+                    previous_pos[0] = center[0]
+                    previous_pos[1] = center[1]
+                else:
+                    if previous_direction == '':
+                        previous_direction = utils.return_ball_direction_change(previous_pos[1], center[1])
+                    else:
+                        current_direction = utils.return_ball_direction_change(previous_pos[1], center[1])
+                        if previous_direction != current_direction:
+                            print('방향 바뀜')
+                    current_direction = previous_direction
+                    previous_pos[0] = center[0]
+                    previous_pos[1] = center[1]
+                    
+                    
                     # 원 중심 좌표와 반지름을 이용하여 중심 계산
                 if radius > golfball_size:
                     cv2.circle(frame, (int(x), int(y)), int(radius),
-                        (0, 255, 255), 2)
-                    cv2.circle(frame, center, 5, (0, 0, 255), -1)
+                        (255, 0, 0), 2)
+                    cv2.circle(frame, center, 2, (255, 0, 0), -1)
                     if x <= goal_y + 30:
                         utils.goal(goal_y,y)
-                utilsp3.ballOutOfRangeAlert(x, radius, SCREEN_WIDTH) # 공이 범위 벗어났을 시 경고 알림
+
                 pts.appendleft(center)
             cv2.imshow("Frame", frame)
         else:
@@ -143,31 +171,23 @@ def stream_opencv(conn):
     cv2.destroyAllWindows()
 
 def get_serial(conn):
-    # myPort = serial.Serial('/dev/ttyUSB1', 2400,timeout=0.2)
-    # myPort1 = serial.Serial('/dev/ttyUSB0', 2400, timeout=0.2)
-    myPort = serial.Serial('/dev/ttyUSB1', 9600,timeout=0.1)
-    myPort1 = serial.Serial('/dev/ttyUSB0', 9600, timeout=0.1)
+    global flag
+
+    myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
+    myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
     time.sleep(0.5) 
     myPort.reset_input_buffer()
     myPort1.reset_input_buffer()
-    previous_output, previous_output1 = [], []
     while True:
         myString = myPort.readline().decode("latin-1").rstrip()
         myString1 = myPort1.readline().decode("latin-1").rstrip()
         if myString or myString1:
-            # if utils.is_valid_string(myString) and utils.is_valid_string(myString1):
-            #     output = list(map(int, list(map(float, myString.split(',')))))
-            #     output1 = list(map(int, list(map(float, myString1.split(',')))))
             o1_bool, output = utils.is_valid_string(myString)
             o2_bool, output1 = utils.is_valid_string(myString1)
             if o1_bool or o2_bool:
                 conn.send([output, output1])
-                previous_output, previous_output1 = output, output1
+                flag = 999
         
-        else:
-            conn.send([previous_output, previous_output1])
-
-
 if __name__ == '__main__':
     parent_conn, child_conn = Pipe()
     p1 = Process(target=stream_opencv, args=(parent_conn,))
