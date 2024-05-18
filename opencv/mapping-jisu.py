@@ -199,7 +199,7 @@ def check_movement(queue):
         initial_x, initial_y = queue.get()  # 초기 좌표를 큐에서 가져옴
         
         time.sleep(2)  # 2초 대기
-        
+        print('checkmovement')
         current_x = previous_pos[0]
         current_y = previous_pos[1] 
         if abs(current_x - initial_x) <= BALL_MOVEMENT_THRESHOLD and abs(current_y - initial_y) <= BALL_MOVEMENT_THRESHOLD:

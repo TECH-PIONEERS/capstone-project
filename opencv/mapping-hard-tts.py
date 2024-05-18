@@ -184,11 +184,13 @@ def get_serial(conn):
         if myString or myString1:
             o1_bool, output = utils.is_valid_string(myString)
             o2_bool, output1 = utils.is_valid_string(myString1)
+            print(output, output1)
             if o1_bool or o2_bool:
-                conn.send([output, output1])
                 utils.tts_flag = 0
-                print('chabge utils tts flag 0')
-            else:
+                # print('chabge utils tts flag 0')
+                conn.send([output, output1])
+                
+            elif len(output) == 0 and len(output1) == 0:
                 print('chabge utils tts flag 999')
                 utils.tts_flag = 999
         
