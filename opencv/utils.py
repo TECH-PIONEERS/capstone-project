@@ -4,14 +4,23 @@ import threading
 import pygame
 import time
 import math
+ 
+global flag
+flag = 000 
 
 # 경고음이 울리고 있는지 여부를 나타내는 변수
 global is_beeping
 is_beeping = False
 
-#공이 IR positioning camera 범위를 벗어났는지 나타내는 플래그 (공이 범위 벗어나면 True)
-global isBallOutOfRange
-isBallOutOfRange = False
+# 원이 범위를 벗어나면 경고 문구 출력하는 함수
+def ballOutOfRangeAlert(x, r, SCREEN_WIDTH):
+    global is_beeping, isBallOutOfRange
+    BOUNDARY_X =  2 * SCREEN_WIDTH // 3 # 경계 범위 설정: 화면 너비의 2/3보다 x 좌표가 작으면
+    if x - r < BOUNDARY_X:
+        print("Circle is going out of screen boundary!")
+        isBallOutOfRange = True
+    else:
+        isBallOutOfRange = False
 
 def generate_alert_beep():
     global is_beeping
