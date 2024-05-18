@@ -122,10 +122,27 @@ def stream_opencv(conn):
                         calibration = 0.41
 
                     if output1[0]//4 <= 105:
-                        if(len(output) > 1):
-                            cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.6)), 5, (0,0,255), -1)
-                        if(len(output) > 3):
-                            cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.4)), 5, (255,0,255), -1)
+                        if output[0] < 300 :
+                            if(len(output) > 1):
+                                cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.4)), 5, (0,0,255), -1)
+                            if(len(output) > 3):
+                                cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.4)), 5, (255,0,255), -1)
+                        elif output[0] < 417:
+                            if(len(output) > 1):
+                                cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.6)), 5, (0,0,255), -1)
+                            if(len(output) > 3):
+                                cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.4)), 5, (255,0,255), -1)
+                        elif output[0] < 534:
+                            if(len(output) > 1):
+                                cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.6)), 5, (0,0,255), -1)
+                            if(len(output) > 3):
+                                cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.4)), 5, (255,0,255), -1)
+                        else :
+                            if(len(output) > 1):
+                                cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.6)), 5, (0,0,255), -1)
+                            if(len(output) > 3):
+                                cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.4)), 5, (255,0,255), -1)
+                        
                     elif output1[0]//4 <= 180:
                         if(len(output) > 1):
                             cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.4)), 5, (0,0,255), -1)

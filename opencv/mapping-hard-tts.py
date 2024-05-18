@@ -33,10 +33,11 @@ previous_direction = ''
 def tts_process():
     while True:
         if utils.is_beeping is False:
-            if flag == 999: #퍼터 값이 없을 경우
+            print(utils.tts_flag)
+            if utils.tts_flag == 999: #퍼터 값이 없을 경우
+                print("Running alert beep")
                 beep_thread = threading.Thread(target=utils.generate_alert_beep)
                 beep_thread.start()
-                print("Running alert beep")
                 beep_thread.join()
 
 def get_position(event, x, y, flags, params):
@@ -171,7 +172,6 @@ def stream_opencv(conn):
     cv2.destroyAllWindows()
 
 def get_serial(conn):
-    global flag
 
     myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
     myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
@@ -186,7 +186,11 @@ def get_serial(conn):
             o2_bool, output1 = utils.is_valid_string(myString1)
             if o1_bool or o2_bool:
                 conn.send([output, output1])
-                flag = 999
+                utils.tts_flag = 0
+                print('chabge utils tts flag 0')
+            else:
+                print('chabge utils tts flag 999')
+                utils.tts_flag = 999
         
 if __name__ == '__main__':
     parent_conn, child_conn = Pipe()
