@@ -16,15 +16,15 @@ global isBallOutOfRange
 isBallOutOfRange = False
 
 # 원이 범위를 벗어나면 경고 문구 출력하는 함수
-def ballOutOfRangeAlert(circles, SCREEN_WIDTH):
+def ballOutOfRangeAlert(x, r, SCREEN_WIDTH):
     global is_beeping, isBallOutOfRange
     BOUNDARY_X =  2 * SCREEN_WIDTH // 3 # 경계 범위 설정: 화면 너비의 2/3보다 x 좌표가 작으면
-    for (x, r) in circles:
-        if x - r < BOUNDARY_X:
-            print("Circle is going out of screen boundary!")
-            isBallOutOfRange = True
-        else:
-            isBallOutOfRange = False
+
+    if x - r < BOUNDARY_X:
+        print("Circle is going out of screen boundary!")
+        isBallOutOfRange = True
+    else:
+        isBallOutOfRange = False
 
 def generate_alert_beep():
     global is_beeping

@@ -109,14 +109,21 @@ def stream_opencv(conn):
                 res = conn.recv()
                 output = res[0]
                 output1 = res[1]
-                print(f'{output} {output1}')
+                # print(f'{output} {output1}')
                 if(len(output1) > 0):
-                    cv2.circle(frame,( output1[0]//4 -80,  (end_y-start_y)//2 ), 5, (255,0,255), -1)
+                    # print(output1[0]//4 -80)
+                    if output1[0]//4 -80 <= -80:
+                        continue
+                    elif output1[0]//4 -80 <= 15:
+                        calibration = 0.43
+                    elif output1[0]//4 -80 <= 60:
+                        calibration = 0.42
+                    else: 
+                        calibration = 0.41
+                    if(len(output) > 1):
+                        cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.4)), 5, (0,0,255), -1)
                     if(len(output) > 3):
-                        cv2.circle(frame,( output1[0]//4 - abs(output[0]-output[2])//8 - 80,  (end_y-start_y)//2 ), 5, (0,0,255), -1)
-                    #     cv2.circle(frame,(( output1[0]//4 - 80, (output[0])//4 )), 5, (0,127,255), -1)
-                    # if(len(output) > 3):
-                    #     cv2.circle(frame,((  output1[0]//4 -80 , (output[2])//4 )), 5, (255,0,0), -1)
+                        cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.4)), 5, (255,0,255), -1)
                     
             blurred = cv2.GaussianBlur(frame, (11, 11), 0)
             hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -170,8 +177,8 @@ def stream_opencv(conn):
     cv2.destroyAllWindows()
 
 def get_serial(conn):
-    myPort = serial.Serial('/dev/ttyUSB1', 9600,timeout=0.1)
-    myPort1 = serial.Serial('/dev/ttyUSB0', 9600, timeout=0.1)
+    myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
+    myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
     time.sleep(0.5) 
     myPort.reset_input_buffer()
     myPort1.reset_input_buffer()

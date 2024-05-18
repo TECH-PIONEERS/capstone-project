@@ -86,13 +86,15 @@ def stream_opencv(conn):
         else:
             previous_frame = cap
 
+
+        cap = utils.camera_calibration(cap)
         cv2.namedWindow('cap')
         cv2.setMouseCallback('cap', get_position)
 
         if flag == 3:
             frame = cap[start_y:end_y, start_x:end_x]
             SCREEN_WIDTH = end_x - start_x
-
+            SCREEN_HEIGHT = end_y - start_y
             if conn.poll():
                 res = conn.recv()
                 output = res[0]
@@ -130,7 +132,7 @@ def stream_opencv(conn):
                     cv2.circle(frame, center, 5, (0, 0, 255), -1)
                     if x <= goal_y + 30:
                         utils.goal(goal_y,y)
-                utilsp3.ballOutOfRangeAlert((x, radius), SCREEN_WIDTH) # 공이 범위 벗어났을 시 경고 알림
+                utilsp3.ballOutOfRangeAlert(x, radius, SCREEN_WIDTH) # 공이 범위 벗어났을 시 경고 알림
                 pts.appendleft(center)
             cv2.imshow("Frame", frame)
         else:
