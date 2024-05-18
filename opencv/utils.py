@@ -5,7 +5,6 @@ import pygame
 import time
 import math
 
-
 # 경고음이 울리고 있는지 여부를 나타내는 변수
 global is_beeping
 is_beeping = False
