@@ -29,14 +29,19 @@ colorUpper = (150, 250, 250)
 previous_pos = [-999, -999]
 previous_direction = ''
 
+global tts_flag
+tts_flag = 000
+
 # tts_process는 global flag에 따라 비프음 및 TTS 출력하는 프로세스
 def tts_process():
+    global tts_flag
+
     while True:
         if utils.is_beeping is False:
-            if flag == 999: #퍼터 값이 없을 경우
+            if tts_flag == 999: #퍼터 값이 없을 경우
+                print("Running alert beep")
                 beep_thread = threading.Thread(target=utils.generate_alert_beep)
                 beep_thread.start()
-                print("Running alert beep")
                 beep_thread.join()
 
 def get_position(event, x, y, flags, params):
@@ -171,7 +176,7 @@ def stream_opencv(conn):
     cv2.destroyAllWindows()
 
 def get_serial(conn):
-    global flag
+    global tts_flag
 
     myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
     myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
@@ -186,7 +191,10 @@ def get_serial(conn):
             o2_bool, output1 = utils.is_valid_string(myString1)
             if o1_bool or o2_bool:
                 conn.send([output, output1])
-                flag = 999
+            else: 
+                print("tts_flag change 999")
+                tts_flag = 999
+                print(tts_flag)
         
 if __name__ == '__main__':
     parent_conn, child_conn = Pipe()
