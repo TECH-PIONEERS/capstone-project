@@ -181,7 +181,7 @@ def is_valid_string(input_string):
         elif char == ',':
             num = int(float(num))
             if num == 1023 and len(arr) == 0:
-                return False, [0]
+                return False, []
             if num < 1023: arr.append(num)
             num = ''
         before = char
