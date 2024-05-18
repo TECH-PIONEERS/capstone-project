@@ -181,10 +181,7 @@ def stream_opencv(conn):
     cv2.destroyAllWindows()
 
 def get_serial(conn):
-<<<<<<< HEAD
-=======
     global tts_flag
->>>>>>> 8a332a53d52a724356bbeb8602f3d0c7af876e0b
 
     myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
     myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
@@ -202,14 +199,11 @@ def get_serial(conn):
                 utils.tts_flag = 0
                 # print('chabge utils tts flag 0')
                 conn.send([output, output1])
-<<<<<<< HEAD
-                
+    
             elif len(output) == 0 and len(output1) == 0:
                 print('chabge utils tts flag 999')
                 utils.tts_flag = 999
-=======
->>>>>>> 8a332a53d52a724356bbeb8602f3d0c7af876e0b
-        
+    
 if __name__ == '__main__':
     parent_conn, child_conn = Pipe()
     p1 = Process(target=stream_opencv, args=(parent_conn,))
