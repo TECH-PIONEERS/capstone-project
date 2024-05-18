@@ -30,15 +30,14 @@ previous_pos = [-999, -999]
 previous_direction = ''
 
 # tts_process는 global flag에 따라 비프음 및 TTS 출력하는 프로세스
-# 출력을 위한 프로세스는 상황마다 시작되고 종료된다.
 def tts_process():
     while True:
         if utils.is_beeping is False:
-            if utils.isBallOutOfRange is True: # 원이 범위를 벗어나면 경고음 출력
-                beep_process = Process(target=utils.generate_alert_beep)
-                beep_process.start() # 시작
+            if flag == 999: #퍼터 값이 없을 경우
+                beep_thread = threading.Thread(target=utils.generate_alert_beep)
+                beep_thread.start()
                 print("Running alert beep")
-                beep_process.join() # 종료
+                beep_thread.join()
 
 def get_position(event, x, y, flags, params):
     global start_x 
@@ -172,6 +171,8 @@ def stream_opencv(conn):
     cv2.destroyAllWindows()
 
 def get_serial(conn):
+    global flag
+
     myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
     myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
     time.sleep(0.5) 
@@ -185,6 +186,7 @@ def get_serial(conn):
             o2_bool, output1 = utils.is_valid_string(myString1)
             if o1_bool or o2_bool:
                 conn.send([output, output1])
+                flag = 999
         
 if __name__ == '__main__':
     parent_conn, child_conn = Pipe()
