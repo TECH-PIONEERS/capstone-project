@@ -24,8 +24,8 @@ previous_frame = None
 # colorLower = (0, 138, 138) # tuning required! 
 colorLower = (5, 152, 152) 
 colorUpper = (150, 250, 250) 
-# colorLower = (40, 0, 200) setting for red
-# colorUpper = (117, 117, 250) 
+# colorLower = ( 0, 0, 200) # setting for red
+# colorUpper = ( 60, 10, 255) # GBR
 previous_pos = [-999, -999]
 previous_direction = ''
 
@@ -111,11 +111,12 @@ def stream_opencv(conn):
                 output1 = res[1]
                 print(f'{output} {output1}')
                 if(len(output1) > 0):
-                    cv2.circle(frame,(SCREEN_HEIGHT - output1[0]//4,  (end_y-start_y)//2 ), 5, (255,0,255), -1)
-                    if(len(output) > 1):
-                        cv2.circle(frame,(( SCREEN_HEIGHT - output1[0]//4 - 30, (output[0])//4 )), 5, (0,127,255), -1)
+                    cv2.circle(frame,( output1[0]//4 -80,  (end_y-start_y)//2 ), 5, (255,0,255), -1)
                     if(len(output) > 3):
-                        cv2.circle(frame,(( SCREEN_HEIGHT - output1[0]//4 - 30, (output[2])//4 )), 5, (255,0,0), -1)
+                        cv2.circle(frame,( output1[0]//4 - abs(output[0]-output[2])//4,  (end_y-start_y)//2 ), 5, (0,0,255), -1)
+                    #     cv2.circle(frame,(( output1[0]//4 - 80, (output[0])//4 )), 5, (0,127,255), -1)
+                    # if(len(output) > 3):
+                    #     cv2.circle(frame,((  output1[0]//4 -80 , (output[2])//4 )), 5, (255,0,0), -1)
                     
             blurred = cv2.GaussianBlur(frame, (11, 11), 0)
             hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
