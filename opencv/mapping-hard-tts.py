@@ -1,4 +1,4 @@
-from multiprocessing import Process, Pipe
+from multiprocessing import Process, Pipe, Manager
 from picamera2 import Picamera2
 from collections import deque
 from imutils.video import VideoStream
@@ -13,6 +13,7 @@ import serial
 import cv2
 import numpy as np
 import time
+import multiprocessing
 
 lf = b'\n'  # Linefeed in ASCII
 myString = None
@@ -193,7 +194,8 @@ def get_serial(conn):
             print(output, output1)
             if o1_bool or o2_bool:
                 tts_flag = 0
-                # print('chabge utils tts flag 0')
+                print('chabge utils tts flag 0')
+                print(o1_bool, o2_bool) 
                 conn.send([output, output1])
     
             #elif len(output) == 0 and len(output1) == 0:
@@ -203,13 +205,18 @@ def get_serial(conn):
                 tts_flag = 999
     
 if __name__ == '__main__':
-    parent_conn, child_conn = Pipe()
-    p1 = Process(target=stream_opencv, args=(parent_conn,))
-    p2 = Process(target=get_serial, args=(child_conn,))
-    p3 = Process(target=tts_process)
-    p2.start()
-    p1.start()
-    p3.start()
-    p1.join()
-    p2.join()
-    p3.join()
+    with Manager() as manager:
+
+        parent_conn, child_conn = Pipe()
+        manager = manager.Value('i', tts_flag)
+
+        p1 = Process(target=stream_opencv, args=(parent_conn,))
+        p2 = Process(target=get_serial, args=(child_conn,))
+        p3 = Process(target=tts_process, args=(manager, ))
+
+        p2.start()
+        p1.start()
+        p3.start()
+        p1.join()
+        p2.join()
+        p3.join()

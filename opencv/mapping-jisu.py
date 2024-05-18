@@ -1,4 +1,4 @@
-from multiprocessing import Process, Pipe, Queue
+from multiprocessing import Process, Pipe, Manager
 from picamera2 import Picamera2
 from collections import deque
 from imutils.video import VideoStream
@@ -74,6 +74,7 @@ def get_position(event, x, y, flags, params):
 
 def stream_opencv(conn):
     global previous_direction
+    global previous_pos
     ap = argparse.ArgumentParser()
     ap.add_argument("-v", "--video",
         help="path to the (optional) video file")
@@ -147,6 +148,7 @@ def stream_opencv(conn):
                 if previous_pos[0] == -999 or previous_pos[1] == -999 : 
                     previous_pos[0] = center[0]
                     previous_pos[1] = center[1]
+                    global_ball = [center[0], center[1]]
                 else:
                     if previous_direction == '':
                         previous_direction = utils.return_ball_direction_change(previous_pos[1], center[1])
@@ -157,8 +159,7 @@ def stream_opencv(conn):
                     current_direction = previous_direction
                     previous_pos[0] = center[0]
                     previous_pos[1] = center[1]
-                    
-                    
+                
                     # 원 중심 좌표와 반지름을 이용하여 중심 계산
                 if radius > golfball_size:
                     cv2.circle(frame, (int(x), int(y)), int(radius),
@@ -168,6 +169,7 @@ def stream_opencv(conn):
                         utils.goal(goal_y,y)
 
                 pts.appendleft(center)
+
             cv2.imshow("Frame", frame)
         else:
             cv2.imshow('cap', cap)
@@ -194,34 +196,36 @@ def get_serial(conn):
         
 
 BALL_MOVEMENT_THRESHOLD = 10
-def check_movement(queue):
+def check_movement():
     while True:
-        initial_x, initial_y = queue.get()  # 초기 좌표를 큐에서 가져옴
-        
+        # initial_x, initial_y = queue.get()  # 초기 좌표를 큐에서 가져옴
+        initial_x = global_ball[0]
+        initial_y = global_ball[1] 
+        print(f'initial value {initial_x} {initial_y}')
         time.sleep(2)  # 2초 대기
-        print('checkmovement')
-        current_x = previous_pos[0]
-        current_y = previous_pos[1] 
+        current_x = global_ball[0]
+        current_y = global_ball[1]
+        print(f'current value {current_x} {current_y}')
+
         if abs(current_x - initial_x) <= BALL_MOVEMENT_THRESHOLD and abs(current_y - initial_y) <= BALL_MOVEMENT_THRESHOLD:
             print("The coordinates have not moved for 2 seconds.")
         else:
             print("The coordinates have moved.")
-
+            
+def update_coordinates(queue):
+    while True:
+        queue.put(previous_pos)
+        print(previous_pos)
 
 if __name__ == '__main__':
     parent_conn, child_conn = Pipe()
-    coordinate_queue = Queue()
 
     p1 = Process(target=stream_opencv, args=(parent_conn,))
     p2 = Process(target=get_serial, args=(child_conn,))
-    p3 = Process(target=check_movement, args=(coordinate_queue,))
+    p3 = Process(target=update_coordinates)
 
-    initial_x = previous_pos[0]
-    initial_y = previous_pos[1] 
-    coordinate_queue.put((initial_x, initial_y))
-
-    p2.start()
     p1.start()
+    p2.start()
     p3.start()
 
     p1.join()
