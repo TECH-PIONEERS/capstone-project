@@ -182,7 +182,7 @@ def is_valid_string(input_string):
             num = int(float(num))
             if num == 1023 and len(arr) == 0:
                 return False, [0]
-            if num <= 1023: arr.append(num)
+            if num < 1023: arr.append(num)
             num = ''
         before = char
     if before != ',':
