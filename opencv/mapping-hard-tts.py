@@ -38,12 +38,8 @@ def tts_process():
 
     while True:
         if utils.is_beeping is False:
-<<<<<<< HEAD
-            print(utils.tts_flag)
-            if utils.tts_flag == 999: #퍼터 값이 없을 경우
-=======
+            print(tts_flag)
             if tts_flag == 999: #퍼터 값이 없을 경우
->>>>>>> 8a332a53d52a724356bbeb8602f3d0c7af876e0b
                 print("Running alert beep")
                 beep_thread = threading.Thread(target=utils.generate_alert_beep)
                 beep_thread.start()
@@ -196,13 +192,13 @@ def get_serial(conn):
             o2_bool, output1 = utils.is_valid_string(myString1)
             print(output, output1)
             if o1_bool or o2_bool:
-                utils.tts_flag = 0
+                tts_flag = 0
                 # print('chabge utils tts flag 0')
                 conn.send([output, output1])
     
             elif len(output) == 0 and len(output1) == 0:
-                print('chabge utils tts flag 999')
-                utils.tts_flag = 999
+                print('change utils tts flag 999')
+                tts_flag = 999
     
 if __name__ == '__main__':
     parent_conn, child_conn = Pipe()
