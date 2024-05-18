@@ -196,7 +196,9 @@ def get_serial(conn):
                 # print('chabge utils tts flag 0')
                 conn.send([output, output1])
     
-            elif len(output) == 0 and len(output1) == 0:
+            #elif len(output) == 0 and len(output1) == 0:
+            else:
+                print(o1_bool, o2_bool) 
                 print('change utils tts flag 999')
                 tts_flag = 999
     
