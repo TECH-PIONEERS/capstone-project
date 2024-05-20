@@ -32,16 +32,17 @@ previous_direction = ''
 
 # tts_process는 global flag에 따라 비프음 및 TTS 출력하는 프로세스
 def tts_process(shared_value):
+    import utils
     while True:
         tts_flag = shared_value.value
+        print(f'is beeping {utils.is_beeping}')
         print(tts_flag)
-
-        if utils.is_beeping is False:
-            if tts_flag == 999: #퍼터 값이 없을 경우
-                print("Running alert beep")
-                beep_thread = threading.Thread(target=utils.generate_alert_beep)
-                beep_thread.start()
-                beep_thread.join()
+        if tts_flag == 999 and utils.is_beeping == False: #퍼터 값이 없을 경우
+            print("Running alert beep")
+            beep_thread = threading.Thread(target=utils.generate_alert_beep)
+            beep_thread.start()
+            beep_thread.join()
+        
 
 def get_position(event, x, y, flags, params):
     global start_x 
