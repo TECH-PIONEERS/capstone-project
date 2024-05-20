@@ -35,15 +35,14 @@ tts_flag = 000
 
 # tts_process는 global flag에 따라 비프음 및 TTS 출력하는 프로세스
 def tts_process(shared_value):
-    with shared_value.get_lock():
-        while True:
-            if utils.is_beeping is False:
-                print(shared_value.value)
-                if shared_value.value == 999: #퍼터 값이 없을 경우
-                    print("Running alert beep")
-                    beep_thread = threading.Thread(target=utils.generate_alert_beep)
-                    beep_thread.start()
-                    beep_thread.join()
+    while True:
+        if utils.is_beeping is False:
+            print(shared_value.value)
+            if shared_value.value == 999: #퍼터 값이 없을 경우
+                print("Running alert beep")
+                beep_thread = threading.Thread(target=utils.generate_alert_beep)
+                beep_thread.start()
+                beep_thread.join()
 
 def get_position(event, x, y, flags, params):
     global start_x 
@@ -177,8 +176,7 @@ def stream_opencv(conn):
     cv2.destroyAllWindows()
 
 def get_serial(conn, shared_value):
-    with shared_value.get_lock():
-
+    #with shared_value.get_lock():
         myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
         myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
         time.sleep(0.5) 
@@ -192,13 +190,13 @@ def get_serial(conn, shared_value):
                 o2_bool, output1 = utils.is_valid_string(myString1)
                 print(output, output1)
                 if o1_bool or o2_bool:
-                    shared_value.value = 0
+                    with shared_value.get_lock():
+                        shared_value.value = 0
                     print('chabge utils tts flag 0')
-                    print(o1_bool, o2_bool) 
-        
                 #elif len(output) == 0 and len(output1) == 0:
                 else:
-                    shared_value.value = 999
+                    with shared_value.get_lock():
+                        shared_value.value = 999
                     print('change utils tts flag 999')
         
 if __name__ == '__main__':
