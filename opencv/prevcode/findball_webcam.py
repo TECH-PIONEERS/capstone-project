@@ -43,10 +43,10 @@ def 골과공정렬(y):
 def goal(y):
     # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
     if(y >= (goal_y-10) and y < (goal_y+10)):
-        print("goal")
+        # print("goal")
         return True
     else:
-        print("miss")
+        # print("miss")
         return False
 
 def get_xy(event, x, y):

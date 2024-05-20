@@ -1,4 +1,4 @@
-from multiprocessing import Process, Pipe
+from multiprocessing import Process, Pipe, Manager
 from picamera2 import Picamera2
 from collections import deque
 from imutils.video import VideoStream
@@ -21,8 +21,19 @@ golfball_size = 3
 flag = 0
 start_x, start_y, end_x, end_y, goal_x, goal_y = 0, 0, 0, 0, 0, 0
 previous_frame = None
-colorLower = (0, 138, 138)  
+
+global previous_x
+global previous_y
+previous_x = -999
+previous_y = -999
+# colorLower = (0, 138, 138) # tuning required! 
+colorLower = (5, 152, 152) 
 colorUpper = (150, 250, 250) 
+# colorLower = ( 0, 0, 200) # setting for red
+# colorUpper = ( 60, 10, 255) # GBR
+
+previous_direction = ''
+
 # 원이 범위를 벗어나면 경고 문구 출력하는 함수
 def ballOutOfRangeAlert(circles, SCREEN_WIDTH):
     # 경계 범위 설정
@@ -65,7 +76,10 @@ def get_position(event, x, y, flags, params):
             flag = 3
     return 
 
-def stream_opencv(conn):
+def stream_opencv(conn, ball_position):
+    global previous_direction
+    global previous_x
+    global previous_y
     ap = argparse.ArgumentParser()
     ap.add_argument("-v", "--video",
         help="path to the (optional) video file")
@@ -81,6 +95,7 @@ def stream_opencv(conn):
     picam2.start()
 
     while True:
+
         cap = picam2.capture_array()
         if cap is None:
             print('no frame')
@@ -88,6 +103,7 @@ def stream_opencv(conn):
         else:
             previous_frame = cap
 
+        cap = utils.camera_calibration(cap)
         cv2.namedWindow('cap')
         cv2.setMouseCallback('cap', get_position)
 
@@ -100,13 +116,21 @@ def stream_opencv(conn):
                 res = conn.recv()
                 output = res[0]
                 output1 = res[1]
-                print(f'{output} {output1}')
+                # print(f'{output} {output1}')
                 if(len(output1) > 0):
-                    cv2.circle(frame,(output1[0]//4, (end_y-start_y)//2 ), 5, (255,0,255), -1)
-                if(len(output) > 1):
-                    cv2.circle(frame,((end_x-start_x)//2, SCREEN_HEIGHT-(output[0])//4 ), 5, (255,255,255), -1)
-                if(len(output) > 3):
-                    cv2.circle(frame,((end_x-start_x)//2, SCREEN_HEIGHT-(output[2])//4 ), 5, (255,0,0), -1)
+                    # print(output1[0]//4 -80)
+                    if output1[0]//4 -80 <= -80:
+                        continue
+                    elif output1[0]//4 -80 <= 15:
+                        calibration = 0.43
+                    elif output1[0]//4 -80 <= 60:
+                        calibration = 0.42
+                    else: 
+                        calibration = 0.41
+                    if(len(output) > 1):
+                        cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.4)), 5, (0,0,255), -1)
+                    if(len(output) > 3):
+                        cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.4)), 5, (255,0,255), -1)
                     
             blurred = cv2.GaussianBlur(frame, (11, 11), 0)
             hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -125,11 +149,25 @@ def stream_opencv(conn):
                 M = cv2.moments(c)
                 if M["m00"] == 0 : M["m00"] = 1
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+                
+                if ball_position[0] == -999 or ball_position[1] == -999 : 
+                    ball_position[0] = center[0]
+                    ball_position[1] = center[1] 
+                else:
+                    if previous_direction == '':
+                        previous_direction = utils.return_ball_direction_change(ball_position[1], center[1])
+                    else:
+                        current_direction = utils.return_ball_direction_change(ball_position[1], center[1])
+                        if previous_direction != current_direction:
+                            print('방향 바뀜')
+                    current_direction = previous_direction
+                    ball_position[0] = center[0]
+                    ball_position[1] = center[1]
                     # 원 중심 좌표와 반지름을 이용하여 중심 계산
                 if radius > golfball_size:
                     cv2.circle(frame, (int(x), int(y)), int(radius),
-                        (0, 255, 255), 2)
-                    cv2.circle(frame, center, 5, (0, 0, 255), -1)
+                        (255, 0, 0), 2)
+                    cv2.circle(frame, center, 2, (255, 0, 0), -1)
                     if x <= goal_y + 30:
                         utils.goal(goal_y,y)
 
@@ -144,25 +182,53 @@ def stream_opencv(conn):
     cv2.destroyAllWindows()
 
 def get_serial(conn):
-    myPort = serial.Serial('/dev/ttyUSB0', 115200)
-    myPort1 = serial.Serial('/dev/ttyUSB1', 115200)
-    time.sleep(2) 
+    myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
+    myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
+    time.sleep(0.5) 
     myPort.reset_input_buffer()
     myPort1.reset_input_buffer()
     while True:
         myString = myPort.readline().decode("latin-1").rstrip()
         myString1 = myPort1.readline().decode("latin-1").rstrip()
         if myString or myString1:
-            if utils.is_valid_string(myString) and utils.is_valid_string(myString1):
-                output = list(map(int, list(map(float, myString.split(',')))))
-                output1 = list(map(int, list(map(float, myString1.split(',')))))
+            o1_bool, output = utils.is_valid_string(myString)
+            o2_bool, output1 = utils.is_valid_string(myString1)
+            if o1_bool or o2_bool:
                 conn.send([output, output1])
+        
+
+BALL_MOVEMENT_THRESHOLD = 10
+def check_movement(ball_pos):
+    while True:
+        initial_x = ball_pos[0]
+        initial_y = ball_pos[1]
+        print(f'initial value {initial_x} {initial_y}')
+        time.sleep(1)  # 2초 대기
+        current_x = ball_pos[0]
+        current_y = ball_pos[1]
+        print(f'current value {current_x} {current_y}')
+
+        if abs(current_x - initial_x) <= BALL_MOVEMENT_THRESHOLD and abs(current_y - initial_y) <= BALL_MOVEMENT_THRESHOLD:
+            print("The coordinates have not moved for 2 seconds.")
+        else:
+            print("The coordinates have moved.")
 
 if __name__ == '__main__':
-    parent_conn, child_conn = Pipe()
-    p1 = Process(target=stream_opencv, args=(parent_conn,))
-    p2 = Process(target=get_serial, args=(child_conn,))
-    p2.start()
-    p1.start()
-    p1.join()
-    p2.join()
+    with Manager() as manager:
+        parent_conn, child_conn = Pipe()
+        ball_position = manager.list()
+
+        ball_position.append(-999)
+        ball_position.append(-999)
+
+        p1 = Process(target=stream_opencv, args=(parent_conn, ball_position))
+        p2 = Process(target=get_serial, args=(child_conn,))
+        p3 = Process(target=check_movement,args=(ball_position,))
+
+        p1.start()
+        p2.start()
+        p3.start()
+
+        p1.join()
+        p2.join()
+        p3.join()

@@ -8,6 +8,7 @@ import cv2
 import imutils
 import time
 import utils 
+import const
 import threading 
 import serial
 import cv2
@@ -22,35 +23,15 @@ flag = 0
 start_x, start_y, end_x, end_y, goal_x, goal_y = 0, 0, 0, 0, 0, 0
 previous_frame = None
 
-global previous_x
-global previous_y
-previous_x = -999
-previous_y = -999
 # yello
 # colorLower = (5, 152, 152) 
 # colorUpper = (150, 250, 250) 
 
 # red
-colorLower = ( 160, 240, 220) # setting for red
+colorLower = ( 150, 230, 210) # setting for red
 colorUpper = ( 180, 255, 255) # BGR
 
 previous_direction = ''
-
-# 원이 범위를 벗어나면 경고 문구 출력하는 함수
-def ballOutOfRangeAlert(circles, SCREEN_WIDTH):
-    # 경계 범위 설정
-    BOUNDARY_X = SCREEN_WIDTH // 3 # 화면 너비의 1/3
-    for (x, y, r) in circles:
-        if x - r < BOUNDARY_X:
-            print("Circle is going out of screen boundary!")
-            if not utils.is_beeping:
-                beep_thread = threading.Thread(target=utils.generate_alert_beep)
-                beep_thread.start()
-                print("Running alert beep")
-            if not utils.isBallOutOfRange:
-                utils.isBallOutOfRange = True
-        elif utils.isBallOutOfRange is True:
-            utils.isBallOutOfRange = False
 
 def get_position(event, x, y, flags, params):
     global start_x 
@@ -78,22 +59,30 @@ def get_position(event, x, y, flags, params):
             flag = 3
     return 
 
-def tts_process(shared_value):
+def tts_process(tts_flag):
+    import utils
     while True:
-        tts_flag = shared_value.value
-        print(tts_flag)
+        if utils.is_beeping == True: return
+        if tts_flag.value == const.ball_missing:
+            print("no ball")
+            beep_thread = threading.Thread(target=utils.generate_high_beep)
+            beep_thread.start()
+            beep_thread.join()
+        elif tts_flag.value == const.ball_align:
+            print("골 과 공 정렬되지않음")
+            beep_thread = threading.Thread(target=utils.generate_low_beep)
+            beep_thread.start()
+            beep_thread.join()
+        elif tts_flag.value == const.head_missing: #퍼터 값이 없을 경우
+            print("no head")
+            beep_thread = threading.Thread(target=utils.generate_alert_beep)
+            beep_thread.start()
+            beep_thread.join()
 
-        if utils.is_beeping is False:
-            if tts_flag == 999: #퍼터 값이 없을 경우
-                print("Running alert beep")
-                beep_thread = threading.Thread(target=utils.generate_alert_beep)
-                beep_thread.start()
-                beep_thread.join()
-
-def stream_opencv(conn, ball_position):
+def stream_opencv(conn, ball_position, tts_flag):
     global previous_direction
-    global previous_x
-    global previous_y
+    global goal_y
+    global flag
     ap = argparse.ArgumentParser()
     ap.add_argument("-v", "--video",
         help="path to the (optional) video file")
@@ -163,6 +152,13 @@ def stream_opencv(conn, ball_position):
                 M = cv2.moments(c)
                 if M["m00"] == 0 : M["m00"] = 1
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+                ballout = utils.ballOutOfRangeAlert(center[0], center[1], radius, SCREEN_WIDTH, SCREEN_HEIGHT)
+                
+                if tts_flag.value == const.ball_missing: 
+                    tts_flag.value = const.default
+                if not utils.골과공정렬(goal_y - start_y, center[1]) and tts_flag.value > const.ball_align:
+                    tts_flag.value = const.ball_align
+                elif utils.골과공정렬(goal_y - start_y, center[1]) and tts_flag.value != const.default: tts_flag.value = const.default                 
                 
                 if ball_position[0] == -999 or ball_position[1] == -999 : 
                     ball_position[0] = center[0]
@@ -186,6 +182,8 @@ def stream_opencv(conn, ball_position):
                         utils.goal(goal_y,y)
 
                 pts.appendleft(center)
+            else:
+                tts_flag.value = const.ball_missing
             cv2.imshow("Frame", frame)
         else:
             cv2.imshow('cap', cap)
@@ -195,7 +193,7 @@ def stream_opencv(conn, ball_position):
             break
     cv2.destroyAllWindows()
 
-def get_serial(conn, shared_value):
+def get_serial(conn, tts_flag):
     myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
     myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
     time.sleep(0.5) 
@@ -208,19 +206,23 @@ def get_serial(conn, shared_value):
             o1_bool, output = utils.is_valid_string(myString)
             o2_bool, output1 = utils.is_valid_string(myString1)
             if o1_bool or o2_bool:
+                if tts_flag.value == const.head_missing:
+                    tts_flag.value = const.default
                 conn.send([output, output1])
-        
+            else:
+                if tts_flag.value > const.head_missing:
+                    tts_flag.value = const.head_missing        
 
 BALL_MOVEMENT_THRESHOLD = 10
 def check_movement(ball_pos):
     while True:
         initial_x = ball_pos[0]
         initial_y = ball_pos[1]
-        print(f'initial value {initial_x} {initial_y}')
+        # print(f'initial value {initial_x} {initial_y}')
         time.sleep(1)  # 2초 대기
         current_x = ball_pos[0]
         current_y = ball_pos[1]
-        print(f'current value {current_x} {current_y}')
+        # print(f'current value {current_x} {current_y}')
 
         if abs(current_x - initial_x) <= BALL_MOVEMENT_THRESHOLD and abs(current_y - initial_y) <= BALL_MOVEMENT_THRESHOLD:
             print("The coordinates have not moved for 2 seconds.")
@@ -228,19 +230,20 @@ def check_movement(ball_pos):
             print("The coordinates have moved.")
 
 if __name__ == '__main__':
+    import const
     with Manager() as manager:
         parent_conn, child_conn = Pipe()
         ball_position = manager.list()
-        shared_value = manager.Namespace()
-        shared_value.value = 0
+        tts_flag = manager.Namespace()
+        tts_flag.value = const.default
 
         ball_position.append(-999)
         ball_position.append(-999)
 
-        p1 = Process(target=stream_opencv, args=(parent_conn, ball_position))
-        p2 = Process(target=get_serial, args=(child_conn,shared_value))
+        p1 = Process(target=stream_opencv, args=(parent_conn, ball_position, tts_flag))
+        p2 = Process(target=get_serial, args=(child_conn,tts_flag))
         p3 = Process(target=check_movement,args=(ball_position,))
-        p4 = Process(target=tts_process, args=(shared_value, ))
+        p4 = Process(target=tts_process, args=(tts_flag, ))
 
         p1.start()
         p2.start()

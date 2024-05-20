@@ -10,14 +10,12 @@ global is_beeping
 is_beeping = False
 
 # 원이 범위를 벗어나면 경고 문구 출력하는 함수
-def ballOutOfRangeAlert(x, r, SCREEN_WIDTH):
+def ballOutOfRangeAlert(x, y, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
     global is_beeping, isBallOutOfRange
-    BOUNDARY_X =  2 * SCREEN_WIDTH // 3 # 경계 범위 설정: 화면 너비의 2/3보다 x 좌표가 작으면
-    if x - r < BOUNDARY_X:
-        print("Circle is going out of screen boundary!")
-        isBallOutOfRange = True
-    else:
-        isBallOutOfRange = False
+    if x > SCREEN_WIDTH or y > SCREEN_HEIGHT:
+        print("Circle x is going out of screen boundary!")
+        return True
+    return False
 
 def generate_alert_beep():
     global is_beeping
@@ -52,7 +50,7 @@ def generate_high_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
         beep_sound.play()
-        time.sleep(1)
+        time.sleep(3)
         is_beeping = False
 
 def generate_low_beep():
@@ -145,18 +143,16 @@ def scale_value(value, min_in=0, max_in=1023, min_out=0, max_out=512):
 def goal(goal_y,y):
     # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
     if(y >= (goal_y-10) and y < (goal_y+10)):
-        print("goal")
+        # print("goal")
         return True
     else:
-        print("miss")
+        # print("miss")
         return False
 
 def 골과공정렬(goal_y, y):
-    if(y >= (goal_y-5) and y < (goal_y+5)):
-        print("골 과 공 정렬")
+    if(y >= (goal_y-8) and y < (goal_y+8)):
         return True
     else:
-        print("골 과 공 정렬되지않음")
         return False
 
 def is_valid_string(input_string):
@@ -187,10 +183,8 @@ def is_valid_string(input_string):
 def return_ball_direction_change(previous_pos, current_pos, threshold=30):
     if abs(current_pos - previous_pos) >= threshold:
         if previous_pos < current_pos:
-            print('bottom')
             return 'bottom'
         elif previous_pos > current_pos:
-            print('up')
             return 'up'
 
 def get_ball_head_distance(ball_pos, head_pos, cm):
