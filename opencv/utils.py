@@ -134,12 +134,6 @@ def find_foot(a1, b1, a2, b2, a3, b3):
 # x_foot, y_foot = find_foot(a1, b1, a2, b2, a3, b3)
 # print("Foot coordinates:", (x_foot, y_foot))
 
-def scale_value(value, min_in=0, max_in=1023, min_out=0, max_out=512):
-    # 입력 값(value)을 입력 범위에서 0과 1 사이의 비율로 변환
-    scaled = (value - min_in) // (max_in - min_in)
-    # 비율에 대응하는 출력 범위에서의 값을 반환
-    return min_out + (max_out - min_out) * scaled
-
 def goal(goal_y,y):
     # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
     if(y >= (goal_y-10) and y < (goal_y+10)):
@@ -189,4 +183,4 @@ def return_ball_direction_change(previous_pos, current_pos, threshold=30):
 
 def get_ball_head_distance(ball_pos, head_pos, cm):
     가로거리차이 = abs(ball_pos[0]-head_pos[0]) * cm
-    return f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다' 
+    return f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다 헤드와 공의 거리 차이는 {abs(ball_pos[0]-head_pos[0])} pixel' 

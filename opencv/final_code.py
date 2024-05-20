@@ -32,6 +32,7 @@ colorLower = ( 150, 230, 210) # setting for red
 colorUpper = ( 180, 255, 255) # BGR
 
 previous_direction = ''
+cm = ''
 
 def get_position(event, x, y, flags, params):
     global start_x 
@@ -41,6 +42,7 @@ def get_position(event, x, y, flags, params):
     global flag
     global goal_x
     global goal_y
+    global cm
     if event == cv2.EVENT_LBUTTONDOWN:
         print("Clicked at (x={}, y={})".format(x, y))
         if flag == 0:
@@ -51,7 +53,7 @@ def get_position(event, x, y, flags, params):
             end_x = x
             end_y = y
             flag = 2  # flag를 2로 설정하여 crop할 좌표를 모두 선택한 상태로 변경
-            utils.pixel_to_cm(end_y-start_y)
+            cm = utils.pixel_to_cm(end_y-start_y)
             # cv2.destroyWindow('cap')  # 마우스 클릭 이벤트를 위한 창 닫기
         elif flag == 2:
             goal_x = x
@@ -121,7 +123,6 @@ def stream_opencv(conn, ball_position, tts_flag):
                 output1 = res[1]
                 # print(f'{output} {output1}')
                 if(len(output1) > 0):
-                    # print(output1[0]//4 -80)
                     if output1[0]//4 -80 <= -80:
                         continue
                     elif output1[0]//4 -80 <= 15:
@@ -190,7 +191,9 @@ def stream_opencv(conn, ball_position, tts_flag):
         
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
-            break
+          break
+        if key == ord("w") and center and cm != '':
+          get_ball_head_distance(center, int(output1[0]//4) * calibration, cm)
     cv2.destroyAllWindows()
 
 def get_serial(conn, tts_flag):
