@@ -34,17 +34,16 @@ global tts_flag
 tts_flag = 000
 
 # tts_process는 global flag에 따라 비프음 및 TTS 출력하는 프로세스
-def tts_process():
-    global tts_flag
-
-    while True:
-        if utils.is_beeping is False:
-            print(tts_flag)
-            if tts_flag == 999: #퍼터 값이 없을 경우
-                print("Running alert beep")
-                beep_thread = threading.Thread(target=utils.generate_alert_beep)
-                beep_thread.start()
-                beep_thread.join()
+def tts_process(shared_value):
+    with shared_value.get_lock():
+        while True:
+            if utils.is_beeping is False:
+                print(shared_value.value)
+                if shared_value.value == 999: #퍼터 값이 없을 경우
+                    print("Running alert beep")
+                    beep_thread = threading.Thread(target=utils.generate_alert_beep)
+                    beep_thread.start()
+                    beep_thread.join()
 
 def get_position(event, x, y, flags, params):
     global start_x 
@@ -177,42 +176,40 @@ def stream_opencv(conn):
             break
     cv2.destroyAllWindows()
 
-def get_serial(conn):
-    global tts_flag
+def get_serial(conn, shared_value):
+    with shared_value.get_lock():
 
-    myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
-    myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
-    time.sleep(0.5) 
-    myPort.reset_input_buffer()
-    myPort1.reset_input_buffer()
-    while True:
-        myString = myPort.readline().decode("latin-1").rstrip()
-        myString1 = myPort1.readline().decode("latin-1").rstrip()
-        if myString or myString1:
-            o1_bool, output = utils.is_valid_string(myString)
-            o2_bool, output1 = utils.is_valid_string(myString1)
-            print(output, output1)
-            if o1_bool or o2_bool:
-                tts_flag = 0
-                print('chabge utils tts flag 0')
-                print(o1_bool, o2_bool) 
-                conn.send([output, output1])
-    
-            #elif len(output) == 0 and len(output1) == 0:
-            else:
-                print(o1_bool, o2_bool) 
-                print('change utils tts flag 999')
-                tts_flag = 999
-    
+        myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
+        myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
+        time.sleep(0.5) 
+        myPort.reset_input_buffer()
+        myPort1.reset_input_buffer()
+        while True:
+            myString = myPort.readline().decode("latin-1").rstrip()
+            myString1 = myPort1.readline().decode("latin-1").rstrip()
+            if myString or myString1:
+                o1_bool, output = utils.is_valid_string(myString)
+                o2_bool, output1 = utils.is_valid_string(myString1)
+                print(output, output1)
+                if o1_bool or o2_bool:
+                    shared_value.value = 0
+                    print('chabge utils tts flag 0')
+                    print(o1_bool, o2_bool) 
+        
+                #elif len(output) == 0 and len(output1) == 0:
+                else:
+                    shared_value.value = 999
+                    print('change utils tts flag 999')
+        
 if __name__ == '__main__':
     with Manager() as manager:
 
         parent_conn, child_conn = Pipe()
-        manager = manager.Value('i', tts_flag)
+        shared_value = manager.Value('i', tts_flag)
 
         p1 = Process(target=stream_opencv, args=(parent_conn,))
-        p2 = Process(target=get_serial, args=(child_conn,))
-        p3 = Process(target=tts_process, args=(manager, ))
+        p2 = Process(target=get_serial, args=(child_conn, shared_value))
+        p3 = Process(target=tts_process, args=(shared_value, ))
 
         p2.start()
         p1.start()
