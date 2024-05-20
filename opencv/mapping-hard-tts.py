@@ -176,27 +176,26 @@ def stream_opencv(conn):
     cv2.destroyAllWindows()
 
 def get_serial(conn, shared_value):
-    #with shared_value.get_lock():
-        myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
-        myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
-        time.sleep(0.5) 
-        myPort.reset_input_buffer()
-        myPort1.reset_input_buffer()
-        while True:
-            myString = myPort.readline().decode("latin-1").rstrip()
-            myString1 = myPort1.readline().decode("latin-1").rstrip()
-            if myString or myString1:
-                o1_bool, output = utils.is_valid_string(myString)
-                o2_bool, output1 = utils.is_valid_string(myString1)
-                print(output, output1)
-                if o1_bool or o2_bool:
-                    with shared_value.get_lock():
-                        shared_value.value = 0
-                    print('chabge utils tts flag 0')
-                #elif len(output) == 0 and len(output1) == 0:
-                else:
-                    with shared_value.get_lock():
-                        shared_value.value = 999
+    myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
+    myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
+    time.sleep(0.5) 
+    myPort.reset_input_buffer()
+    myPort1.reset_input_buffer()
+    while True:
+        myString = myPort.readline().decode("latin-1").rstrip()
+        myString1 = myPort1.readline().decode("latin-1").rstrip()
+        if myString or myString1:
+            o1_bool, output = utils.is_valid_string(myString)
+            o2_bool, output1 = utils.is_valid_string(myString1)
+            print(output, output1)
+            if o1_bool or o2_bool:
+                with shared_value.get_lock():
+                    shared_value.value = 0
+                print('chabge utils tts flag 0')
+            #elif len(output) == 0 and len(output1) == 0:
+            else:
+                with shared_value.get_lock():
+                    shared_value.value = 999
                     print('change utils tts flag 999')
         
 if __name__ == '__main__':
