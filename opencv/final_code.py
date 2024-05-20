@@ -26,11 +26,13 @@ global previous_x
 global previous_y
 previous_x = -999
 previous_y = -999
-# colorLower = (0, 138, 138) # tuning required! 
-colorLower = (5, 152, 152) 
-colorUpper = (150, 250, 250) 
-# colorLower = ( 0, 0, 200) # setting for red
-# colorUpper = ( 60, 10, 255) # GBR
+# yello
+# colorLower = (5, 152, 152) 
+# colorUpper = (150, 250, 250) 
+
+# red
+colorLower = ( 160, 240, 220) # setting for red
+colorUpper = ( 180, 255, 255) # BGR
 
 previous_direction = ''
 
@@ -193,7 +195,7 @@ def stream_opencv(conn, ball_position):
             break
     cv2.destroyAllWindows()
 
-def get_serial(conn):
+def get_serial(conn, shared_value):
     myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
     myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
     time.sleep(0.5) 
@@ -236,7 +238,7 @@ if __name__ == '__main__':
         ball_position.append(-999)
 
         p1 = Process(target=stream_opencv, args=(parent_conn, ball_position))
-        p2 = Process(target=get_serial, args=(child_conn,))
+        p2 = Process(target=get_serial, args=(child_conn,shared_value))
         p3 = Process(target=check_movement,args=(ball_position,))
         p4 = Process(target=tts_process, args=(shared_value, ))
 
