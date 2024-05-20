@@ -10,7 +10,7 @@ picam2.preview_configuration.main.format = "RGB888"
 picam2.start()
 
 # 색상 설정하는곳 BGR임에 유의할것
-lower_bgr = np.array([160, 240, 220])
+lower_bgr = np.array([150, 250, 250])
 upper_bgr = np.array([180, 255, 255])
 
 
