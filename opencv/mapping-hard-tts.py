@@ -30,15 +30,14 @@ colorUpper = (150, 250, 250)
 previous_pos = [-999, -999]
 previous_direction = ''
 
-global tts_flag
-tts_flag = 000
-
 # tts_process는 global flag에 따라 비프음 및 TTS 출력하는 프로세스
 def tts_process(shared_value):
     while True:
+        tts_flag = shared_value.value
+        print(tts_flag)
+
         if utils.is_beeping is False:
-            print(shared_value.value)
-            if shared_value.value == 999: #퍼터 값이 없을 경우
+            if tts_flag == 999: #퍼터 값이 없을 경우
                 print("Running alert beep")
                 beep_thread = threading.Thread(target=utils.generate_alert_beep)
                 beep_thread.start()
@@ -189,27 +188,27 @@ def get_serial(conn, shared_value):
             o2_bool, output1 = utils.is_valid_string(myString1)
             print(output, output1)
             if o1_bool or o2_bool:
-                with shared_value.get_lock():
-                    shared_value.value = 0
+                shared_value.value = 0
                 print('chabge utils tts flag 0')
             #elif len(output) == 0 and len(output1) == 0:
             else:
-                with shared_value.get_lock():
-                    shared_value.value = 999
-                    print('change utils tts flag 999')
+                shared_value.value = 999
+                print('change utils tts flag 999')
         
 if __name__ == '__main__':
     with Manager() as manager:
 
         parent_conn, child_conn = Pipe()
-        shared_value = manager.Value('i', tts_flag)
+        #shared_value = manager.Value('i', 0)
+        shared_value = manager.Namespace()
+        shared_value.value = 0
 
         p1 = Process(target=stream_opencv, args=(parent_conn,))
         p2 = Process(target=get_serial, args=(child_conn, shared_value))
         p3 = Process(target=tts_process, args=(shared_value, ))
 
-        p2.start()
         p1.start()
+        p2.start()
         p3.start()
         p1.join()
         p2.join()
