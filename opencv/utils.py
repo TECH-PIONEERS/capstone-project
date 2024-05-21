@@ -146,10 +146,10 @@ def goal(goal_y,y):
 def 골과공정렬(goal_y, y):
     if(y >= (goal_y-8) and y <= (goal_y+8)):
         return True
-    elif y < goal_y-8:
-        return 1
-    elif y > goal_y+8:
+    elif y < (goal_y-8):
         return 2
+    elif y > (goal_y+8):
+        return 3
 
 def is_valid_string(input_string):
     before = ''

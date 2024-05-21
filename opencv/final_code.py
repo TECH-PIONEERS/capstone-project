@@ -66,18 +66,19 @@ def tts_process(tts_flag):
     import utils
     while True:
         if utils.is_beeping == True: return
+        print(tts_flag.value)
         if tts_flag.value == const.ball_missing:
             print("no ball")
             beep_thread = threading.Thread(target=utils.generate_high_beep)
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.ball_align_bottom:
-            print("골 과 공 정렬되지않음")
+            print("골 과 공 정렬되지않음 bottom")
             beep_thread = threading.Thread(target=utils.generate_low_beep)
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.ball_align_up:
-            print("골 과 공 정렬되지않음")
+            print("골 과 공 정렬되지않음 up")
             beep_thread = threading.Thread(target=utils.generate_long_beep)
             beep_thread.start()
             beep_thread.join()    
@@ -133,9 +134,7 @@ def stream_opencv(conn, ball_position, tts_flag):
                 res = conn.recv()
                 output = res[0]
                 output1 = res[1]
-                # print(f'{output} {output1}')
                 if(len(output1) > 0):
-                    print(f'{output1[0]//4 - 80}')
                     if output1[0]//4 -80 <= -80:
                         continue
                     elif output1[0]//4 -80 <= 15:
@@ -174,10 +173,10 @@ def stream_opencv(conn, ball_position, tts_flag):
                 
                 if tts_flag.value == const.ball_missing: 
                     tts_flag.value = const.default
-                if utils.골과공정렬(goal_y - start_y, center[1]) != True and tts_flag.value >= const.ball_align_up:
-                    if utils.골과공정렬(goal_y - start_y, center[1]) == 1:
+                if (utils.골과공정렬(goal_y - start_y, center[1]) == 2 or utils.골과공정렬(goal_y - start_y, center[1]) == 3) and tts_flag.value >= const.ball_align_up:
+                    if utils.골과공정렬(goal_y - start_y, center[1]) == 2:
                         tts_flag.value = const.ball_align_up
-                    elif utils.골과공정렬(goal_y - start_y, center[1]) == 2:
+                    elif utils.골과공정렬(goal_y - start_y, center[1]) == 3:
                         tts_flag.value = const.ball_align_bottom
                 elif utils.골과공정렬(goal_y - start_y, center[1]) and tts_flag.value != const.default: tts_flag.value = const.default                 
                 
@@ -231,8 +230,10 @@ def get_serial(conn, tts_flag):
             if o1_bool or o2_bool:
                 if tts_flag.value == const.head_missing:
                     tts_flag.value = const.default
-                if len(output) < 3 and tts_flag.value > head_align:
+                if len(output) < 3 and tts_flag.value > const.head_align:
                     tts_flag.value = const.head_align
+                elif len(output) >= 3 and tts_flag.value == const.head_align:
+                    tts_flag.value = const.default
                 conn.send([output, output1])
             else:
                 if tts_flag.value > const.head_missing:
