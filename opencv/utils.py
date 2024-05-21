@@ -101,7 +101,7 @@ def camera_calibration(image):
 
 def pixel_to_cm(height):
     print(200/height) #단위(mm)
-    return 200/height
+    return 200/height/10
 
 def find_foot(a1, b1, a2, b2, a3, b3):
     # a1, b1 / a2, b2는 헤드 ir센서의 좌표
