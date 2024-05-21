@@ -66,7 +66,6 @@ def tts_process(tts_flag):
     import utils
     while True:
         if utils.is_beeping == True: return
-        print(tts_flag.value)
         if tts_flag.value == const.ball_missing:
             print("no ball")
             beep_thread = threading.Thread(target=utils.generate_high_beep)
@@ -93,7 +92,7 @@ def tts_process(tts_flag):
             beep_thread.start()
             beep_thread.join()
 
-def stream_opencv(conn, ball_position, tts_flag):
+def stream_opencv(conn, ball_position, tts_flag, isMoving):
     global previous_direction
     global goal_y
     global flag
@@ -211,7 +210,7 @@ def stream_opencv(conn, ball_position, tts_flag):
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
           break
-        if key == ord("w") and center and cm != '':
+        if key == ord("w") and center and cm != '' and not isMoving.value:
           utils.get_ball_head_distance(center, int(output1[0]//4 * calibration), cm)
     cv2.destroyAllWindows()
 
@@ -240,7 +239,7 @@ def get_serial(conn, tts_flag):
                     tts_flag.value = const.head_missing        
 
 BALL_MOVEMENT_THRESHOLD = 10
-def check_movement(ball_pos):
+def check_movement(ball_pos, isMoving):
     while True:
         initial_x = ball_pos[0]
         initial_y = ball_pos[1]
@@ -251,9 +250,9 @@ def check_movement(ball_pos):
         # print(f'current value {current_x} {current_y}')
 
         if abs(current_x - initial_x) <= BALL_MOVEMENT_THRESHOLD and abs(current_y - initial_y) <= BALL_MOVEMENT_THRESHOLD:
-            print("The coordinates have not moved for 2 seconds.")
+            isMoving.value = False
         else:
-            print("The coordinates have moved.")
+            isMoving.value = True
 
 if __name__ == '__main__':
     import const
@@ -262,13 +261,15 @@ if __name__ == '__main__':
         ball_position = manager.list()
         tts_flag = manager.Namespace()
         tts_flag.value = const.default
+        isMoving = manager.Namespace()
+        isMoving.value = True
 
         ball_position.append(-999)
         ball_position.append(-999)
 
-        p1 = Process(target=stream_opencv, args=(parent_conn, ball_position, tts_flag))
+        p1 = Process(target=stream_opencv, args=(parent_conn, ball_position, tts_flag, isMoving))
         p2 = Process(target=get_serial, args=(child_conn,tts_flag))
-        p3 = Process(target=check_movement,args=(ball_position,))
+        p3 = Process(target=check_movement,args=(ball_position,isMoving))
         p4 = Process(target=tts_process, args=(tts_flag, ))
 
         p1.start()
