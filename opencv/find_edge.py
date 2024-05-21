@@ -1,5 +1,6 @@
 from collections import deque
 from imutils.video import VideoStream
+from picamera2 import Picamera2
 import numpy as np
 import argparse
 import cv2
@@ -17,19 +18,25 @@ args = vars(ap.parse_args())
 # Deque 초기화
 pts = deque(maxlen=args["buffer"])
 
-# 비디오 스트림 시작
-vs = cv2.VideoCapture(0)
+picam2 = Picamera2()
+picam2.video_configuration.controls.FrameRate = 60.0
+picam2.preview_configuration.main.size=(640, 480)
+picam2.preview_configuration.main.format = "RGB888"
+picam2.start()
 
 time.sleep(2.0)
 
 while True:
-    # 프레임 읽기
-    ret, frame = vs.read()
+    cap = picam2.capture_array()
+    if cap is None:
+        print('no frame')
+        cap = previous_frame  # 이전 프레임을 사용
+    else:
+        previous_frame = cap
 
-    # 프레임을 잡지 못하면 비디오 종료
-    if not ret:
-        print('No frame captured, exiting...')
-        break
+    cap = utils.camera_calibration(cap)
+    cv2.namedWindow('cap')
+    cv2.setMouseCallback('cap', get_position)
 
     # 프레임을 그레이스케일로 변환
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -51,4 +58,4 @@ while True:
 
 # 모든 창 닫기
 cv2.destroyAllWindows()
-vs.release()
+
