@@ -101,7 +101,7 @@ def camera_calibration(image):
 
 def pixel_to_cm(height):
     print(200/height) #단위(mm)
-    return 200/height/10
+    return 200/height
 
 def find_foot(a1, b1, a2, b2, a3, b3):
     # a1, b1 / a2, b2는 헤드 ir센서의 좌표
@@ -144,10 +144,12 @@ def goal(goal_y,y):
         return False
 
 def 골과공정렬(goal_y, y):
-    if(y >= (goal_y-8) and y < (goal_y+8)):
+    if(y >= (goal_y-8) and y <= (goal_y+8)):
         return True
-    else:
-        return False
+    elif y < goal_y-8:
+        return 1
+    elif y > goal_y+8:
+        return 2
 
 def is_valid_string(input_string):
     before = ''
@@ -183,6 +185,6 @@ def return_ball_direction_change(previous_pos, current_pos, threshold=30):
 
 def get_ball_head_distance(ball_pos, head_pos, cm):
     print(f'1cm {cm}')
-    가로거리차이 = abs(ball_pos[0]-head_pos) * cm
+    가로거리차이 = (abs(ball_pos[0]-head_pos) * cm / 10)
     print(f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다 헤드와 공의 거리 차이는 {abs(ball_pos[0]-head_pos)} pixel')
     return 

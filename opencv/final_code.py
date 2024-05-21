@@ -46,12 +46,13 @@ def get_position(event, x, y, flags, params):
     if event == cv2.EVENT_LBUTTONDOWN:
         print("Clicked at (x={}, y={})".format(x, y))
         if flag == 0:
-            start_x = x
-            start_y = y
+            # start_x = x
+            start_x = 8
+            start_y = 101
             flag = 1
         elif flag == 1:
-            end_x = x
-            end_y = y
+            end_x = 600
+            end_y = 174
             flag = 2  # flag를 2로 설정하여 crop할 좌표를 모두 선택한 상태로 변경
             cm = int(utils.pixel_to_cm(end_y-start_y))
             # cv2.destroyWindow('cap')  # 마우스 클릭 이벤트를 위한 창 닫기
@@ -70,14 +71,24 @@ def tts_process(tts_flag):
             beep_thread = threading.Thread(target=utils.generate_high_beep)
             beep_thread.start()
             beep_thread.join()
-        elif tts_flag.value == const.ball_align:
+        elif tts_flag.value == const.ball_align_bottom:
             print("골 과 공 정렬되지않음")
             beep_thread = threading.Thread(target=utils.generate_low_beep)
             beep_thread.start()
             beep_thread.join()
+        elif tts_flag.value == const.ball_align_up:
+            print("골 과 공 정렬되지않음")
+            beep_thread = threading.Thread(target=utils.generate_long_beep)
+            beep_thread.start()
+            beep_thread.join()    
         elif tts_flag.value == const.head_missing: #퍼터 값이 없을 경우
             print("no head")
             beep_thread = threading.Thread(target=utils.generate_alert_beep)
+            beep_thread.start()
+            beep_thread.join()
+        elif tts_flag.value == const.head_align: #퍼터 값이 없을 경우
+            print("no head align")
+            beep_thread = threading.Thread(target=utils.generate_high_beep)
             beep_thread.start()
             beep_thread.join()
 
@@ -113,6 +124,7 @@ def stream_opencv(conn, ball_position, tts_flag):
         cv2.setMouseCallback('cap', get_position)
 
         if flag == 3:
+            # frame = cap[start_y:end_y, start_x:end_x]
             frame = cap[start_y:end_y, start_x:end_x]
             SCREEN_WIDTH = end_x - start_x
             SCREEN_HEIGHT = end_y - start_y
@@ -123,14 +135,19 @@ def stream_opencv(conn, ball_position, tts_flag):
                 output1 = res[1]
                 # print(f'{output} {output1}')
                 if(len(output1) > 0):
+                    print(f'{output1[0]//4 - 80}')
                     if output1[0]//4 -80 <= -80:
                         continue
                     elif output1[0]//4 -80 <= 15:
-                        calibration = 0.43
-                    elif output1[0]//4 -80 <= 60:
-                        calibration = 0.42
+                        calibration = 0.285
+                    elif output1[0]//4 -80 <= 70:
+                        calibration = 0.325
+                    elif output1[0]//4 -80 <= 90:
+                        calibration = 0.34
+                    elif output1[0]//4 -80 <= 150:
+                        calibration = 0.36
                     else: 
-                        calibration = 0.41
+                        calibration = 0.38
                     if(len(output) > 1):
                         cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.4)), 5, (0,0,255), -1)
                     if(len(output) > 3):
@@ -157,8 +174,11 @@ def stream_opencv(conn, ball_position, tts_flag):
                 
                 if tts_flag.value == const.ball_missing: 
                     tts_flag.value = const.default
-                if not utils.골과공정렬(goal_y - start_y, center[1]) and tts_flag.value > const.ball_align:
-                    tts_flag.value = const.ball_align
+                if utils.골과공정렬(goal_y - start_y, center[1]) != True and tts_flag.value >= const.ball_align_up:
+                    if utils.골과공정렬(goal_y - start_y, center[1]) == 1:
+                        tts_flag.value = const.ball_align_up
+                    elif utils.골과공정렬(goal_y - start_y, center[1]) == 2:
+                        tts_flag.value = const.ball_align_bottom
                 elif utils.골과공정렬(goal_y - start_y, center[1]) and tts_flag.value != const.default: tts_flag.value = const.default                 
                 
                 if ball_position[0] == -999 or ball_position[1] == -999 : 
@@ -197,8 +217,8 @@ def stream_opencv(conn, ball_position, tts_flag):
     cv2.destroyAllWindows()
 
 def get_serial(conn, tts_flag):
-    myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
-    myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
+    myPort = serial.Serial('/dev/ttyUSB1', 9600,timeout=0.1)
+    myPort1 = serial.Serial('/dev/ttyUSB0', 9600, timeout=0.1)
     time.sleep(0.5) 
     myPort.reset_input_buffer()
     myPort1.reset_input_buffer()
@@ -211,6 +231,8 @@ def get_serial(conn, tts_flag):
             if o1_bool or o2_bool:
                 if tts_flag.value == const.head_missing:
                     tts_flag.value = const.default
+                if len(output) < 3 and tts_flag.value > head_align:
+                    tts_flag.value = const.head_align
                 conn.send([output, output1])
             else:
                 if tts_flag.value > const.head_missing:
