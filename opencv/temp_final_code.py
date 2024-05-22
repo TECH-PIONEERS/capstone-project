@@ -236,6 +236,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving):
     cv2.destroyAllWindows()
 
 def get_serial(conn, tts_flag):
+    temp_y_head = [0, 0]
     myPort = serial.Serial('/dev/ttyUSB1', 9600,timeout=0.1)
     myPort1 = serial.Serial('/dev/ttyUSB0', 9600, timeout=0.1)
     time.sleep(0.5) 
@@ -247,6 +248,8 @@ def get_serial(conn, tts_flag):
         if myString or myString1:
             o1_bool, output = utils.is_valid_string(myString)
             o2_bool, output1 = utils.is_valid_string(myString1)
+
+            print("y: ", len(output1), "output: ", output1)
             if o1_bool or o2_bool:
                 if tts_flag.value == const.head_missing:
                     tts_flag.value = const.default
@@ -254,6 +257,12 @@ def get_serial(conn, tts_flag):
                     tts_flag.value = const.head_align
                 if len(output1) < 3 and tts_flag.value > const.head_align: # 헤드 기울어진 상황
                     tts_flag.value = const.head_align
+                    if len(output1) != 0:
+                        if (output1[0] > temp_y_head[0]): print("x left")
+                        elif (output1[0] < temp_y_head[0]): print("x right")
+
+                        if (output1[1] > temp_y_head[1]): print("y left")
+                        elif (output1[1] < temp_y_head[1]): print("y right")
                 elif len(output) >= 3 and tts_flag.value == const.head_align:
                     tts_flag.value = const.default
                 elif len(output1) >= 3 and tts_flag.value == const.head_align: # 헤드 기울어지지 않은 상황
@@ -261,7 +270,8 @@ def get_serial(conn, tts_flag):
                 conn.send([output, output1])
             else:
                 if tts_flag.value > const.head_missing:
-                    tts_flag.value = const.head_missing           
+                    tts_flag.value = const.head_missing 
+            temp_y_head = output1
 
 BALL_MOVEMENT_THRESHOLD = 10
 def check_movement(ball_pos, isMoving):
