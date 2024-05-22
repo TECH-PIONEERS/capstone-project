@@ -78,10 +78,10 @@ def remote_process(tts_flag):
                 #tts_flag.value = 666
             elif key == "KEY_1": 
                 print(key)
-                tts_flag.value = 777
+                #tts_flag.value = 777
             elif key == "KEY_2": 
                 print(key)
-                tts_flag.value = 888
+                #tts_flag.value = 888
 
 def tts_process(tts_flag):
     import utils
