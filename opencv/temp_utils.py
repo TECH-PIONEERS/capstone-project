@@ -17,20 +17,6 @@ def ballOutOfRangeAlert(x, y, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
         return True
     return False
 
-def generate_alert_beep():
-    global is_beeping
-    if not is_beeping:
-        pygame.init()
-        pygame.mixer.init()
-        is_beeping = True
-   
-        # generate_long_beep(alert=True)
-        beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
-        beep_sound.play()
-        time.sleep(3)
-
-        is_beeping = False
-
 def generate_long_beep():
     global is_beeping
     if not is_beeping:
@@ -42,13 +28,57 @@ def generate_long_beep():
         time.sleep(3)
         is_beeping = False
 
-def generate_high_beep():
+def generate_high_4_beep():
+    global is_beeping
+    if not is_beeping:
+        is_beeping = True 
+        pygame.init()
+        pygame.mixer.init()
+        beep_sound = pygame.mixer.Sound("sound/high_4_beep.wav")
+        beep_sound.play()
+        time.sleep(3)
+        is_beeping = False
+
+def generate_high_3_beep():
+    global is_beeping
+    if not is_beeping:
+        is_beeping = True 
+        pygame.init()
+        pygame.mixer.init()
+        beep_sound = pygame.mixer.Sound("sound/high_3_beep.wav")
+        beep_sound.play()
+        time.sleep(3)
+        is_beeping = False
+
+def generate_high_2_beep():
     global is_beeping
     if not is_beeping:
         is_beeping = True 
         pygame.init()
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_2_beep.wav")
+        beep_sound.play()
+        time.sleep(3)
+        is_beeping = False
+
+def generate_high_1_beep():
+    global is_beeping
+    if not is_beeping:
+        is_beeping = True 
+        pygame.init()
+        pygame.mixer.init()
+        beep_sound = pygame.mixer.Sound("sound/high_1_beep.wav")
+        beep_sound.play()
+        time.sleep(3)
+        is_beeping = False
+
+def generate_mid_beep():
+    global is_beeping
+    if not is_beeping:
+        is_beeping = True 
+        pygame.init()
+        pygame.mixer.init()
+        beep_sound = pygame.mixer.Sound("sound/mid_beep.wav")
         beep_sound.play()
         time.sleep(3)
         is_beeping = False
