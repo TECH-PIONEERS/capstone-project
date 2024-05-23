@@ -31,6 +31,39 @@ def generate_alert_beep():
 
         is_beeping = False
 
+def generate_high_4_beep():
+    global is_beeping
+    if not is_beeping:
+        is_beeping = True 
+        pygame.init()
+        pygame.mixer.init()
+        beep_sound = pygame.mixer.Sound("sound/high_4_beep.wav")
+        beep_sound.play()
+        time.sleep(3)
+        is_beeping = False
+
+def generate_high_3_beep():
+    global is_beeping
+    if not is_beeping:
+        is_beeping = True 
+        pygame.init()
+        pygame.mixer.init()
+        beep_sound = pygame.mixer.Sound("sound/high_3_beep.wav")
+        beep_sound.play()
+        time.sleep(3)
+        is_beeping = False
+
+def generate_high_2_beep():
+    global is_beeping
+    if not is_beeping:
+        is_beeping = True 
+        pygame.init()
+        pygame.mixer.init()
+        beep_sound = pygame.mixer.Sound("sound/high_2_beep.wav")
+        beep_sound.play()
+        time.sleep(3)
+        is_beeping = False
+
 def generate_long_beep():
     global is_beeping
     if not is_beeping:

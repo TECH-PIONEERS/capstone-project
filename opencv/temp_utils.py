@@ -4,7 +4,8 @@ import threading
 import pygame
 import time
 import math
-import pyttsx3
+#import pyttsx3
+import const
 
 # 경고음이 울리고 있는지 여부를 나타내는 변수
 global is_beeping
@@ -17,6 +18,64 @@ def ballOutOfRangeAlert(x, y, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
         print("Circle x is going out of screen boundary!")
         return True
     return False
+
+def test_head_align(output1):
+    #print("output1[1]: " , output1[1], "output1[3]: ", output1[3])
+    head_y = 0
+    head_x = 0
+    tou_y = 0
+    tou_x = 0
+    
+    if output1[1] > output1[3]:
+        tou_x = output1[0]
+        tou_y = output1[1]
+        head_x = output1[2]
+        head_y = output1[3]
+    else:
+        head_x = output1[0]
+        head_y = output1[1]
+        tou_x = output1[2]
+        tou_y = output1[3]
+    
+
+    #print("head: ", head_x, "tou: ", tou_x) 
+    
+    distance = head_x - tou_x
+    #print(head_y)
+
+    #if head_x > 346 and head_x < 475:
+    #    print("2")
+    #    distance = distance
+    #elif head_x > 475 and head_x < 623:
+    #    print("4")
+    #    distance = distance
+    #elif head_x < 346:
+    #    print("1")
+    #    distance = distance
+    #elif head_x > 623:
+    #    print("6")
+    #    distance = distance
+    #else: 
+    #    print("5")
+    #    distance = distance
+
+    #print("distance: ", distance)
+
+
+    distance = head_x - tou_x
+    #int(distance * 0.4)
+
+    #if distance 
+
+    #print("distance: ", distance)
+
+    if distance > 40:
+        return const.head_align
+    elif distance < -10:
+        return const.head_align
+    else:
+        print("alin")
+        return const.default
 
 def generate_TTS(text):
     global is_beeping
@@ -39,7 +98,7 @@ def generate_long_beep():
         time.sleep(3)
         is_beeping = False
 
-def generate_high_4_beep():
+def generate_high_beep():
     global is_beeping
     if not is_beeping:
         is_beeping = True 

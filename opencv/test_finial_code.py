@@ -9,13 +9,11 @@ import imutils
 import time
 import utils 
 import const
-import subprocess  # system command를 실행하기 위해
 import threading 
 import serial
 import cv2
 import numpy as np
 import time
-
 import temp_utils
 
 lf = b'\n'  # Linefeed in ASCII
@@ -65,52 +63,37 @@ def get_position(event, x, y, flags, params):
             flag = 3
     return 
 
-def remote_process(tts_flag):
-    while True:
-        proc = subprocess.Popen(['irw'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        # 리모컨 신호 수신: 0000000000ffa25d 00 KEY_0 TECH-PIONEERS
-        line = proc.stdout.readline() 
-        if line:
-            string = line.decode('utf-8').strip()
-            key = string[20:25]
-            if key == "KEY_0": 
-                print(key)
-                #tts_flag.value = 666
-            elif key == "KEY_1": 
-                print(key)
-                #tts_flag.value = 777
-            elif key == "KEY_2": 
-                print(key)
-                #tts_flag.value = 888
-
 def tts_process(tts_flag):
     import utils
     while True:
         if utils.is_beeping == True: return
         if tts_flag.value == const.ball_missing:
             print("no ball")
-            beep_thread = threading.Thread(target=temp_utils.generate_high_1_beep)
+            beep_thread = threading.Thread(target=utils.generate_high_beep)
+            #beep_thread = threading.Thread(target=temp_utils.generate_high_1_beep)
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.ball_align_bottom:
             print("골 과 공 정렬되지않음 bottom")
-            #beep_thread = threading.Thread(target=temp_utils.generate_TTS, args=("Down ",))
-            beep_thread = threading.Thread(target=temp_utils.generate_high_3_beep)
+            #beep_thread = threading.Thread(target=temp_utils.generate_high_3_beep)
+            beep_thread = threading.Thread(target=utils.generate_low_beep)
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.ball_align_up:
             print("골 과 공 정렬되지않음 up")
-            #beep_thread = threading.Thread(target=temp_utils.generate_TTS, args=("Up ",))
-            beep_thread = threading.Thread(target=temp_utils.generate_high_2_beep)
+            #beep_thread = threading.Thread(target=temp_utils.generate_high_2_beep)
+            beep_thread = threading.Thread(target=utils.generate_long_beep)
             beep_thread.start()
             beep_thread.join()    
         elif tts_flag.value == const.head_missing: #퍼터 값이 없을 경우
             print("no head")
-            beep_thread = threading.Thread(target=temp_utils.generate_mid_beep)
+            #beep_thread = threading.Thread(target=temp_utils.generate_mid_beep)
+            beep_thread = threading.Thread(target=utils.generate_alert_beep)
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.head_align: #퍼터 값이 없을 경우
             print("no head align")
+            #beep_thread = threading.Thread(target=temp_utils.generate_low_beep)
             beep_thread = threading.Thread(target=utils.generate_high_beep)
             beep_thread.start()
             beep_thread.join()
@@ -238,7 +221,6 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving):
     cv2.destroyAllWindows()
 
 def get_serial(conn, tts_flag):
-    temp_y_head = [0, 0]
     myPort = serial.Serial('/dev/ttyUSB1', 9600,timeout=0.1)
     myPort1 = serial.Serial('/dev/ttyUSB0', 9600, timeout=0.1)
     time.sleep(0.5) 
@@ -250,8 +232,6 @@ def get_serial(conn, tts_flag):
         if myString or myString1:
             o1_bool, output = utils.is_valid_string(myString)
             o2_bool, output1 = utils.is_valid_string(myString1)
-
-            #print("y: ", len(output1), "output: ", output1)
             if o1_bool or o2_bool:
                 if tts_flag.value == const.head_missing:
                     tts_flag.value = const.default
@@ -260,14 +240,14 @@ def get_serial(conn, tts_flag):
                 elif len(output) >= 3 and tts_flag.value == const.head_align:
                     tts_flag.value = const.default
 
-                #if len(output1) < 3:
-                #    tts_flag.value = const.head_no_align
-                #elif len(output1) == 4:
-                #    tts_flag = temp_utils.test_head_align(output1)
+                if len(output1) < 3:
+                    tts_flag.value = const.head_align
+                elif len(output1) == 4:
+                    temp_utils.test_head_align(output1)
                 conn.send([output, output1])
             else:
                 if tts_flag.value > const.head_missing:
-                    tts_flag.value = const.head_missing 
+                    tts_flag.value = const.head_missing        
 
 BALL_MOVEMENT_THRESHOLD = 10
 def check_movement(ball_pos, isMoving):
@@ -302,16 +282,13 @@ if __name__ == '__main__':
         p2 = Process(target=get_serial, args=(child_conn,tts_flag))
         p3 = Process(target=check_movement,args=(ball_position,isMoving))
         p4 = Process(target=tts_process, args=(tts_flag, ))
-        #p5 = Process(target=remote_process, args=(tts_flag, ))
 
         p1.start()
         p2.start()
         p3.start()
         p4.start()
-        #p5.start()
 
         p1.join()
         p2.join()
         p3.join()
         p4.join()
-        #p5.join()
