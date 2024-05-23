@@ -94,12 +94,14 @@ def tts_process(tts_flag):
             beep_thread.join()
         elif tts_flag.value == const.ball_align_bottom:
             print("골 과 공 정렬되지않음 bottom")
-            beep_thread = threading.Thread(target=temp_utils.generate_high_3_beep)
+            beep_thread = threading.Thread(target=temp_utils.generate_TTS, args=("Down ",))
+            #beep_thread = threading.Thread(target=temp_utils.generate_high_3_beep)
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.ball_align_up:
             print("골 과 공 정렬되지않음 up")
-            beep_thread = threading.Thread(target=temp_utils.generate_high_2_beep)
+            beep_thread = threading.Thread(target=temp_utils.generate_TTS, args=("Up ",))
+            #beep_thread = threading.Thread(target=temp_utils.generate_high_2_beep)
             beep_thread.start()
             beep_thread.join()    
         elif tts_flag.value == const.head_missing: #퍼터 값이 없을 경우
