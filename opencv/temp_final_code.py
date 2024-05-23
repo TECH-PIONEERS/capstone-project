@@ -257,12 +257,12 @@ def get_serial(conn, tts_flag):
                     tts_flag.value = const.head_align
                 if len(output1) < 3 and tts_flag.value > const.head_align: # 헤드 기울어진 상황
                     tts_flag.value = const.head_align
-                    if len(output1) != 0:
-                        if (output1[0] > temp_y_head[0]): print("x left")
-                        elif (output1[0] < temp_y_head[0]): print("x right")
-
-                        if (output1[1] > temp_y_head[1]): print("y left")
-                        elif (output1[1] < temp_y_head[1]): print("y right")
+                    #if len(output1) != 0:
+                        #if (output1[0] > temp_y_head[0]): print("x left")
+                        #elif (output1[0] < temp_y_head[0]): print("x right")
+                        #if (output1[1] > temp_y_head[1]): print("y left")
+                        #elif (output1[1] < temp_y_head[1]): print("y right")
+                    print("head turn !!!")
                 elif len(output) >= 3 and tts_flag.value == const.head_align:
                     tts_flag.value = const.default
                 elif len(output1) >= 3 and tts_flag.value == const.head_align: # 헤드 기울어지지 않은 상황
@@ -271,7 +271,6 @@ def get_serial(conn, tts_flag):
             else:
                 if tts_flag.value > const.head_missing:
                     tts_flag.value = const.head_missing 
-            temp_y_head = output1
 
 BALL_MOVEMENT_THRESHOLD = 10
 def check_movement(ball_pos, isMoving):

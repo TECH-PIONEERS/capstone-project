@@ -4,6 +4,7 @@ import threading
 import pygame
 import time
 import math
+import pyttsx3
 
 # 경고음이 울리고 있는지 여부를 나타내는 변수
 global is_beeping
@@ -16,6 +17,16 @@ def ballOutOfRangeAlert(x, y, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
         print("Circle x is going out of screen boundary!")
         return True
     return False
+
+def generate_TTS(text):
+    global is_beeping
+    if not is_beeping:
+        is_beeping = True  
+        engine = pyttsx3.init()
+        engine.say(text)
+        engine.runAndWait()
+        time.sleep(3)
+        is_beeping = False
 
 def generate_long_beep():
     global is_beeping
