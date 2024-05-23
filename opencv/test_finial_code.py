@@ -14,7 +14,6 @@ import serial
 import cv2
 import numpy as np
 import time
-import temp_utils
 
 lf = b'\n'  # Linefeed in ASCII
 myString = None
@@ -235,15 +234,18 @@ def get_serial(conn, tts_flag):
             if o1_bool or o2_bool:
                 if tts_flag.value == const.head_missing:
                     tts_flag.value = const.default
+                # 밑의 4줄이 head_align을 위해 임시로 작성한 코드인지?
                 if len(output) < 3 and tts_flag.value > const.head_align:
                     tts_flag.value = const.head_align
                 elif len(output) >= 3 and tts_flag.value == const.head_align:
                     tts_flag.value = const.default
 
-                if len(output1) < 3:
+                if len(output1) < 3 and tts_flag.value > const.head_align:
                     tts_flag.value = const.head_align
-                elif len(output1) == 4:
-                    temp_utils.test_head_align(output1)
+                elif len(output1) == 4 and tts_flag.value == const.head_align:
+                    tts_flag.value = utils.test_head_align(output1)
+                    # 정렬 o => const.default
+                    # 정렬 x => const.head_align
                 conn.send([output, output1])
             else:
                 if tts_flag.value > const.head_missing:
