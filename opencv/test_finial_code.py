@@ -137,6 +137,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success):
                 output = res[0]
                 output1 = res[1]
                 if(len(output1) > 1):
+                    #rint(output1)
                     if output1[1] < const.upper_ir:
                         glo_output = output1
                         if output1[0]//4 -80 <= -80:
@@ -210,10 +211,9 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success):
             else:
                 tts_flag.value = const.ball_missing
             
-            #print(f'align_success.value {align_success.value}')
             if align_success.value == const.align_default and center:
                 if len(glo_output) <= 0:
-                    print(f'output {glo_output}')
+                    #print(f'output {glo_output}')
                     continue
                 if isMoving.value:
                     print("moving")
@@ -252,7 +252,7 @@ def get_serial(conn, tts_flag,align_success):
                     tts_flag.value = const.default
                 if len(output1) < 3 and tts_flag.value > const.head_align:
                     tts_flag.value = const.head_align
-                elif len(output1) == 4 and tts_flag.value >= const.head_align:
+                elif len(output1) == 4 and int(tts_flag.value) >= int(const.head_align):
                     tts_flag.value = utils.test_head_align(output1)
                     if tts_flag.value == const.default:
                         align_success.value = const.align_default
@@ -280,7 +280,7 @@ if __name__ == '__main__':
     with Manager() as manager:
         parent_conn, child_conn = Pipe()
         ball_position = manager.list()
-        align_success = manager.list()
+        align_success = manager.Namespace()
         align_success.value = -1
         tts_flag = manager.Namespace()
         tts_flag.value = const.default
