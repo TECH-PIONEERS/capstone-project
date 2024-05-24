@@ -29,12 +29,6 @@ def test_head_align(output1):
     # 일단, 기울어지는 크기가 달라지는 건 그냥 두고, 방향 부터 잡아보자
     # 가운데에서 뒤집히는건..
 
-    # 일단, HeadLED랑 TouLED랑 값이 바뀌어 들어오는게 맞는지 확인
-    # + TOU 쪽 값이 크게 들어왔던게 IR 카메라기준 Z 좌표가 토우쪽이 더 커서 그랬던건지
-
-    # 그러면 IR 카메라로 구할 수 있는 X 좌표로 범위 나눌 수 있는지 체크
-    #          깊이 다를 때 (카메라 기준 점점 멀리갈때와 가까워 질 때) X 값 같은지 3자리에서 체크 
-
     # 그러면 기울어진 방향은 X 좌표로 구할 수 있다 (차이가 + 인지 - 인지 확인해서 )
     #           먼저, 중앙에 있을때, Headled와 touled의 차이가 최대한 0이 되도록 만들자.     
 
@@ -42,7 +36,6 @@ def test_head_align(output1):
     head_y = 0
     tou_x = 0
     tou_y = 0
-
 
     # 이것도 다시 체크해서...
     # 헤드와 토우의 x, y값 구별: y가 더 큰 값이 토우 쪽 LED
@@ -82,30 +75,30 @@ def test_head_align(output1):
 
     # y 좌표로 기울기 구분
 
-    #if head_x > 346 and head_x < 475:
-    #    print("2")
-    #    distance = distance
-    #elif head_x > 475 and head_x < 623:
-    #    print("4")
-    #    distance = distance
-    #elif head_x < 346:
-    #    print("1")
-    #    distance = distance
-    #elif head_x > 623:
-    #    print("6")
-    #    distance = distance
-    #else: 
-    #    print("5")
-    #    distance = distance
+    default_distance = 0
+    calibration = 0
+
+
+    if head_x < 340:
+        print("1")
+        default_distance = 60
+    elif head_x > 340 and head_x < 470:
+        print("2 left of center")
+        default_distance = 40
+    elif head_x > 470 and head_x < 560:
+        print("3 right of center")
+        default_distance = 20
+    elif head_x > 560 and head_x < 590:
+        print("4")
+        default_distance = 40
+    else: 
+        print("5")
+        default_distance = 60
+
 
     #print("distance: ", distance)
-
-
-    #int(distance * 0.4)
-
-    #if distance 
-
-    #print("distance: ", distance)
+    distance = head_x - tou_x
+    
 
     #if distance > 40:
         # 정렬이 필요한 상황
@@ -271,7 +264,7 @@ def goal(goal_y,y):
     # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
     if(y >= (goal_y-10) and y < (goal_y+10)):
         # print("goal")
-        return True
+        return Trueif
     else:
         # print("miss")
         return False

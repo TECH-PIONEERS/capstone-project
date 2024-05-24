@@ -243,7 +243,8 @@ def get_serial(conn, tts_flag):
                 if len(output1) < 3 and tts_flag.value > const.head_align:
                     tts_flag.value = const.head_align
                 elif len(output1) == 4 and tts_flag.value == const.head_align:
-                    tts_flag.value = utils.test_head_align(output1)
+                    utils.test_head_align(output1)
+                    #_flag.value = utils.test_head_align(output1)
                     # 정렬 o => const.default
                     # 정렬 x => const.head_align
                 conn.send([output, output1])
