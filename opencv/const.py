@@ -6,3 +6,4 @@ head_missing = 4
 head_align = 5
 
 upper_ir = 380
+align_default = 888

@@ -5,11 +5,24 @@ import pygame
 import time
 import math
 import const
+import pyttsx3
+from espeak import espeak
 
 
 # 경고음이 울리고 있는지 여부를 나타내는 변수
 global is_beeping
 is_beeping = False
+
+# def generate_TTS(text):
+#     global is_beeping
+#     if not is_beeping:
+#         is_beeping = True
+#         time.sleep(2)
+#         espeak.set_voice('english')
+#         espeak.synth(text)
+#         while espeak.is_playing():
+#             time.sleep(3)
+#         is_beeping = False
 
 # 원이 범위를 벗어나면 경고 문구 출력하는 함수
 def ballOutOfRangeAlert(x, y, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
@@ -50,34 +63,34 @@ def test_head_align(output1):
     
 
     if head_x < 340: #complete
-        print("1")
+        # print("1")
         default_distance = 60
         tou_x = tou_x *  0.795
     elif head_x > 340 and head_x < 470: 
-        print("2 left of center") #comlete
+        # print("2 left of center") #comlete
         default_distance = 40
         tou_x = tou_x * 0.854
     elif head_x > 470 and head_x < 560: #complete
-        print("3 right of center")
+        # print("3 right of center")
         default_distance = 20
         tou_x = tou_x * 0.90
     elif head_x > 560 and head_x < 590:#complete
-        print("4")
+        # print("4")
         default_distance = 40
         tou_x = tou_x * 0.97
     else: 
-        print("5") #complete
+        # print("5") #complete
         default_distance = 60
         tou_x = tou_x * 0.99
 
-    print("head: ", head_x, "tou: ", tou_x) 
+    # print("head: ", head_x, "tou: ", tou_x) 
     
     # default_distance 값을 영역에 따라 적절하게 구성하여, 정렬된 상황에서 head_x - tou_x가 거의 0이 되도록 맞추기
     # 그 후 threshold 값은 영역에 모두 동일하게 적용하여  
     #            head_x - tou_x의 결과를 양수 / 음수값으로 구분하여 정렬되지 않은 상황의 왼쪽/오른쪽 기울기 판별
 
     distance = head_x - tou_x
-    print("distance", distance)
+    # print("distance", distance)
 
     # 정렬 및 기울어짐 판별
     if distance > -20 and distance < 20:
@@ -314,8 +327,8 @@ def generate_TTS(text):
     global is_beeping
     if not is_beeping:
         is_beeping = True  
-        engine = pyttsx3.init()
-        engine.say(text)
+        engine = pyttsx3.init('espeak')
+        engine.say(str(text))
         engine.runAndWait()
         time.sleep(3)
         is_beeping = False
@@ -324,6 +337,5 @@ def get_ball_head_distance(ball_pos, head_pos, cm):
     print(f'1cm {cm}')
     가로거리차이 = (abs(ball_pos[0]-head_pos) * cm / 10)
     print(f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다 헤드와 공의 거리 차이는 {abs(ball_pos[0]-head_pos)} pixel')
-    # generate_TTS();
-    return 
+    return 가로거리차이
 
