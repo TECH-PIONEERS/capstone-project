@@ -84,10 +84,10 @@ def test_head_align(output1):
         print("align")
         return const.default
     elif distance < -20:
-        print("왼쪽으로 기울어짐")
+        print("CW")
         return const.head_align
     elif distance > 20:
-        print("오른쪽으로 기울어짐")
+        print("CCW")
         return const.head_align
 
 def generate_alert_beep():
@@ -322,13 +322,8 @@ def generate_TTS(text):
 
 def get_ball_head_distance(ball_pos, head_pos, cm):
     print(f'1cm {cm}')
-<<<<<<< HEAD
-    가로거리차이 = (abs(ball_pos[0]-head_pos) * cm / 10)-2
-    print(f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다')
-=======
     가로거리차이 = (abs(ball_pos[0]-head_pos) * cm / 10)
     print(f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다 헤드와 공의 거리 차이는 {abs(ball_pos[0]-head_pos)} pixel')
     # generate_TTS();
->>>>>>> cebc4fe143a3bbffcdb3289cb6b673e12c7b56f5
     return 
 
