@@ -210,7 +210,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success):
             else:
                 tts_flag.value = const.ball_missing
             
-            print(f'align_success.value {align_success.value}')
+            #print(f'align_success.value {align_success.value}')
             if align_success.value == const.align_default and center:
                 if len(glo_output) <= 0:
                     print(f'output {glo_output}')

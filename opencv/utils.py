@@ -60,28 +60,94 @@ def test_head_align(output1):
         head_y = output1[1]
         tou_x = output1[2]
         tou_y = output1[3]
-    
 
-    if head_x < 340: #complete
-        # print("1")
-        default_distance = 60
+   #이전 정렬데이터
+    # if head_x < 340: #complete
+    #     print("1")
+    #     default_distance = 60
+    #     tou_x = tou_x *  0.795
+    # elif head_x > 340 and head_x < 470: 
+    #     print("2 left of center") #comlete
+    #     default_distance = 40
+    #     tou_x = tou_x * 0.854
+    # elif head_x > 470 and head_x < 560: #complete
+    #     print("3 right of center")
+    #     default_distance = 20
+    #     tou_x = tou_x * 0.90
+    # elif head_x > 560 and head_x < 590:#complete
+    #     print("4")
+    #     default_distance = 40
+    #     tou_x = tou_x * 0.97
+    # else: 
+    #     print("5") #complete
+    #     default_distance = 60
+    #     tou_x = tou_x * 0.99
+
+    if head_x < 263:
+        print("1")
         tou_x = tou_x *  0.795
-    elif head_x > 340 and head_x < 470: 
-        # print("2 left of center") #comlete
-        default_distance = 40
+    elif head_x >= 263 and head_x < 298: 
+        print("2")
         tou_x = tou_x * 0.854
-    elif head_x > 470 and head_x < 560: #complete
-        # print("3 right of center")
-        default_distance = 20
-        tou_x = tou_x * 0.90
-    elif head_x > 560 and head_x < 590:#complete
-        # print("4")
-        default_distance = 40
-        tou_x = tou_x * 0.97
-    else: 
-        # print("5") #complete
-        default_distance = 60
-        tou_x = tou_x * 0.99
+    elif head_x >= 298 and head_x < 333: 
+        print("3")
+        tou_x = tou_x * 0.854
+    elif head_x >= 333 and head_x < 368: 
+        print("4")
+        tou_x = tou_x * 0.854
+    elif head_x >= 368 and head_x < 403: 
+        print("5")
+    elif head_x >= 403 and head_x < 438: 
+        print("6")
+        tou_x = tou_x * 0.854
+    elif head_x >= 438 and head_x < 473: 
+        print("7")
+        tou_x = tou_x * 0.854
+    elif head_x >= 473 and head_x < 508: 
+        print("8")
+        tou_x = tou_x * 0.854
+    elif head_x >= 508 and head_x < 543: 
+        print("9")
+        tou_x = tou_x * 0.854
+    elif head_x >= 543 and head_x < 578: 
+        print("10")
+        tou_x = tou_x * 0.854
+    elif head_x >= 578 and head_x < 613: 
+        print("11")
+        tou_x = tou_x * 0.854
+    elif head_x >= 613 and head_x < 648: 
+        print("12")
+        tou_x = tou_x * 0.854
+    elif head_x >= 648 and head_x < 683: 
+        print("13")
+        tou_x = tou_x * 0.854
+    elif head_x >= 683 and head_x < 718: 
+        print("14")
+        tou_x = tou_x * 0.854
+    elif head_x >= 718 and head_x < 753: 
+        print("15")
+        tou_x = tou_x * 0.854
+    elif head_x >= 753 and head_x < 788: 
+        print("16")
+        tou_x = tou_x * 0.854
+    elif head_x >= 788 and head_x < 823: 
+        print("17")
+        tou_x = tou_x * 0.854
+    elif head_x >= 823 and head_x < 858: 
+        print("18")
+        tou_x = tou_x * 0.854
+    elif head_x >= 858 and head_x < 893: 
+        print("19")
+        tou_x = tou_x * 0.854
+    elif head_x >= 893 and head_x < 928: 
+        print("20")
+        tou_x = tou_x * 0.854
+    elif head_x >= 928 and head_x < 968: 
+        print("21")
+        tou_x = tou_x * 0.854
+    else:
+        print("22")
+        tou_x = tou_x * 0.854
 
     # print("head: ", head_x, "tou: ", tou_x) 
     
