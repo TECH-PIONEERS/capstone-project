@@ -53,26 +53,39 @@ def test_head_align(output1):
     # 그 후 threshold 값은 영역에 모두 동일하게 적용하여  
     #            head_x - tou_x의 결과를 양수 / 음수값으로 구분하여 정렬되지 않은 상황의 왼쪽/오른쪽 기울기 판별
 
-    default_distance = 0 # liner 하게 해야할 듯
+    calibration = 0
 
-    # x 좌표로 범위 구분
+    # x 좌표로 범위 구분 및 매핑
     if head_x < 340:
         print("1")
-        default_distance = 60
+        calibration = 60
     elif head_x > 340 and head_x < 470:
         print("2 left of center")
-        default_distance = 40
+        calibration = 40
     elif head_x > 470 and head_x < 560:
         print("3 right of center")
-        default_distance = 20
+        calibration = -20
     elif head_x > 560 and head_x < 590:
         print("4")
-        default_distance = 40
+        calibration = -40
     else: 
         print("5")
-        default_distance = 60
+        calibration= -60
 
-    #distance = head_x - tou_x - default_distance
+    distance = head_x - tou_x + calibration
+
+    # 정렬 및 기울어짐 판별
+    if distance > -20 and distance < 20:
+        print("align")
+        #return const.default
+    elif distance < -20:
+        print("왼쪽으로 기울어짐")
+        # return const.head_align
+    elif distance > 20:
+        print("오른쪽으로 기울어짐")
+        # return const.head_align
+
+
 
 def generate_alert_beep():
     global is_beeping
