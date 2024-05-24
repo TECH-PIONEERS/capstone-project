@@ -18,26 +18,23 @@ def ballOutOfRangeAlert(x, y, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
         return True
     return False
 
-def test_head_align(output1):
-
-     
-    # 우선 순위에 따라 시리얼 프로세스 수정해야하는데 그건 이 함수 다 만들고
+def test_head_align(output1):     
+    # 우선 순위에 따라 시리얼 프로세스 수정해야하는데 그건 이 함수 다 만들고 수정하자
     # TTS 및 비프음 체크
 
+    # 생각 해야할 케이스: x 좌표값 460 부근에서 토우쪽 led 위치가 뒤집히는 상황 
+    #                   (1, 2번 영역에서는 head_x - tou_x가 음수 값이고 3, 4 5번 영역에서는 head_x - tou_x가 양수 값)
+    # 생각 해야할 케이스: IR 카메라 외곽에서, 정렬된 상황 자체에서 중앙보다 더 벌어져 있다.
+    #                   영역 나누어서 처리하는 것이 필요
+
+
     #print("output1[1]: " , output1[1], "output1[3]: ", output1[3])
-
-    # 일단, 기울어지는 크기가 달라지는 건 그냥 두고, 방향 부터 잡아보자
-    # 가운데에서 뒤집히는건..
-
-    # 그러면 기울어진 방향은 X 좌표로 구할 수 있다 (차이가 + 인지 - 인지 확인해서 )
-    #           먼저, 중앙에 있을때, Headled와 touled의 차이가 최대한 0이 되도록 만들자.     
 
     head_x = 0
     head_y = 0
     tou_x = 0
     tou_y = 0
 
-    # 이것도 다시 체크해서...
     # 헤드와 토우의 x, y값 구별: y가 더 큰 값이 토우 쪽 LED
     if output1[1] > output1[3]:
         tou_x = output1[0]
@@ -50,35 +47,15 @@ def test_head_align(output1):
         tou_x = output1[2]
         tou_y = output1[3]
     
-    # 생각 해야할 케이스: 중간에서 토우쪽 led 위치가 뒤집히는 상황 
-    #                   (왼쪽은 토우쪽 LED가 헤드LED보다 왼쪽으로, 오른쪽은 토우쪽 LED가 헤드LED보다 오른쪽으로 출력된다.)
-    # 생각 해야할 케이스: IR 카메라 외곽에서, 정렬된 상황 자체에서 중앙보다 더 벌어져 있다.
-    #                   원래는 기본 5 정도 벌어져있는데 외곽에서는 더 벌어져있고
-    # 생각 해야할 케이스: IR 카메라 외곽에서, 기울어져있을 때도 중앙에서 기울였을 때보다 더 벌어진다.
-
-    ori_distance = 5
-    front = head_x
-    back = tou_x - head_x - ori_distance
-
-    if back < 2 and back > -2:
-        print("alin")
-    elif back > 2:
-        print("left turn")
-    elif back < -2:
-        print("right turn")
-
     #print("head: ", head_x, "tou: ", tou_x) 
     
+    # default_distance 값을 영역에 따라 적절하게 구성하여, 정렬된 상황에서 head_x - tou_x가 거의 0이 되도록 맞추기
+    # 그 후 threshold 값은 영역에 모두 동일하게 적용하여  
+    #            head_x - tou_x의 결과를 양수 / 음수값으로 구분하여 정렬되지 않은 상황의 왼쪽/오른쪽 기울기 판별
+
+    default_distance = 0 # liner 하게 해야할 듯
+
     # x 좌표로 범위 구분
-    # distance = head_x - tou_x
-    #print(head_y)
-
-    # y 좌표로 기울기 구분
-
-    default_distance = 0
-    calibration = 0
-
-
     if head_x < 340:
         print("1")
         default_distance = 60
@@ -95,20 +72,7 @@ def test_head_align(output1):
         print("5")
         default_distance = 60
 
-
-    #print("distance: ", distance)
-    distance = head_x - tou_x
-    
-
-    #if distance > 40:
-        # 정렬이 필요한 상황
-    #    return const.head_align
-    #elif distance < -10:
-        # 정렬이 필요한 상황
-    #    return const.head_align
-    #else:
-    #    print("공 정렬 완료")
-    #    return const.default
+    #distance = head_x - tou_x - default_distance
 
 def generate_alert_beep():
     global is_beeping
