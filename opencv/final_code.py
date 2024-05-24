@@ -68,27 +68,27 @@ def tts_process(tts_flag):
         if utils.is_beeping == True: return
         if tts_flag.value == const.ball_missing:
             print("no ball")
-            beep_thread = threading.Thread(target=utils.generate_high_beep)
+            beep_thread = threading.Thread(target=utils.generate_high_1_beep)
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.ball_align_bottom:
             print("골 과 공 정렬되지않음 bottom")
-            beep_thread = threading.Thread(target=utils.generate_low_beep)
+            beep_thread = threading.Thread(target=utils.generate_mid_beep)
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.ball_align_up:
             print("골 과 공 정렬되지않음 up")
-            beep_thread = threading.Thread(target=utils.generate_long_beep)
+            beep_thread = threading.Thread(target=utils.generate_high_4_beep)
             beep_thread.start()
             beep_thread.join()    
         elif tts_flag.value == const.head_missing: #퍼터 값이 없을 경우
             print("no head")
-            beep_thread = threading.Thread(target=utils.generate_alert_beep)
+            beep_thread = threading.Thread(target=utils.generate_high_2_beep)
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.head_align: #퍼터 값이 없을 경우
             print("no head align")
-            beep_thread = threading.Thread(target=utils.generate_high_beep)
+            beep_thread = threading.Thread(target=utils.generate_high_3_beep)
             beep_thread.start()
             beep_thread.join()
 
@@ -133,7 +133,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving):
                 res = conn.recv()
                 output = res[0]
                 output1 = res[1]
-                if(len(output1) > 0):
+                if(len(output1) > 0 and output1[1] < const.upper_ir):
                     if output1[0]//4 -80 <= -80:
                         continue
                     elif output1[0]//4 -80 <= 15:
@@ -210,7 +210,8 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving):
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
           break
-        if key == ord("w") and center and cm != '' and not isMoving.value:
+        #   정렬이 됐을 경우
+        if key == ord("w") and center and cm != '' and not isMoving.value and len(output1[0]) > 0 and output1[1] < const.upper_ir:
           utils.get_ball_head_distance(center, int(output1[0]//4 * calibration), cm)
     cv2.destroyAllWindows()
 
