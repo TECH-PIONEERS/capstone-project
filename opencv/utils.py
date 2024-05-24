@@ -132,7 +132,7 @@ def test_head_align(output1):
     elif head_x >= 928 and head_x < 968: 
         print("21")
         tou_x = tou_x * 0.854
-    else
+    else:
         print("22")
         tou_x = tou_x * 0.854
 
