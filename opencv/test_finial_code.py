@@ -215,7 +215,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving):
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
           break
-        if key == ord("w") and center and cm != '' and not isMoving.value:
+        if key == ord("w") and center and cm != '' and not isMoving.value and len(output1) > 0:
           utils.get_ball_head_distance(center, int(output1[0]//4 * calibration), cm)
     cv2.destroyAllWindows()
 
@@ -231,6 +231,7 @@ def get_serial(conn, tts_flag):
         if myString or myString1:
             o1_bool, output = utils.is_valid_string(myString)
             o2_bool, output1 = utils.is_valid_string(myString1)
+            # print(output1)
             if o1_bool or o2_bool:
                 if tts_flag.value == const.head_missing:
                     tts_flag.value = const.default

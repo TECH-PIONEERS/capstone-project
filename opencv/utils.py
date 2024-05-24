@@ -6,6 +6,7 @@ import time
 import math
 import const
 
+
 # 경고음이 울리고 있는지 여부를 나타내는 변수
 global is_beeping
 is_beeping = False
@@ -56,6 +57,30 @@ def test_head_align(output1):
     #                   원래는 기본 5 정도 벌어져있는데 외곽에서는 더 벌어져있고
     # 생각 해야할 케이스: IR 카메라 외곽에서, 기울어져있을 때도 중앙에서 기울였을 때보다 더 벌어진다.
 
+
+
+    if head_x < 340: #complete
+        print("1")
+        default_distance = 60
+        tou_x = tou_x *  0.795
+    elif head_x > 340 and head_x < 470: 
+        print("2 left of center") #comlete
+        default_distance = 40
+        tou_x = tou_x * 0.854
+    elif head_x > 470 and head_x < 560: #complete
+        print("3 right of center")
+        default_distance = 20
+        tou_x = tou_x * 0.90
+    elif head_x > 560 and head_x < 590:#complete
+        print("4")
+        default_distance = 40
+        tou_x = tou_x * 0.97
+    else: 
+        print("5") #complete
+        default_distance = 60
+        tou_x = tou_x * 0.99
+
+
     ori_distance = 5
     front = head_x
     back = tou_x - head_x - ori_distance
@@ -75,40 +100,25 @@ def test_head_align(output1):
 
     # y 좌표로 기울기 구분
 
-    default_distance = 0
-    calibration = 0
 
 
-    if head_x < 340:
-        print("1")
-        default_distance = 60
-    elif head_x > 340 and head_x < 470:
-        print("2 left of center")
-        default_distance = 40
-    elif head_x > 470 and head_x < 560:
-        print("3 right of center")
-        default_distance = 20
-    elif head_x > 560 and head_x < 590:
-        print("4")
-        default_distance = 40
-    else: 
-        print("5")
-        default_distance = 60
 
 
-    #print("distance: ", distance)
     distance = head_x - tou_x
-    
+    print("head_x : ", head_x)
+    print("tou_x : ", tou_x)
+    print("distance: ", distance)
 
-    #if distance > 40:
+
+    if distance > 40:
         # 정렬이 필요한 상황
-    #    return const.head_align
-    #elif distance < -10:
+       return const.head_align
+    elif distance < -10:
         # 정렬이 필요한 상황
-    #    return const.head_align
-    #else:
-    #    print("공 정렬 완료")
-    #    return const.default
+       return const.head_align
+    else:
+        print("공 정렬 완료")
+        return const.default
 
 def generate_alert_beep():
     global is_beeping
@@ -226,8 +236,7 @@ def camera_calibration(image):
     return dst
 
 def pixel_to_cm(height):
-    print(200/height) #단위(mm)
-    return 200/height
+    return 330/height
 
 def find_foot(a1, b1, a2, b2, a3, b3):
     # a1, b1 / a2, b2는 헤드 ir센서의 좌표
@@ -311,6 +320,6 @@ def return_ball_direction_change(previous_pos, current_pos, threshold=30):
 
 def get_ball_head_distance(ball_pos, head_pos, cm):
     print(f'1cm {cm}')
-    가로거리차이 = (abs(ball_pos[0]-head_pos) * cm / 10)
-    print(f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다 헤드와 공의 거리 차이는 {abs(ball_pos[0]-head_pos)} pixel')
+    가로거리차이 = (abs(ball_pos[0]-head_pos) * cm / 10)-2
+    print(f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다')
     return 
