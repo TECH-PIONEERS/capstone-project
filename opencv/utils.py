@@ -77,13 +77,13 @@ def test_head_align(output1):
     # 정렬 및 기울어짐 판별
     if distance > -20 and distance < 20:
         print("align")
-        #return const.default
+        return const.default
     elif distance < -20:
         print("왼쪽으로 기울어짐")
-        # return const.head_align
+        return const.head_align
     elif distance > 20:
         print("오른쪽으로 기울어짐")
-        # return const.head_align
+        return const.head_align
 
 
 

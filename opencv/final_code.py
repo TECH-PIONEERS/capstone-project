@@ -133,7 +133,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving):
                 res = conn.recv()
                 output = res[0]
                 output1 = res[1]
-                if(len(output1) > 0):
+                if(len(output1) > 0 and output1[1] < const.upper_ir):
                     if output1[0]//4 -80 <= -80:
                         continue
                     elif output1[0]//4 -80 <= 15:
@@ -210,7 +210,8 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving):
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
           break
-        if key == ord("w") and center and cm != '' and not isMoving.value:
+        #   정렬이 됐을 경우
+        if key == ord("w") and center and cm != '' and not isMoving.value and len(output1[0]) > 0 and output1[1] < const.upper_ir:
           utils.get_ball_head_distance(center, int(output1[0]//4 * calibration), cm)
     cv2.destroyAllWindows()
 
