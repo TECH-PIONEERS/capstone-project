@@ -62,43 +62,57 @@ def get_position(event, x, y, flags, params):
             flag = 3
     return 
 
-def tts_process(tts_flag):
+def tts_process(tts_flag, dist):
     import utils
     while True:
         if utils.is_beeping == True: return
         if tts_flag.value == const.ball_missing:
             print("no ball")
             beep_thread = threading.Thread(target=utils.generate_high_beep)
-            #beep_thread = threading.Thread(target=temp_utils.generate_high_1_beep)
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.ball_align_bottom:
-            beep_thread = threading.Thread(target=utils.generate_TTS,args=("bottom", ))
+            print("ball bottom")
+            beep_thread = threading.Thread(target=utils.generate_TTS,args=("down", ))
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.ball_align_up:
+            print("ball up")
             beep_thread = threading.Thread(target=utils.generate_TTS,args=("up", ))
             beep_thread.start()
             beep_thread.join()    
-            #utils.generate_TTS("up")
         elif tts_flag.value == const.head_missing: #퍼터 값이 없을 경우
             print("no head")
-            #beep_thread = threading.Thread(target=temp_utils.generate_mid_beep)
             beep_thread = threading.Thread(target=utils.generate_alert_beep)
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.head_align: #퍼터 값이 없을 경우
             print("no head align")
-            #beep_thread = threading.Thread(target=temp_utils.generate_low_beep)
             beep_thread = threading.Thread(target=utils.generate_high_beep)
             beep_thread.start()
             beep_thread.join()
+        # elif tts_flag.value == const.head_center_down:
+        #     print("head down")
+        #     # beep_thread = threading.Thread(target=utils.generate_TTS,args=("down2", ))
+        #     # beep_thread.start()
+        #     # beep_thread.join()
+        # elif tts_flag.value == const.head_center_up:
+        #     print("head up")
+        #     # beep_thread = threading.Thread(target=utils.generate_TTS,args=("up2", ))
+        #     # beep_thread.start()
+        #     # beep_thread.join()
+        # elif dist.value > 0:
+            # print(f"dist {dist.value}")
+            # beep_thread = threading.Thread(target=utils.generate_TTS,args=(dist.value, ))
+            # beep_thread.start()
+            # beep_thread.join()
 
-def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success):
+def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
     global previous_direction
     global goal_y
     global flag
     global glo_output
+    new_ouput = []
     ap = argparse.ArgumentParser()
     ap.add_argument("-v", "--video",
         help="path to the (optional) video file")
@@ -136,28 +150,43 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success):
                 res = conn.recv()
                 output = res[0]
                 output1 = res[1]
-                if(len(output1) > 1):
-                    #rint(output1)
-                    if output1[1] < const.upper_ir:
-                        glo_output = output1
-                        if output1[0]//4 -80 <= -80:
-                            continue
-                        elif output1[0]//4 -80 <= 15:
-                            calibration = 0.285
-                        elif output1[0]//4 -80 <= 70:
-                            calibration = 0.325
-                        elif output1[0]//4 -80 <= 90:
-                            calibration = 0.34
-                        elif output1[0]//4 -80 <= 150:
-                            calibration = 0.36
-                        else: 
-                            calibration = 0.38
-                        if(len(output) > 1):
-                            cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.4)), 5, (0,0,255), -1)
-                        if(len(output) > 3):
-                            cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.4)), 5, (255,0,255), -1)
-                    else:
-                        glo_output = []
+
+                if len(output1) > 3:
+                    if output1[1] > output1[3]:
+                        new_ouput = [output1[2], output1[3], output1[0], output1[1]]
+                elif (len(output1) > 1):
+                    new_ouput = output1
+                else:
+                    new_ouput = []
+
+                glo_output = new_ouput
+                
+                if len(new_ouput) > 1:
+                    if output1[0]//4 -80 <= -80:
+                        continue
+                    elif output1[0]//4 -80 <= 15:
+                        calibration = 0.285
+                    elif output1[0]//4 -80 <= 70:
+                        calibration = 0.31
+                    elif output1[0]//4 -80 <= 90:
+                        calibration = 0.34
+                    elif output1[0]//4 -80 <= 150:
+                        calibration = 0.36
+                    else: 
+                        calibration = 0.38
+                    if(len(output) > 1):
+                        cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.42)), 5, (0,0,255), -1)
+                    if(len(output) > 3):
+                        cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.42)), 5, (255,0,255), -1)
+                        # if (utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 2 or utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[1])//4 * 0.42))//2) == 3) and tts_flag.value >= const.head_center_down:
+                        #     if utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 2:
+                        #         tts_flag.value = const.head_center_up
+                        #     elif utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 3:
+                        #         tts_flag.value = const.head_center_down
+                        # elif utils.골과공정렬(goal_y - start_y,(int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) and tts_flag.value != const.default:
+                        #     tts_flag.value = const.default
+                            
+
             blurred = cv2.GaussianBlur(frame, (11, 11), 0)
             hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
         
@@ -175,7 +204,6 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success):
                 M = cv2.moments(c)
                 if M["m00"] == 0 : M["m00"] = 1
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                ballout = utils.ballOutOfRangeAlert(center[0], center[1], radius, SCREEN_WIDTH, SCREEN_HEIGHT)
                 
                 if tts_flag.value == const.ball_missing: 
                     tts_flag.value = const.default
@@ -211,24 +239,16 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success):
             else:
                 tts_flag.value = const.ball_missing
             
-            if align_success.value == const.align_default and center:
+            if align_success.value == const.align_default and center and not isMoving.value:
                 if len(glo_output) <= 0:
-                    #print(f'output {glo_output}')
                     continue
-                if isMoving.value:
-                    print("moving")
-                    continue
-                if output1[1] < const.upper_ir:
-                    dist = utils.get_ball_head_distance(center, int(glo_output[0]//4 * calibration), cm)
-                    align_success.value = -1
-                    beep_thread = threading.Thread(target=utils.generate_TTS,args=(dist, ))
-                    beep_thread.start()
-                    beep_thread.join()
-            
+                dist.value = utils.get_ball_head_distance(center, int(glo_output[0]//4 * calibration), cm)
+                align_success.value = -1
+        
             cv2.imshow("Frame", frame)
         else:
             cv2.imshow('cap', cap)
-        
+        #print(f'tts_flag {tts_flag.value}')
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
           break
@@ -250,10 +270,12 @@ def get_serial(conn, tts_flag,align_success):
             if o1_bool or o2_bool:
                 if tts_flag.value == const.head_missing:
                     tts_flag.value = const.default
+                    
                 if len(output1) < 3 and tts_flag.value > const.head_align:
                     tts_flag.value = const.head_align
-                elif len(output1) == 4 and int(tts_flag.value) >= int(const.head_align):
+                elif len(output1) == 4 and tts_flag.value >= const.head_align:
                     tts_flag.value = utils.test_head_align(output1)
+
                     if tts_flag.value == const.default:
                         align_success.value = const.align_default
                 conn.send([output, output1])
@@ -282,6 +304,8 @@ if __name__ == '__main__':
         ball_position = manager.list()
         align_success = manager.Namespace()
         align_success.value = -1
+        dist = manager.Namespace()
+        dist.value = const.dist_default
         tts_flag = manager.Namespace()
         tts_flag.value = const.default
         isMoving = manager.Namespace()
@@ -290,10 +314,10 @@ if __name__ == '__main__':
         ball_position.append(-999)
         ball_position.append(-999)
 
-        p1 = Process(target=stream_opencv, args=(parent_conn, ball_position, tts_flag, isMoving, align_success, ))
+        p1 = Process(target=stream_opencv, args=(parent_conn, ball_position, tts_flag, isMoving, align_success, dist, ))
         p2 = Process(target=get_serial, args=(child_conn,tts_flag, align_success, ))
         p3 = Process(target=check_movement,args=(ball_position,isMoving, ))
-        p4 = Process(target=tts_process, args=(tts_flag, ))
+        p4 = Process(target=tts_process, args=(tts_flag,dist, ))
 
         p1.start()
         p2.start()

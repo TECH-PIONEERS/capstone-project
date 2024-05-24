@@ -13,37 +13,7 @@ from espeak import espeak
 global is_beeping
 is_beeping = False
 
-# def generate_TTS(text):
-#     global is_beeping
-#     if not is_beeping:
-#         is_beeping = True
-#         time.sleep(2)
-#         espeak.set_voice('english')
-#         espeak.synth(text)
-#         while espeak.is_playing():
-#             time.sleep(3)
-#         is_beeping = False
-
-# 원이 범위를 벗어나면 경고 문구 출력하는 함수
-def ballOutOfRangeAlert(x, y, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
-    global is_beeping, isBallOutOfRange
-    if x > SCREEN_WIDTH or y > SCREEN_HEIGHT:
-        print("Circle x is going out of screen boundary!")
-        return True
-    return False
-
 def test_head_align(output1):     
-    # 우선 순위에 따라 시리얼 프로세스 수정해야하는데 그건 이 함수 다 만들고 수정하자
-    # TTS 및 비프음 체크
-
-    # 생각 해야할 케이스: x 좌표값 460 부근에서 토우쪽 led 위치가 뒤집히는 상황 
-    #                   (1, 2번 영역에서는 head_x - tou_x가 음수 값이고 3, 4 5번 영역에서는 head_x - tou_x가 양수 값)
-    # 생각 해야할 케이스: IR 카메라 외곽에서, 정렬된 상황 자체에서 중앙보다 더 벌어져 있다.
-    #                   영역 나누어서 처리하는 것이 필요
-
-
-    #print("output1[1]: " , output1[1], "output1[3]: ", output1[3])
-
     head_x = 0
     head_y = 0
     tou_x = 0
@@ -61,113 +31,59 @@ def test_head_align(output1):
         tou_x = output1[2]
         tou_y = output1[3]
 
-#    #이전 정렬데이터
-#     if head_x < 340: #complete
-#         print("1")
-#         default_distance = 60
-#         tou_x = tou_x *  0.795
-#     elif head_x > 340 and head_x < 470: 
-#         print("2 left of center") #comlete
-#         default_distance = 40
-#         tou_x = tou_x * 0.854
-#     elif head_x > 470 and head_x < 560: #complete
-#         print("3 right of center")
-#         default_distance = 20
-#         tou_x = tou_x * 0.90
-#     elif head_x > 560 and head_x < 590:#complete
-#         print("4")
-#         default_distance = 40
-#         tou_x = tou_x * 0.97
-#     else: 
-#         print("5") #complete
-#         default_distance = 60
-#         tou_x = tou_x * 0.99
-
     if head_x < 263:
-        print("1")
         tou_x = tou_x *  0.75
     elif head_x >= 263 and head_x < 298: #done
-        print("2")
         tou_x = tou_x * 0.75
     elif head_x >= 298 and head_x < 333: #done
-        print("3")
         tou_x = tou_x * 0.8
     elif head_x >= 333 and head_x < 368: #done
-        print("4")
         tou_x = tou_x * 0.82
     elif head_x >= 368 and head_x < 403: #done
-        print("5")
         tou_x = tou_x * 0.852
     elif head_x >= 403 and head_x < 438: #done
-        print("6")
         tou_x = tou_x * 0.888
     elif head_x >= 438 and head_x < 473: #done
-        print("7")
         tou_x = tou_x * 0.86
     elif head_x >= 473 and head_x < 508: #done
-        print("8")
         tou_x = tou_x * 0.87
     elif head_x >= 508 and head_x < 543: #done
-        print("9")
         tou_x = tou_x * 0.9
     elif head_x >= 543 and head_x < 578: #done
-        print("10")
         tou_x = tou_x * 0.93
     elif head_x >= 578 and head_x < 613: #done
-        print("11")
         tou_x = tou_x * 0.93
     elif head_x >= 613 and head_x < 648: #done
-        print("12")
         tou_x = tou_x * 0.95
     elif head_x >= 648 and head_x < 683: #done
-        print("13")
         tou_x = tou_x * 0.95
     elif head_x >= 683 and head_x < 718: #done
-        print("14")
         tou_x = tou_x * 0.95
     elif head_x >= 718 and head_x < 753: #done
-        print("15")
         tou_x = tou_x * 0.965
     elif head_x >= 753 and head_x < 788: #done
-        print("16")
         tou_x = tou_x * 0.969
     elif head_x >= 788 and head_x < 823: #done
-        print("17")
         tou_x = tou_x * 0.98
     elif head_x >= 823 and head_x < 858: #done
-        print("18")
         tou_x = tou_x * 0.987
     elif head_x >= 858 and head_x < 893: #done
-        print("19")
         tou_x = tou_x * 0.987
     elif head_x >= 893 and head_x < 928: #done
-        print("20")
         tou_x = tou_x * 0.995
     elif head_x >= 928 and head_x < 968: #done
-        print("21")
         tou_x = tou_x * 1.03
     else:
-        print("22")
         tou_x = tou_x * 1.04
 
-    print("head: ", head_x, "tou: ", tou_x) 
-    
-    # default_distance 값을 영역에 따라 적절하게 구성하여, 정렬된 상황에서 head_x - tou_x가 거의 0이 되도록 맞추기
-    # 그 후 threshold 값은 영역에 모두 동일하게 적용하여  
-    #            head_x - tou_x의 결과를 양수 / 음수값으로 구분하여 정렬되지 않은 상황의 왼쪽/오른쪽 기울기 판별
-
     distance = head_x - int(tou_x)
-    print("distance", distance)
 
     # 정렬 및 기울어짐 판별
     if distance > -30 and distance < 30:
-        print("align")
         return const.default
     elif distance < -30:
-        print("CW")
         return const.head_align
     elif distance > 30:
-        print("CCW")
         return const.head_align
     else:
         return const.head_align
@@ -182,7 +98,7 @@ def generate_alert_beep():
         # generate_long_beep(alert=True)
         beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
         beep_sound.play()
-        time.sleep(3)
+        time.sleep(1)
 
         is_beeping = False
 
@@ -194,7 +110,7 @@ def generate_high_4_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_4_beep.wav")
         beep_sound.play()
-        time.sleep(3)
+        # time.sleep(0.5)
         is_beeping = False
 
 def generate_high_3_beep():
@@ -205,7 +121,7 @@ def generate_high_3_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_3_beep.wav")
         beep_sound.play()
-        time.sleep(3)
+        # time.sleep(0.5)
         is_beeping = False
 
 def generate_high_2_beep():
@@ -216,7 +132,7 @@ def generate_high_2_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_2_beep.wav")
         beep_sound.play()
-        time.sleep(3)
+        # time.sleep(0.5)
         is_beeping = False
 
 def generate_high_1_beep():
@@ -227,7 +143,7 @@ def generate_high_1_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_1_beep.wav")
         beep_sound.play()
-        time.sleep(3)
+        # time.sleep(0.5)
         is_beeping = False
 
 def generate_mid_beep():
@@ -238,7 +154,7 @@ def generate_mid_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/mid_beep.wav")
         beep_sound.play()
-        time.sleep(3)
+        # time.sleep(0.5)
         is_beeping = False
 
 def generate_long_beep():
@@ -249,7 +165,7 @@ def generate_long_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
         beep_sound.play()
-        time.sleep(1)
+        # time.sleep(0.5)
         is_beeping = False
 
 def generate_high_beep():
@@ -260,7 +176,7 @@ def generate_high_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
         beep_sound.play()
-        time.sleep(3)
+        time.sleep(0.3)
         is_beeping = False
 
 def generate_low_beep():
@@ -271,7 +187,7 @@ def generate_low_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/low_beep.wav")
         beep_sound.play()
-        time.sleep(1)
+        # time.sleep(0.3)
         is_beeping = False
 
 def camera_calibration(image):
@@ -310,7 +226,7 @@ def camera_calibration(image):
     return dst
 
 def pixel_to_cm(height):
-    return 330/height
+    return 270/height
 
 def find_foot(a1, b1, a2, b2, a3, b3):
     # a1, b1 / a2, b2는 헤드 ir센서의 좌표
@@ -388,7 +304,7 @@ def is_valid_string(input_string):
 def return_ball_direction_change(previous_pos, current_pos, threshold=30):
     if abs(current_pos - previous_pos) >= threshold:
         if previous_pos < current_pos:
-            return 'bottom'
+            return 'down'
         elif previous_pos > current_pos:
             return 'up'
 
@@ -399,11 +315,10 @@ def generate_TTS(text):
         engine = pyttsx3.init('espeak')
         engine.say(str(text))
         engine.runAndWait()
-        time.sleep(3)
+        # time.sleep(1)
         is_beeping = False
 
 def get_ball_head_distance(ball_pos, head_pos, cm):
-    print(f'1cm {cm}')
     가로거리차이 = (abs(ball_pos[0]-head_pos) * cm / 10)
     print(f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다 헤드와 공의 거리 차이는 {abs(ball_pos[0]-head_pos)} pixel')
     return 가로거리차이
