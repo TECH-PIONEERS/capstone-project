@@ -225,8 +225,7 @@ def camera_calibration(image):
     return dst
 
 def pixel_to_cm(height):
-    print(200/height) #단위(mm)
-    return 200/height
+    return 330/height
 
 def find_foot(a1, b1, a2, b2, a3, b3):
     # a1, b1 / a2, b2는 헤드 ir센서의 좌표
@@ -308,8 +307,20 @@ def return_ball_direction_change(previous_pos, current_pos, threshold=30):
         elif previous_pos > current_pos:
             return 'up'
 
+def generate_TTS(text):
+    global is_beeping
+    if not is_beeping:
+        is_beeping = True  
+        engine = pyttsx3.init()
+        engine.say(text)
+        engine.runAndWait()
+        time.sleep(3)
+        is_beeping = False
+
 def get_ball_head_distance(ball_pos, head_pos, cm):
     print(f'1cm {cm}')
     가로거리차이 = (abs(ball_pos[0]-head_pos) * cm / 10)
     print(f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다 헤드와 공의 거리 차이는 {abs(ball_pos[0]-head_pos)} pixel')
+    # generate_TTS();
     return 
+

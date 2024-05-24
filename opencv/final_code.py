@@ -73,11 +73,13 @@ def tts_process(tts_flag):
             beep_thread.join()
         elif tts_flag.value == const.ball_align_bottom:
             print("골 과 공 정렬되지않음 bottom")
+            # utils.generate_TTS('bottom')
             beep_thread = threading.Thread(target=utils.generate_mid_beep)
             beep_thread.start()
             beep_thread.join()
         elif tts_flag.value == const.ball_align_up:
             print("골 과 공 정렬되지않음 up")
+            # utils.generate_TTS('up')
             beep_thread = threading.Thread(target=utils.generate_high_4_beep)
             beep_thread.start()
             beep_thread.join()    
