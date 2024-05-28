@@ -57,8 +57,8 @@ def get_position(event, x, y, flags, params):
             cm = int(utils.pixel_to_cm(end_y-start_y))
             # cv2.destroyWindow('cap')  # 마우스 클릭 이벤트를 위한 창 닫기
         elif flag == 2:
-            goal_x = x
-            goal_y = y
+            goal_x = 583
+            goal_y = 134
             flag = 3
     return 
 
@@ -177,7 +177,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
                     if(len(output) > 1):
                         cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.42)), 5, (0,0,255), -1)
                     if(len(output) > 3):
-                        cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.42)), 5, (255,0,255), -1)
+                        cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.42)), 5, (255,0,0), -1)
                         # if (utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 2 or utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[1])//4 * 0.42))//2) == 3) and tts_flag.value >= const.head_center_down:
                         #     if utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 2:
                         #         tts_flag.value = const.head_center_up

@@ -77,6 +77,7 @@ def test_head_align(output1):
         tou_x = tou_x * 1.04
 
     distance = head_x - int(tou_x)
+    print("head : ", head_x, "distance : ", distance)
 
     # 정렬 및 기울어짐 판별
     if distance > -30 and distance < 30:
@@ -110,7 +111,7 @@ def generate_high_4_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_4_beep.wav")
         beep_sound.play()
-        # time.sleep(0.5)
+        time.sleep(1)
         is_beeping = False
 
 def generate_high_3_beep():
@@ -121,7 +122,7 @@ def generate_high_3_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_3_beep.wav")
         beep_sound.play()
-        # time.sleep(0.5)
+        time.sleep(1)
         is_beeping = False
 
 def generate_high_2_beep():
@@ -132,7 +133,7 @@ def generate_high_2_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_2_beep.wav")
         beep_sound.play()
-        # time.sleep(0.5)
+        time.sleep(1)
         is_beeping = False
 
 def generate_high_1_beep():
@@ -143,7 +144,7 @@ def generate_high_1_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_1_beep.wav")
         beep_sound.play()
-        # time.sleep(0.5)
+        time.sleep(1)
         is_beeping = False
 
 def generate_mid_beep():
@@ -154,7 +155,7 @@ def generate_mid_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/mid_beep.wav")
         beep_sound.play()
-        # time.sleep(0.5)
+        time.sleep(1)
         is_beeping = False
 
 def generate_long_beep():
@@ -165,7 +166,7 @@ def generate_long_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
         beep_sound.play()
-        # time.sleep(0.5)
+        time.sleep(1)
         is_beeping = False
 
 def generate_high_beep():
@@ -176,7 +177,7 @@ def generate_high_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
         beep_sound.play()
-        time.sleep(0.3)
+        time.sleep(1)
         is_beeping = False
 
 def generate_low_beep():
@@ -187,7 +188,7 @@ def generate_low_beep():
         pygame.mixer.init()
         beep_sound = pygame.mixer.Sound("sound/low_beep.wav")
         beep_sound.play()
-        # time.sleep(0.3)
+        time.sleep(1)
         is_beeping = False
 
 def camera_calibration(image):
@@ -269,11 +270,11 @@ def goal(goal_y,y):
         return False
 
 def 골과공정렬(goal_y, y):
-    if(y >= (goal_y-8) and y <= (goal_y+8)):
+    if(y >= (goal_y-5) and y <= (goal_y+5)):
         return True
-    elif y < (goal_y-8):
+    elif y < (goal_y-5):
         return 2
-    elif y > (goal_y+8):
+    elif y > (goal_y+5):
         return 3
 
 def is_valid_string(input_string):
