@@ -63,49 +63,117 @@ def get_position(event, x, y, flags, params):
     return 
 
 def tts_process(tts_flag, dist):
+    # 함수 안에서 라이브러리 import, utils 함수 및 변수 안 쓰도록
     import utils
+    import time
+    import pygame
+    import pyttsx3
+    from espeak import espeak
+
+    #is_beeping = False
+    #current_dist = 0
+    pygame.init()
+    pygame.mixer.init()
+    engine = pyttsx3.init('espeak')
+
     while True:
-        if utils.is_beeping == True: return
-        if tts_flag.value == const.ball_missing:
-            print("no ball")
-            beep_thread = threading.Thread(target=utils.generate_high_beep)
-            beep_thread.start()
-            beep_thread.join()
-        elif tts_flag.value == const.ball_align_bottom:
+        #tts_lock.acquire() # 선점 방지 Lock
+        current_flag = tts_flag.value
+        #print(current_flag)
+        #tts_lock.release() # 선점 해지
+
+        #dist_lock.acquire() # 선점 방지 Lock
+        current_dist = dist.value
+        #dist_lock.release()
+
+        if current_flag == const.ball_missing:
+            print("ball missing")
+            beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
+            beep_sound.play()
+            time.sleep(3)
+            current_dist = 0
+        elif current_flag == const.ball_align_bottom:
             print("ball bottom")
-            beep_thread = threading.Thread(target=utils.generate_TTS,args=("down", ))
-            beep_thread.start()
-            beep_thread.join()
-        elif tts_flag.value == const.ball_align_up:
+            engine.say("Down") #TTS
+            engine.runAndWait()
+            current_dist = 0
+        elif current_flag == const.ball_align_up:
             print("ball up")
-            beep_thread = threading.Thread(target=utils.generate_TTS,args=("up", ))
-            beep_thread.start()
-            beep_thread.join()    
-        elif tts_flag.value == const.head_missing: #퍼터 값이 없을 경우
-            print("no head")
-            beep_thread = threading.Thread(target=utils.generate_alert_beep)
-            beep_thread.start()
-            beep_thread.join()
-        elif tts_flag.value == const.head_align: #퍼터 값이 없을 경우
+            engine.say("Up") #TTS
+            engine.runAndWait()
+            current_dist = 0 
+        elif current_flag == const.head_missing: #퍼터 값이 없을 경우
+            print("head missing")
+            beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
+            beep_sound.play()
+            time.sleep(3)
+            current_dist = 0
+        elif current_flag == const.head_align: #정렬 되지 않은 경우
             print("no head align")
-            beep_thread = threading.Thread(target=utils.generate_high_beep)
-            beep_thread.start()
-            beep_thread.join()
-        # elif tts_flag.value == const.head_center_down:
-        #     print("head down")
-        #     # beep_thread = threading.Thread(target=utils.generate_TTS,args=("down2", ))
-        #     # beep_thread.start()
-        #     # beep_thread.join()
-        # elif tts_flag.value == const.head_center_up:
-        #     print("head up")
-        #     # beep_thread = threading.Thread(target=utils.generate_TTS,args=("up2", ))
-        #     # beep_thread.start()
-        #     # beep_thread.join()
-        # elif dist.value > 0:
-            # print(f"dist {dist.value}")
-            # beep_thread = threading.Thread(target=utils.generate_TTS,args=(dist.value, ))
-            # beep_thread.start()
-            # beep_thread.join()
+            beep_sound = pygame.mixer.Sound("sound/low_beep.wav")
+            beep_sound.play()
+            time.sleep(3)
+            current_dist = 0
+        elif current_flag == const.head_center_down:
+            print("head down")
+            engine.say("head Down") #TTS
+            engine.runAndWait()
+            current_dist = 0
+        elif current_flag == const.head_center_up:
+            print("head up")            
+            engine.say("Head Up") #TTS
+            engine.runAndWait()
+            current_dist = 0
+        elif current_dist > 0:
+            print(f"dist {current_dist}")
+            engine.say(str(int(current_dist))) #TTS
+            engine.runAndWait()
+
+
+# def tts_process(tts_flag, dist):
+#     import utils
+#     while True:
+#         if utils.is_beeping == True: return
+#         if tts_flag.value == const.ball_missing:
+#             print("no ball")
+#             beep_thread = threading.Thread(target=utils.generate_high_beep)
+#             beep_thread.start()
+#             beep_thread.join()
+#         elif tts_flag.value == const.ball_align_bottom:
+#             print("ball bottom")
+#             beep_thread = threading.Thread(target=utils.generate_TTS,args=("down", ))
+#             beep_thread.start()
+#             beep_thread.join()
+#         elif tts_flag.value == const.ball_align_up:
+#             print("ball up")
+#             beep_thread = threading.Thread(target=utils.generate_TTS,args=("up", ))
+#             beep_thread.start()
+#             beep_thread.join()    
+#         elif tts_flag.value == const.head_missing: #퍼터 값이 없을 경우
+#             print("no head")
+#             beep_thread = threading.Thread(target=utils.generate_alert_beep)
+#             beep_thread.start()
+#             beep_thread.join()
+#         elif tts_flag.value == const.head_align: #퍼터 값이 없을 경우
+#             print("no head align")
+#             beep_thread = threading.Thread(target=utils.generate_high_beep)
+#             beep_thread.start()
+#             beep_thread.join()
+#         # elif tts_flag.value == const.head_center_down:
+#         #     print("head down")
+#         #     # beep_thread = threading.Thread(target=utils.generate_TTS,args=("down2", ))
+#         #     # beep_thread.start()
+#         #     # beep_thread.join()
+#         # elif tts_flag.value == const.head_center_up:
+#         #     print("head up")
+#         #     # beep_thread = threading.Thread(target=utils.generate_TTS,args=("up2", ))
+#         #     # beep_thread.start()
+#         #     # beep_thread.join()
+#         # elif dist.value > 0:
+#             # print(f"dist {dist.value}")
+#             # beep_thread = threading.Thread(target=utils.generate_TTS,args=(dist.value, ))
+#             # beep_thread.start()
+#             # beep_thread.join()
 
 def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
     global previous_direction
@@ -178,13 +246,14 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
                         cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.42)), 5, (0,0,255), -1)
                     if(len(output) > 3):
                         cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.42)), 5, (255,0,0), -1)
-                        # if (utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 2 or utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[1])//4 * 0.42))//2) == 3) and tts_flag.value >= const.head_center_down:
-                        #     if utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 2:
-                        #         tts_flag.value = const.head_center_up
-                        #     elif utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 3:
-                        #         tts_flag.value = const.head_center_down
-                        # elif utils.골과공정렬(goal_y - start_y,(int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) and tts_flag.value != const.default:
-                        #     tts_flag.value = const.default
+                        if (utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 2 or utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[1])//4 * 0.42))//2) == 3) and tts_flag.value >= const.head_center_up:
+                            if utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 2:
+                                tts_flag.value = const.head_center_up
+                            elif utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 3:
+                                tts_flag.value = const.head_center_down
+                        elif utils.골과공정렬(goal_y - start_y,(int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) and tts_flag.value != const.default:
+                            tts_flag.value = const.default
+                        # print(f"len(output) > 3 : {tts_flag.value}")
                             
 
             blurred = cv2.GaussianBlur(frame, (11, 11), 0)
@@ -213,7 +282,9 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
                     elif utils.골과공정렬(goal_y - start_y, center[1]) == 3:
                         tts_flag.value = const.ball_align_bottom
                 elif utils.골과공정렬(goal_y - start_y, center[1]) and tts_flag.value != const.default: tts_flag.value = const.default                 
-                
+            
+                # OK
+
                 if ball_position[0] == -999 or ball_position[1] == -999 : 
                     ball_position[0] = center[0]
                     ball_position[1] = center[1] 
@@ -239,12 +310,15 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
             else:
                 tts_flag.value = const.ball_missing
             
+            print(tts_flag.value)
+
             if align_success.value == const.align_default and center and not isMoving.value:
                 if len(glo_output) <= 0:
                     continue
                 dist.value = utils.get_ball_head_distance(center, int(glo_output[0]//4 * calibration), cm)
                 align_success.value = -1
         
+
             cv2.imshow("Frame", frame)
         else:
             cv2.imshow('cap', cap)
@@ -271,13 +345,13 @@ def get_serial(conn, tts_flag,align_success):
                 if tts_flag.value == const.head_missing:
                     tts_flag.value = const.default
                     
-                if len(output1) < 3 and tts_flag.value > const.head_align:
-                    tts_flag.value = const.head_align
-                elif len(output1) == 4 and tts_flag.value >= const.head_align:
-                    tts_flag.value = utils.test_head_align(output1)
+                # if len(output1) < 3 and tts_flag.value > const.head_align:
+                #     tts_flag.value = const.head_align
+                # elif len(output1) == 4 and tts_flag.value >= const.head_align:
+                #     tts_flag.value = utils.test_head_align(output1)
+                #     if tts_flag.value == const.default:
+                #         align_success.value = const.align_default
 
-                    if tts_flag.value == const.default:
-                        align_success.value = const.align_default
                 conn.send([output, output1])
             else:
                 if tts_flag.value > const.head_missing:

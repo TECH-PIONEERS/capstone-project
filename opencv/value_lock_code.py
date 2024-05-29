@@ -12,6 +12,7 @@ import threading
 import serial
 import cv2
 import numpy as np
+import time
 
 lf = b'\n'  # Linefeed in ASCII
 myString = None
@@ -60,7 +61,7 @@ def get_position(event, x, y, flags, params):
             flag = 3
     return 
 
-def tts_process(tts_flag, lock, dist):
+def tts_process(tts_flag, tts_lock, dist, dist_lock):
     # 함수 안에서 라이브러리 import, utils 함수 및 변수 안 쓰도록
     import utils
     import time
@@ -75,11 +76,13 @@ def tts_process(tts_flag, lock, dist):
     engine = pyttsx3.init('espeak')
 
     while True:
-        lock.acquire() # 선점 방지 Lock
+        tts_lock.acquire() # 선점 방지 Lock
         current_flag = tts_flag.value
-        lock.release() # 선점 해지
+        tts_lock.release() # 선점 해지
 
+        dist_lock.acquire() # 선점 방지 Lock
         current_dist = dist.value
+        dist_lock.release()
 
         if current_flag == const.ball_missing:
             print("ball missing")
@@ -114,10 +117,10 @@ def tts_process(tts_flag, lock, dist):
              engine.runAndWait()
         elif current_dist > 0:
              print(f"dist {current_dist}")
-             engine.say(str(current_dist)) #TTS
+             engine.say(str(int(current_dist))) #TTS
              engine.runAndWait()
 
-def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, lock):
+def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, tts_lock, dist_lock):
     global previous_direction
     global goal_y
     global flag
@@ -221,18 +224,18 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
                 
                 if tts_flag.value == const.ball_missing: 
-                    lock.acquire() # 선점 방지 Lock
+                    tts_lock.acquire() # 선점 방지 Lock
                     tts_flag.value = const.default
-                    lock.release() # 선점 해지
+                    tts_lock.release() # 선점 해지
                 if (utils.골과공정렬(goal_y - start_y, center[1]) == 2 or utils.골과공정렬(goal_y - start_y, center[1]) == 3) and tts_flag.value >= const.ball_align_up:
                     if utils.골과공정렬(goal_y - start_y, center[1]) == 2:
-                        lock.acquire() # 선점 방지 Lock
+                        tts_lock.acquire() # 선점 방지 Lock
                         tts_flag.value = const.ball_align_up
-                        lock.release() # 선점 해지
+                        tts_lock.release() # 선점 해지
                     elif utils.골과공정렬(goal_y - start_y, center[1]) == 3:
-                        lock.acquire() # 선점 방지 Lock
+                        tts_lock.acquire() # 선점 방지 Lock
                         tts_flag.value = const.ball_align_bottom
-                        lock.release() # 선점 해지
+                        tts_lock.release() # 선점 해지
                 elif utils.골과공정렬(goal_y - start_y, center[1]) and tts_flag.value != const.default: tts_flag.value = const.default                 
                 
                 if ball_position[0] == -999 or ball_position[1] == -999 : 
@@ -258,14 +261,16 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
 
                 pts.appendleft(center)  
             else:
-                lock.acquire() # 선점 방지 Lock
+                tts_lock.acquire() # 선점 방지 Lock
                 tts_flag.value = const.ball_missing
-                lock.release() # 선점 해지
+                tts_lock.release() # 선점 해지
             
             if align_success.value == const.align_default and center and not isMoving.value:
                 if len(glo_output) <= 0:
                     continue
+                dist_lock.acquire()
                 dist.value = utils.get_ball_head_distance(center, int(glo_output[0]//4 * calibration), cm)   
+                dist_lock.release()
                 align_success.value = -1
         
             cv2.imshow("Frame", frame)
@@ -278,7 +283,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
 
     cv2.destroyAllWindows()
 
-def get_serial(conn, tts_flag,align_success, lock):
+def get_serial(conn, tts_flag,align_success, tts_lock):
     myPort = serial.Serial('/dev/ttyUSB1', 9600,timeout=0.1)
     myPort1 = serial.Serial('/dev/ttyUSB0', 9600, timeout=0.1)
     time.sleep(0.5) 
@@ -292,27 +297,27 @@ def get_serial(conn, tts_flag,align_success, lock):
             o2_bool, output1 = utils.is_valid_string(myString1)
             if o1_bool or o2_bool:
                 if tts_flag.value == const.head_missing:
-                    lock.acquire() # 선점 방지 Lock
+                    tts_lock.acquire() # 선점 방지 Lock
                     tts_flag.value = const.default
-                    lock.release() # 선점 해지
+                    tts_lock.release() # 선점 해지
                     
                 if len(output1) < 3 and tts_flag.value > const.head_align:
-                    lock.acquire() # 선점 방지 Lock
+                    tts_lock.acquire() # 선점 방지 Lock
                     tts_flag.value = const.head_align
-                    lock.release() # 선점 해지
+                    tts_lock.release() # 선점 해지
                 elif len(output1) == 4 and tts_flag.value >= const.head_align:
-                    lock.acquire() # 선점 방지 Lock
+                    tts_lock.acquire() # 선점 방지 Lock
                     tts_flag.value = utils.test_head_align(output1)
-                    lock.release() # 선점 해지
+                    tts_lock.release() # 선점 해지
 
                     if tts_flag.value == const.default:
                         align_success.value = const.align_default
                 conn.send([output, output1])
             else:
                 if tts_flag.value > const.head_missing:
-                    lock.acquire() # 선점 방지 Lock
+                    tts_lock.acquire() # 선점 방지 Lock
                     tts_flag.value = const.head_missing    
-                    lock.release() # 선점 해지    
+                    tts_lock.release() # 선점 해지    
 
 BALL_MOVEMENT_THRESHOLD = 10
 def check_movement(ball_pos, isMoving):
@@ -331,14 +336,16 @@ def check_movement(ball_pos, isMoving):
 if __name__ == '__main__':
     import const
     with Manager() as manager:
-        tts_flag_lock           = Lock()
+        tts_lock                = Lock()
+        dist_lock               = Lock()
 
         parent_conn, child_conn = Pipe()
         ball_position           = manager.list()
         align_success           = manager.Namespace()
         align_success.value     = -1
-        dist                    = manager.Namespace()
-        dist.value              = const.dist_default
+        #dist                    = manager.Namespace()
+        #dist.value              = const.dist_default
+        dist                    = Value('f', const.dist_default, lock=False)
         tts_flag                = Value('i', const.default, lock=False)
         isMoving                = manager.Namespace()
         isMoving.value          = True
@@ -346,10 +353,10 @@ if __name__ == '__main__':
         ball_position.append(-999)
         ball_position.append(-999)
 
-        p1 = Process(target=stream_opencv, args=(parent_conn, ball_position, tts_flag, isMoving, align_success, dist, tts_flag_lock ))
-        p2 = Process(target=get_serial, args=(child_conn,tts_flag, align_success, tts_flag_lock, ))
+        p1 = Process(target=stream_opencv, args=(parent_conn, ball_position, tts_flag, isMoving, align_success, dist, tts_lock, dist_lock))
+        p2 = Process(target=get_serial, args=(child_conn,tts_flag, align_success, tts_lock, ))
         p3 = Process(target=check_movement,args=(ball_position,isMoving, ))
-        p4 = Process(target=tts_process, args=(tts_flag, tts_flag_lock, dist ))
+        p4 = Process(target=tts_process, args=(tts_flag, tts_lock, dist, dist_lock ))
 
         p1.start()
         p2.start()

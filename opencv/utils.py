@@ -77,14 +77,17 @@ def test_head_align(output1):
         tou_x = tou_x * 1.04
 
     distance = head_x - int(tou_x)
-    print("head : ", head_x, "distance : ", distance)
+
+    #print("head : ", head_x, "tou: ", tou_x, "distance : ", distance)
 
     # 정렬 및 기울어짐 판별
     if distance > -30 and distance < 30:
         return const.default
     elif distance < -30:
+        print("CW")
         return const.head_align
     elif distance > 30:
+        print("CCW")
         return const.head_align
     else:
         return const.head_align
@@ -321,6 +324,6 @@ def generate_TTS(text):
 
 def get_ball_head_distance(ball_pos, head_pos, cm):
     가로거리차이 = (abs(ball_pos[0]-head_pos) * cm / 10)
-    print(f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다 헤드와 공의 거리 차이는 {abs(ball_pos[0]-head_pos)} pixel')
+    #print(f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다 헤드와 공의 거리 차이는 {abs(ball_pos[0]-head_pos)} pixel')
     return 가로거리차이
 
