@@ -14,10 +14,10 @@ is_beeping = False
 
 # 원이 범위를 벗어나면 경고 문구 출력하는 함수
 def ballOutOfRangeAlert(x, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
-    if x - r < (SCREEN_WIDTH // 5) * 2 # 카메라쪽
+    if x - r < (SCREEN_WIDTH // 5) * 2: # 카메라쪽
         print("Circle x is going out of screen boundary!")
         return True
-    elif x + r > (SCREEN_WIDTH // 5) * 3 # 바깥쪽
+    elif x + r > (SCREEN_WIDTH // 5) * 3: # 바깥쪽
         print("Circle x is going out of screen boundary!")
         return True    
     else:
@@ -121,8 +121,6 @@ def generate_beep(case):
                 beep_sound = pygame.mixer.Sound("sound/mid_beep.wav")
             case 6:
                 beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
-            case 7:
-                beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
             case 8:
                 beep_sound = pygame.mixer.Sound("sound/low_beep.wav")
         beep_sound.play()

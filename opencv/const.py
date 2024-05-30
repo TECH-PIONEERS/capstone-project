@@ -17,5 +17,4 @@ high2 = 3
 high1 = 4
 mid_beep = 5
 long_beep = 6
-high = 7
 low_beep = 8  
