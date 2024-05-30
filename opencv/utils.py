@@ -8,10 +8,20 @@ import const
 import pyttsx3
 from espeak import espeak
 
-
 # 경고음이 울리고 있는지 여부를 나타내는 변수
 global is_beeping
 is_beeping = False
+
+# 원이 범위를 벗어나면 경고 문구 출력하는 함수
+def ballOutOfRangeAlert(x, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
+    if x - r < (SCREEN_WIDTH // 5) * 2 # 카메라쪽
+        print("Circle x is going out of screen boundary!")
+        return True
+    elif x + r > (SCREEN_WIDTH // 5) * 3 # 바깥쪽
+        print("Circle x is going out of screen boundary!")
+        return True    
+    else:
+		    return False
 
 def test_head_align(output1):     
     head_x = 0
