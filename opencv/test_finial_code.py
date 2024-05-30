@@ -19,48 +19,23 @@ lf = b'\n'  # Linefeed in ASCII
 myString = None
 myString1 = None
 golfball_size = 3
-flag = 0
-start_x, start_y, end_x, end_y, goal_x, goal_y = 0, 0, 0, 0, 0, 0
 previous_frame = None
 
 glo_output = []
-# yello
-# colorLower = (5, 152, 152) 
-# colorUpper = (150, 250, 250) 
 
 # red
 colorLower = ( 130, 210, 190) # setting for red
 colorUpper = ( 185, 255, 255) # BGR
 
 previous_direction = ''
-cm = ''
 
-def get_position(event, x, y, flags, params):
-    global start_x 
-    global start_y 
-    global end_x 
-    global end_y 
-    global flag
-    global goal_x
-    global goal_y
-    global cm
-    if event == cv2.EVENT_LBUTTONDOWN:
-        if flag == 0:
-            # start_x = x
-            start_x = 8
-            start_y = 101
-            flag = 1
-        elif flag == 1:
-            end_x = 600
-            end_y = 174
-            flag = 2  # flag를 2로 설정하여 crop할 좌표를 모두 선택한 상태로 변경
-            cm = int(utils.pixel_to_cm(end_y-start_y))
-            # cv2.destroyWindow('cap')  # 마우스 클릭 이벤트를 위한 창 닫기
-        elif flag == 2:
-            goal_x = 583
-            goal_y = 134
-            flag = 3
-    return 
+start_x = 8
+start_y = 101
+end_x = 600
+end_y = 174
+goal_x = 583
+goal_y = 134
+cm = int(utils.pixel_to_cm(end_y-start_y))
 
 def tts_process(tts_flag, dist):
     # 함수 안에서 라이브러리 import, utils 함수 및 변수 안 쓰도록
@@ -88,7 +63,7 @@ def tts_process(tts_flag, dist):
 
         if current_flag == const.ball_missing:
             print("ball missing")
-            beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
+            beep_sound = pygame.mixer.Sound("sound/high_1_beep.wav")
             beep_sound.play()
             time.sleep(3)
             current_dist = 0
@@ -129,52 +104,6 @@ def tts_process(tts_flag, dist):
             engine.say(str(int(current_dist))) #TTS
             engine.runAndWait()
 
-
-# def tts_process(tts_flag, dist):
-#     import utils
-#     while True:
-#         if utils.is_beeping == True: return
-#         if tts_flag.value == const.ball_missing:
-#             print("no ball")
-#             beep_thread = threading.Thread(target=utils.generate_high_beep)
-#             beep_thread.start()
-#             beep_thread.join()
-#         elif tts_flag.value == const.ball_align_bottom:
-#             print("ball bottom")
-#             beep_thread = threading.Thread(target=utils.generate_TTS,args=("down", ))
-#             beep_thread.start()
-#             beep_thread.join()
-#         elif tts_flag.value == const.ball_align_up:
-#             print("ball up")
-#             beep_thread = threading.Thread(target=utils.generate_TTS,args=("up", ))
-#             beep_thread.start()
-#             beep_thread.join()    
-#         elif tts_flag.value == const.head_missing: #퍼터 값이 없을 경우
-#             print("no head")
-#             beep_thread = threading.Thread(target=utils.generate_alert_beep)
-#             beep_thread.start()
-#             beep_thread.join()
-#         elif tts_flag.value == const.head_align: #퍼터 값이 없을 경우
-#             print("no head align")
-#             beep_thread = threading.Thread(target=utils.generate_high_beep)
-#             beep_thread.start()
-#             beep_thread.join()
-#         # elif tts_flag.value == const.head_center_down:
-#         #     print("head down")
-#         #     # beep_thread = threading.Thread(target=utils.generate_TTS,args=("down2", ))
-#         #     # beep_thread.start()
-#         #     # beep_thread.join()
-#         # elif tts_flag.value == const.head_center_up:
-#         #     print("head up")
-#         #     # beep_thread = threading.Thread(target=utils.generate_TTS,args=("up2", ))
-#         #     # beep_thread.start()
-#         #     # beep_thread.join()
-#         # elif dist.value > 0:
-#             # print(f"dist {dist.value}")
-#             # beep_thread = threading.Thread(target=utils.generate_TTS,args=(dist.value, ))
-#             # beep_thread.start()
-#             # beep_thread.join()
-
 def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
     global previous_direction
     global goal_y
@@ -196,7 +125,6 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
     picam2.start()
 
     while True:
-
         cap = picam2.capture_array()
         if cap is None:
             print('no frame')
@@ -206,126 +134,125 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
 
         cap = utils.camera_calibration(cap)
         cv2.namedWindow('cap')
-        cv2.setMouseCallback('cap', get_position)
 
-        if flag == 3:
-            # frame = cap[start_y:end_y, start_x:end_x]
-            frame = cap[start_y:end_y, start_x:end_x]
-            SCREEN_WIDTH = end_x - start_x
-            SCREEN_HEIGHT = end_y - start_y
+        frame = cap[start_y:end_y, start_x:end_x]
+        SCREEN_WIDTH = end_x - start_x
+        SCREEN_HEIGHT = end_y - start_y
 
-            if conn.poll():
-                res = conn.recv()
-                output = res[0]
-                output1 = res[1]
+        if conn.poll():
+            res = conn.recv()
+            output = res[0]
+            output1 = res[1]
 
-                if len(output1) > 3:
-                    if output1[1] > output1[3]:
-                        new_ouput = [output1[2], output1[3], output1[0], output1[1]]
-                elif (len(output1) > 1):
-                    new_ouput = output1
-                else:
-                    new_ouput = []
-
-                glo_output = new_ouput
-                
-                if len(new_ouput) > 1:
-                    if output1[0]//4 -80 <= -80:
-                        continue
-                    elif output1[0]//4 -80 <= 15:
-                        calibration = 0.285
-                    elif output1[0]//4 -80 <= 70:
-                        calibration = 0.31
-                    elif output1[0]//4 -80 <= 90:
-                        calibration = 0.34
-                    elif output1[0]//4 -80 <= 150:
-                        calibration = 0.36
-                    else: 
-                        calibration = 0.38
-                    if(len(output) > 1):
-                        cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[0])//4 * 0.42)), 5, (0,0,255), -1)
-                    if(len(output) > 3):
-                        cv2.circle(frame,( int(output1[0]//4 * calibration), int((output[2])//4 * 0.42)), 5, (255,0,0), -1)
-                        if (utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 2 or utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[1])//4 * 0.42))//2) == 3) and tts_flag.value >= const.head_center_up:
-                            if utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 2:
-                                tts_flag.value = const.head_center_up
-                            elif utils.골과공정렬(goal_y - start_y, (int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) == 3:
-                                tts_flag.value = const.head_center_down
-                        elif utils.골과공정렬(goal_y - start_y,(int((output[0])//4 * 0.42)+int((output[2])//4 * 0.42))//2) and tts_flag.value != const.default:
-                            tts_flag.value = const.default
-                        # print(f"len(output) > 3 : {tts_flag.value}")
-                            
-
-            blurred = cv2.GaussianBlur(frame, (11, 11), 0)
-            hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
-        
-            mask = cv2.inRange(hsv, colorLower, colorUpper)
-            mask = cv2.erode(mask, None, iterations=2)
-            mask = cv2.dilate(mask, None, iterations=2)
-
-            edges = cv2.Canny(mask, 30, 150)
-            cnts = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
-            cnts = imutils.grab_contours(cnts)
-
-            if len(cnts) > 0:
-                c = max(cnts, key=cv2.contourArea)
-                ((x, y), radius) = cv2.minEnclosingCircle(c)
-                M = cv2.moments(c)
-                if M["m00"] == 0 : M["m00"] = 1
-                center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-                
-                if tts_flag.value == const.ball_missing: 
-                    tts_flag.value = const.default
-                if (utils.골과공정렬(goal_y - start_y, center[1]) == 2 or utils.골과공정렬(goal_y - start_y, center[1]) == 3) and tts_flag.value >= const.ball_align_up:
-                    if utils.골과공정렬(goal_y - start_y, center[1]) == 2:
-                        tts_flag.value = const.ball_align_up
-                    elif utils.골과공정렬(goal_y - start_y, center[1]) == 3:
-                        tts_flag.value = const.ball_align_bottom
-                elif utils.골과공정렬(goal_y - start_y, center[1]) and tts_flag.value != const.default: tts_flag.value = const.default                 
-            
-                # OK
-
-                if ball_position[0] == -999 or ball_position[1] == -999 : 
-                    ball_position[0] = center[0]
-                    ball_position[1] = center[1] 
-                else:
-                    if previous_direction == '':
-                        previous_direction = utils.return_ball_direction_change(ball_position[1], center[1])
-                    else:
-                        current_direction = utils.return_ball_direction_change(ball_position[1], center[1])
-                        if previous_direction != current_direction:
-                            print('방향 바뀜')
-                    current_direction = previous_direction
-                    ball_position[0] = center[0]
-                    ball_position[1] = center[1]
-                    # 원 중심 좌표와 반지름을 이용하여 중심 계산
-                if radius > golfball_size:
-                    cv2.circle(frame, (int(x), int(y)), int(radius),
-                        (255, 0, 0), 2)
-                    cv2.circle(frame, center, 2, (255, 0, 0), -1)
-                    if x <= goal_y + 30:
-                        utils.goal(goal_y,y)
-
-                pts.appendleft(center)  
+            #fix
+            if len(output1) > 3:
+                if output1[1] > output1[3]:
+                    new_ouput = [output1[2], output1[3], output1[0], output1[1]]
+            elif (len(output1) > 1):
+                new_ouput = output1
             else:
-                tts_flag.value = const.ball_missing
+                new_ouput = []
+
+            glo_output = new_ouput
             
-            print(tts_flag.value)
-
-            if align_success.value == const.align_default and center and not isMoving.value:
-                if len(glo_output) <= 0:
+            if len(new_ouput) > 1:
+                if output1[0]//4 -80 <= -80:
                     continue
-                dist.value = utils.get_ball_head_distance(center, int(glo_output[0]//4 * calibration), cm)
-                align_success.value = -1
-        
+                elif output1[0]//4 -80 <= 15:
+                    calibration = 0.285
+                elif output1[0]//4 -80 <= 70:
+                    calibration = 0.31
+                elif output1[0]//4 -80 <= 90:
+                    calibration = 0.34
+                elif output1[0]//4 -80 <= 150:
+                    calibration = 0.36
+                else: 
+                    calibration = 0.38
+                output1_cali_x = int(output1[0]//4 * calibration)
+                if(len(output) > 1):
+                    output_cali_y1 = int((output[0])//4 * 0.42)
+                    cv2.circle(frame,(output1_cali_x, output_cali_y1), 5, (0,0,255), -1)
+                    if(len(output) > 3):
+                        output_cali_y2 = int((output[2])//4 * 0.42)
+                        cv2.circle(frame,(output1_cali_x, output_cali_y2), 5, (255,0,0), -1)
+                        #헤드 정렬 - 위치 판단
+                        is_head_align = utils.is_align((output_cali_y1+output_cali_y2)//2)
+                        if ( is_head_align == 2 or is_head_align == 3) and tts_flag.value >= const.head_center_up:
+                            if is_head_align == 2:
+                                tts_flag.value = const.head_center_up
+                            elif is_head_align == 3:
+                                tts_flag.value = const.head_center_down
+                        elif is_head_align and tts_flag.value != const.default:
+                            tts_flag.value = const.default
 
-            cv2.imshow("Frame", frame)
+        blurred = cv2.GaussianBlur(frame, (11, 11), 0)
+        hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
+    
+        mask = cv2.inRange(hsv, colorLower, colorUpper)
+        mask = cv2.erode(mask, None, iterations=2)
+        mask = cv2.dilate(mask, None, iterations=2)
+
+        edges = cv2.Canny(mask, 30, 150)
+        cnts = cv2.findContours(edges.copy(), cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        cnts = imutils.grab_contours(cnts)
+
+        if len(cnts) > 0:
+            c = max(cnts, key=cv2.contourArea)
+            ((x, y), radius) = cv2.minEnclosingCircle(c)
+            M = cv2.moments(c)
+            if M["m00"] == 0 : M["m00"] = 1
+            center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+            
+            if tts_flag.value == const.ball_missing: 
+                tts_flag.value = const.default
+            # 공 정렬 판단
+            is_ball_aling = utils.is_align(center[1])
+            if (is_ball_aling == 2 or is_ball_aling == 3) and tts_flag.value >= const.ball_align_up:
+                if is_ball_aling == 2:
+                    tts_flag.value = const.ball_align_up
+                elif is_ball_aling == 3:
+                    tts_flag.value = const.ball_align_bottom
+            elif is_ball_aling and (tts_flag.value == 2 or tts_flag.value == 3): tts_flag.value = const.default                 
+        
+            # OK
+
+            if ball_position[0] == -999 or ball_position[1] == -999 : 
+                ball_position[0] = center[0]
+                ball_position[1] = center[1] 
+            else:
+                if previous_direction == '':
+                    previous_direction = utils.return_ball_direction_change(ball_position[1], center[1])
+                else:
+                    current_direction = utils.return_ball_direction_change(ball_position[1], center[1])
+                    if previous_direction != current_direction:
+                        print('방향 바뀜')
+                current_direction = previous_direction
+                ball_position[0] = center[0]
+                ball_position[1] = center[1]
+                # 원 중심 좌표와 반지름을 이용하여 중심 계산
+            if radius > golfball_size:
+                cv2.circle(frame, (int(x), int(y)), int(radius),
+                    (255, 0, 0), 2)
+                cv2.circle(frame, center, 2, (255, 0, 0), -1)
+                # if x <= goal_y + 30:
+                #     utils.goal(y)
+            pts.appendleft(center)  
         else:
-            cv2.imshow('cap', cap)
-        #print(f'tts_flag {tts_flag.value}')
+            tts_flag.value = const.ball_missing
+        
+        print(tts_flag.value)
+
+        #fix
+        if align_success.value == const.align_default and center and not isMoving.value:
+            if len(glo_output) <= 0:
+                continue
+            dist.value = utils.get_ball_head_distance(center, int(glo_output[0]//4 * calibration), cm)
+            align_success.value = -1
+    
+        cv2.imshow('cap', frame)
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
-          break
+            break
 
     cv2.destroyAllWindows()
 
@@ -342,6 +269,7 @@ def get_serial(conn, tts_flag,align_success):
             o1_bool, output = utils.is_valid_string(myString)
             o2_bool, output1 = utils.is_valid_string(myString1)
             if o1_bool or o2_bool:
+                #fix
                 if tts_flag.value == const.head_missing:
                     tts_flag.value = const.default
                     
@@ -355,7 +283,7 @@ def get_serial(conn, tts_flag,align_success):
                 conn.send([output, output1])
             else:
                 if tts_flag.value > const.head_missing:
-                    tts_flag.value = const.head_missing        
+                    tts_flag.value = const.head_missing  
 
 BALL_MOVEMENT_THRESHOLD = 10
 def check_movement(ball_pos, isMoving):
@@ -388,7 +316,7 @@ if __name__ == '__main__':
         ball_position.append(-999)
         ball_position.append(-999)
 
-        p1 = Process(target=stream_opencv, args=(parent_conn, ball_position, tts_flag, isMoving, align_success, dist, ))
+        p1 = Process(target=stream_opencv, args=(parent_conn,ball_position,tts_flag,isMoving,align_success,dist, ))
         p2 = Process(target=get_serial, args=(child_conn,tts_flag, align_success, ))
         p3 = Process(target=check_movement,args=(ball_position,isMoving, ))
         p4 = Process(target=tts_process, args=(tts_flag,dist, ))

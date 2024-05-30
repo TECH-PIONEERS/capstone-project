@@ -14,10 +14,10 @@ is_beeping = False
 
 # 원이 범위를 벗어나면 경고 문구 출력하는 함수
 def ballOutOfRangeAlert(x, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
-    if x - r < (SCREEN_WIDTH // 5) * 2 # 카메라쪽
+    if x - r < (SCREEN_WIDTH // 5) * 2: # 카메라쪽
         print("Circle x is going out of screen boundary!")
         return True
-    elif x + r > (SCREEN_WIDTH // 5) * 3 # 바깥쪽
+    elif x + r > (SCREEN_WIDTH // 5) * 3: # 바깥쪽
         print("Circle x is going out of screen boundary!")
         return True    
     else:
@@ -102,13 +102,37 @@ def test_head_align(output1):
     else:
         return const.head_align
 
+def generate_beep(case):
+    global is_beeping
+    if not is_beeping:
+        is_beeping = True 
+        pygame.init()
+        pygame.mixer.init()
+        match case:
+            case 1:
+                beep_sound = pygame.mixer.Sound("sound/high_4_beep.wav")
+            case 2:
+                beep_sound = pygame.mixer.Sound("sound/high_3_beep.wav")
+            case 3:
+                beep_sound = pygame.mixer.Sound("sound/high_2_beep.wav")
+            case 4:
+                beep_sound = pygame.mixer.Sound("sound/high_1_beep.wav")
+            case 5:
+                beep_sound = pygame.mixer.Sound("sound/mid_beep.wav")
+            case 6:
+                beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
+            case 8:
+                beep_sound = pygame.mixer.Sound("sound/low_beep.wav")
+        beep_sound.play()
+        time.sleep(1)
+        is_beeping = False
+
 def generate_alert_beep():
     global is_beeping
     if not is_beeping:
         pygame.init()
         pygame.mixer.init()
         is_beeping = True
-   
         # generate_long_beep(alert=True)
         beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
         beep_sound.play()
@@ -273,7 +297,8 @@ def find_foot(a1, b1, a2, b2, a3, b3):
 # x_foot, y_foot = find_foot(a1, b1, a2, b2, a3, b3)
 # print("Foot coordinates:", (x_foot, y_foot))
 
-def goal(goal_y,y):
+def goal(y):
+    goal_y = 134 - 101
     # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
     if(y >= (goal_y-10) and y < (goal_y+10)):
         # print("goal")
@@ -282,7 +307,8 @@ def goal(goal_y,y):
         # print("miss")
         return False
 
-def 골과공정렬(goal_y, y):
+def is_align(y):
+    goal_y = 134 - 101
     if(y >= (goal_y-5) and y <= (goal_y+5)):
         return True
     elif y < (goal_y-5):
@@ -334,6 +360,5 @@ def generate_TTS(text):
 
 def get_ball_head_distance(ball_pos, head_pos, cm):
     가로거리차이 = (abs(ball_pos[0]-head_pos) * cm / 10)
-    #print(f'헤드와 공의 거리 차이는 {가로거리차이}cm입니다 헤드와 공의 거리 차이는 {abs(ball_pos[0]-head_pos)} pixel')
     return 가로거리차이
 
