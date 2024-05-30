@@ -298,7 +298,7 @@ def find_foot(a1, b1, a2, b2, a3, b3):
 # print("Foot coordinates:", (x_foot, y_foot))
 
 def goal(y):
-    goal_y = 134 - 101
+    goal_y = 36
     # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
     if(y >= (goal_y-10) and y < (goal_y+10)):
         # print("goal")
@@ -308,12 +308,13 @@ def goal(y):
         return False
 
 def is_align(y):
-    goal_y = 134 - 101
-    if(y >= (goal_y-5) and y <= (goal_y+5)):
+    goal_y = 36
+    offset = 2
+    if(y >= (goal_y-offset) and y <= (goal_y+offset)):
         return True
-    elif y < (goal_y-5):
+    elif y < (goal_y-offset):
         return 2
-    elif y > (goal_y+5):
+    elif y > (goal_y+offset):
         return 3
 
 def is_valid_string(input_string):

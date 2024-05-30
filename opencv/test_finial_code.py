@@ -24,8 +24,8 @@ previous_frame = None
 glo_output = []
 
 # red
-colorLower = ( 130, 210, 190) # setting for red
-colorUpper = ( 185, 255, 255) # BGR
+colorLower = (130, 210, 190) # setting for red
+colorUpper = (185, 255, 255) # BGR
 
 previous_direction = ''
 
@@ -34,7 +34,7 @@ start_y = 101
 end_x = 600
 end_y = 174
 goal_x = 583
-goal_y = 134
+goal_y = 36
 cm = int(utils.pixel_to_cm(end_y-start_y))
 
 def tts_process(tts_flag, dist):
@@ -51,6 +51,7 @@ def tts_process(tts_flag, dist):
     pygame.mixer.init()
     engine = pyttsx3.init('espeak')
 
+
     while True:
         #tts_lock.acquire() # 선점 방지 Lock
         current_flag = tts_flag.value
@@ -63,10 +64,10 @@ def tts_process(tts_flag, dist):
 
         if current_flag == const.ball_missing:
             print("ball missing")
-            beep_sound = pygame.mixer.Sound("sound/high_1_beep.wav")
-            beep_sound.play()
-            time.sleep(3)
-            current_dist = 0
+            # beep_sound = pygame.mixer.Sound("/sound/high_1_beep.wav")
+            # beep_sound.play()
+            # time.sleep(3)
+            # current_dist = 0
         elif current_flag == const.ball_align_bottom:
             print("ball bottom")
             engine.say("Down") #TTS
@@ -79,15 +80,15 @@ def tts_process(tts_flag, dist):
             current_dist = 0 
         elif current_flag == const.head_missing: #퍼터 값이 없을 경우
             print("head missing")
-            beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
-            beep_sound.play()
-            time.sleep(3)
+            # beep_sound = pygame.mixer.Sound("/sound/long_beep.wav")
+            # beep_sound.play()
+            # time.sleep(3)
             current_dist = 0
         elif current_flag == const.head_align: #정렬 되지 않은 경우
-            print("no head align")
-            beep_sound = pygame.mixer.Sound("sound/low_beep.wav")
-            beep_sound.play()
-            time.sleep(3)
+            # print("no head align")
+            # beep_sound = pygame.mixer.Sound("/sound/low_beep.wav")
+            # beep_sound.play()
+            # time.sleep(3)
             current_dist = 0
         elif current_flag == const.head_center_down:
             print("head down")
@@ -109,7 +110,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
     global goal_y
     global flag
     global glo_output
-    new_ouput = []
+    new_output = []
     ap = argparse.ArgumentParser()
     ap.add_argument("-v", "--video",
         help="path to the (optional) video file")
@@ -143,47 +144,54 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
             res = conn.recv()
             output = res[0]
             output1 = res[1]
-
             #fix
             if len(output1) > 3:
                 if output1[1] > output1[3]:
-                    new_ouput = [output1[2], output1[3], output1[0], output1[1]]
-            elif (len(output1) > 1):
-                new_ouput = output1
+                    new_output = [output1[2], output1[3], output1[0], output1[1]]
+                else:
+                    new_output = output1
             else:
-                new_ouput = []
-
-            glo_output = new_ouput
-            
-            if len(new_ouput) > 1:
-                if output1[0]//4 -80 <= -80:
+                new_output = output1
+            glo_output = new_output
+            # print(f"ouput : {output}")
+            #fix first time new_output = []
+            # print(f"ouput1 : {new_output}")
+            if len(new_output) > 1:
+                if new_output[0]//4 -80 <= -80:
                     continue
-                elif output1[0]//4 -80 <= 15:
-                    calibration = 0.285
-                elif output1[0]//4 -80 <= 70:
-                    calibration = 0.31
-                elif output1[0]//4 -80 <= 90:
-                    calibration = 0.34
-                elif output1[0]//4 -80 <= 150:
-                    calibration = 0.36
+                elif new_output[0]//4 -80 <= 15:
+                    calibration_x = 0.285
+                elif new_output[0]//4 -80 <= 70:
+                    calibration_x = 0.31
+                elif new_output[0]//4 -80 <= 90:
+                    calibration_x = 0.34
+                elif new_output[0]//4 -80 <= 150:
+                    calibration_x = 0.36
                 else: 
-                    calibration = 0.38
-                output1_cali_x = int(output1[0]//4 * calibration)
-                if(len(output) > 1):
-                    output_cali_y1 = int((output[0])//4 * 0.42)
+                    calibration_x = 0.39
+                output1_cali_x = int(new_output[0]//4 * calibration_x)
+                if(len(output) > 3):
+                    calibration_y = 0.29
+                    diff_y = abs(output[0]-output[2])
+                    diff_limit = 110
+                    if diff_y < diff_limit:
+                        offset = abs(diff_limit-diff_y)//9
+                    else:
+                        offset = 0
+                    output_cali_y1 = int((output[0])//4 * calibration_y - offset)
+                    output_cali_y2 = int((output[2])//4 * calibration_y + offset)
                     cv2.circle(frame,(output1_cali_x, output_cali_y1), 5, (0,0,255), -1)
-                    if(len(output) > 3):
-                        output_cali_y2 = int((output[2])//4 * 0.42)
-                        cv2.circle(frame,(output1_cali_x, output_cali_y2), 5, (255,0,0), -1)
-                        #헤드 정렬 - 위치 판단
-                        is_head_align = utils.is_align((output_cali_y1+output_cali_y2)//2)
-                        if ( is_head_align == 2 or is_head_align == 3) and tts_flag.value >= const.head_center_up:
-                            if is_head_align == 2:
-                                tts_flag.value = const.head_center_up
-                            elif is_head_align == 3:
-                                tts_flag.value = const.head_center_down
-                        elif is_head_align and tts_flag.value != const.default:
-                            tts_flag.value = const.default
+                    cv2.circle(frame,(output1_cali_x, output_cali_y2), 5, (255,0,0), -1)
+                    
+                    #헤드 정렬 - 위치 판단
+                    is_head_align = utils.is_align((output_cali_y1+output_cali_y2)//2)
+                    if ( is_head_align == 2 or is_head_align == 3) and tts_flag.value >= const.head_center_up:
+                        if is_head_align == 2:
+                            tts_flag.value = const.head_center_up
+                        elif is_head_align == 3:
+                            tts_flag.value = const.head_center_down
+                    elif is_head_align and (tts_flag.value == const.head_center_up or tts_flag.value == const.head_center_down):
+                        tts_flag.value = const.default
 
         blurred = cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -207,14 +215,21 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
                 tts_flag.value = const.default
             # 공 정렬 판단
             is_ball_aling = utils.is_align(center[1])
-            if (is_ball_aling == 2 or is_ball_aling == 3) and tts_flag.value >= const.ball_align_up:
+            if (is_ball_aling == 2 or is_ball_aling == 3) and tts_flag.value >= const.ball_align_bottom:
                 if is_ball_aling == 2:
                     tts_flag.value = const.ball_align_up
                 elif is_ball_aling == 3:
+                    print(f"bottom {tts_flag.value}")
                     tts_flag.value = const.ball_align_bottom
-            elif is_ball_aling and (tts_flag.value == 2 or tts_flag.value == 3): tts_flag.value = const.default                 
+            elif (is_ball_aling) and (tts_flag.value == const.ball_align_bottom or tts_flag.value == const.ball_align_up): 
+                tts_flag.value = const.default                 
         
             # OK
+            if len(new_output) == 4 and tts_flag.value >= const.head_align:
+                    print(f"tts_Flag1 {tts_flag.value}")
+                    tts_flag.value = utils.test_head_align(output1)
+                    print(f"tts_Flag2 {tts_flag.value}")
+
 
             if ball_position[0] == -999 or ball_position[1] == -999 : 
                 ball_position[0] = center[0]
@@ -239,8 +254,6 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
             pts.appendleft(center)  
         else:
             tts_flag.value = const.ball_missing
-        
-        print(tts_flag.value)
 
         #fix
         if align_success.value == const.align_default and center and not isMoving.value:
@@ -269,12 +282,12 @@ def get_serial(conn, tts_flag,align_success):
             o1_bool, output = utils.is_valid_string(myString)
             o2_bool, output1 = utils.is_valid_string(myString1)
             if o1_bool or o2_bool:
-                #fix
+                
                 if tts_flag.value == const.head_missing:
                     tts_flag.value = const.default
-                    
-                # if len(output1) < 3 and tts_flag.value > const.head_align:
-                #     tts_flag.value = const.head_align
+
+                if len(output1) < 3 and tts_flag.value > const.head_align:
+                    tts_flag.value = const.head_align
                 # elif len(output1) == 4 and tts_flag.value >= const.head_align:
                 #     tts_flag.value = utils.test_head_align(output1)
                 #     if tts_flag.value == const.default:
