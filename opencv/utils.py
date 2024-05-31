@@ -95,10 +95,12 @@ def test_head_align(output1):
         return const.default
     elif distance < -30:
         print("CW")
-        return const.head_align
+        # return const.head_align
+        return const.default
     elif distance > 30:
         print("CCW")
-        return const.head_align
+        # return const.head_align
+        return const.default
     else:
         return const.head_align
 
@@ -127,106 +129,6 @@ def generate_beep(case):
         time.sleep(1)
         is_beeping = False
 
-def generate_alert_beep():
-    global is_beeping
-    if not is_beeping:
-        pygame.init()
-        pygame.mixer.init()
-        is_beeping = True
-        # generate_long_beep(alert=True)
-        beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
-        beep_sound.play()
-        time.sleep(1)
-
-        is_beeping = False
-
-def generate_high_4_beep():
-    global is_beeping
-    if not is_beeping:
-        is_beeping = True 
-        pygame.init()
-        pygame.mixer.init()
-        beep_sound = pygame.mixer.Sound("sound/high_4_beep.wav")
-        beep_sound.play()
-        time.sleep(1)
-        is_beeping = False
-
-def generate_high_3_beep():
-    global is_beeping
-    if not is_beeping:
-        is_beeping = True 
-        pygame.init()
-        pygame.mixer.init()
-        beep_sound = pygame.mixer.Sound("sound/high_3_beep.wav")
-        beep_sound.play()
-        time.sleep(1)
-        is_beeping = False
-
-def generate_high_2_beep():
-    global is_beeping
-    if not is_beeping:
-        is_beeping = True 
-        pygame.init()
-        pygame.mixer.init()
-        beep_sound = pygame.mixer.Sound("sound/high_2_beep.wav")
-        beep_sound.play()
-        time.sleep(1)
-        is_beeping = False
-
-def generate_high_1_beep():
-    global is_beeping
-    if not is_beeping:
-        is_beeping = True 
-        pygame.init()
-        pygame.mixer.init()
-        beep_sound = pygame.mixer.Sound("sound/high_1_beep.wav")
-        beep_sound.play()
-        time.sleep(1)
-        is_beeping = False
-
-def generate_mid_beep():
-    global is_beeping
-    if not is_beeping:
-        is_beeping = True 
-        pygame.init()
-        pygame.mixer.init()
-        beep_sound = pygame.mixer.Sound("sound/mid_beep.wav")
-        beep_sound.play()
-        time.sleep(1)
-        is_beeping = False
-
-def generate_long_beep():
-    global is_beeping
-    if not is_beeping:
-        is_beeping = True   
-        pygame.init()
-        pygame.mixer.init()
-        beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
-        beep_sound.play()
-        time.sleep(1)
-        is_beeping = False
-
-def generate_high_beep():
-    global is_beeping
-    if not is_beeping:
-        is_beeping = True 
-        pygame.init()
-        pygame.mixer.init()
-        beep_sound = pygame.mixer.Sound("sound/high_beep.wav")
-        beep_sound.play()
-        time.sleep(1)
-        is_beeping = False
-
-def generate_low_beep():
-    global is_beeping
-    if not is_beeping:
-        is_beeping = True 
-        pygame.init()
-        pygame.mixer.init()
-        beep_sound = pygame.mixer.Sound("sound/low_beep.wav")
-        beep_sound.play()
-        time.sleep(1)
-        is_beeping = False
 
 def camera_calibration(image):
     # 카메라 보정 함수 
@@ -297,10 +199,11 @@ def find_foot(a1, b1, a2, b2, a3, b3):
 # x_foot, y_foot = find_foot(a1, b1, a2, b2, a3, b3)
 # print("Foot coordinates:", (x_foot, y_foot))
 
-def goal(y):
+def goal(x, y):
     goal_y = 36
+    goal_x = 578
     # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
-    if(y >= (goal_y-10) and y < (goal_y+10)):
+    if(y >= (goal_y-10) and y < (goal_y+10)) and (x >= (goal_x-6) and x < (goal_x+6)):
         # print("goal")
         return True
     else:
@@ -316,9 +219,8 @@ def is_align_x(x):
     else: # x align success
         return True
 
-def is_align(y):
+def is_align(y, offset=5):
     goal_y = 36
-    offset = 2
     if(y >= (goal_y-offset) and y <= (goal_y+offset)):
         return True
     elif y < (goal_y-offset):

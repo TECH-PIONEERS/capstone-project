@@ -7,6 +7,8 @@ head_center_up = 5
 head_center_down = 6
 head_align = 7
 ball_shot = 8
+game_win = 9
+game_lose = 10
 
 dist_default = -999
 upper_ir = 380
@@ -19,3 +21,5 @@ high1 = 4
 mid_beep = 5
 long_beep = 6
 low_beep = 8  
+
+boundary1 = 97
