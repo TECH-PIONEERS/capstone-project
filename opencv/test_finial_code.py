@@ -35,7 +35,6 @@ start_y = 101
 end_x = 600
 end_y = 174
 goal_x = 572
-cm = int(utils.pixel_to_cm(end_y-start_y))
 
 def tts_process(tts_flag, dist):
     # 함수 안에서 라이브러리 import, utils 함수 및 변수 안 쓰도록
@@ -283,12 +282,11 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
         else:
             tts_flag.value = const.ball_missing
 
-
         #fix
         if align_success.value == const.align_default and center and not isMoving.value:
             if len(glo_output) <= 0:
                 continue
-            dist.value = utils.get_ball_head_distance(center, int(glo_output[0]//4 * calibration), cm)
+            dist.value = utils.get_distance_AB(center[0], int(glo_output[0]//4 * calibration), cm)
             align_success.value = -1
     
         cv2.imshow('cap', frame)

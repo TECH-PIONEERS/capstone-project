@@ -270,6 +270,11 @@ def generate_TTS(text):
         # time.sleep(1)
         is_beeping = False
 
-def get_ball_head_distance(ball_pos, head_pos, cm):
-    가로거리차이 = (abs(ball_pos[0]-head_pos) * cm / 10)
-    return 가로거리차이
+import test_finial_code 
+end_x = 600
+end_y = 174
+cm = int(pixel_to_cm(end_y-start_y))
+
+def get_distance_AB(A, B):
+    dist = (abs(A-B) * cm / 10)
+    return dist
