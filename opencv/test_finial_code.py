@@ -69,12 +69,6 @@ def tts_process(tts_flag, dist):
             current_dist = 0
         elif current_flag == const.ball_align_bottom:
             print("ball bottom")
-            voices = engine.getProperty('voices')
-            volume = engine.getProperty('volume')
-
-            # engine.setProperty(voices, voice-)
-            engine.setProperty(voices, volume+0.5)
-
             engine.say("Down") #TTS
             engine.runAndWait()
             current_dist = 0
@@ -157,9 +151,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             else:
                 new_output = output1
             glo_output = new_output
-            # print(f"ouput : {output}")
-            #fix first time new_output = []
-            # print(f"ouput1 : {new_output}")
+
             if len(new_output) > 1:
                 if new_output[0]//4 -80 <= -80:
                     continue
@@ -175,10 +167,11 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                     calibration_x = 0.39
                 output1_cali_x = int(new_output[0]//4 * calibration_x)
                 if(len(output) > 3):
-                    calibration_y = 0.29
+                    # head align
+                    calibration_y = 0.5
                     diff_y = abs(output[0]-output[2])
                     print(f"diff {diff_y} {36}")
-                    diff_limit = 110
+                    diff_limit = 80
                     if diff_y < diff_limit:
                         offset = abs(diff_limit-diff_y)//9
                     else:
@@ -286,7 +279,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
         if align_success.value == const.align_default and center and not isMoving.value:
             if len(glo_output) <= 0:
                 continue
-            dist.value = utils.get_distance_AB(center[0], int(glo_output[0]//4 * calibration), cm)
+            dist.value = utils.get_distance_AB(center[0], int(glo_output[0]//4 * calibration))
             align_success.value = -1
     
         cv2.imshow('cap', frame)
