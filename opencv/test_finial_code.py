@@ -15,6 +15,7 @@ import cv2
 import numpy as np
 import time
 
+
 lf = b'\n'  # Linefeed in ASCII
 myString = None
 myString1 = None
@@ -64,10 +65,10 @@ def tts_process(tts_flag, dist):
 
         if current_flag == const.ball_missing:
             print("ball missing")
-            # beep_sound = pygame.mixer.Sound("/sound/high_1_beep.wav")
-            # beep_sound.play()
-            # time.sleep(3)
-            # current_dist = 0
+            beep_sound = pygame.mixer.Sound("opencv/sound/high_1_beep.wav")
+            beep_sound.play()
+            time.sleep(3)
+            current_dist = 0
         elif current_flag == const.ball_align_bottom:
             print("ball bottom")
             engine.say("Down") #TTS
@@ -80,15 +81,15 @@ def tts_process(tts_flag, dist):
             current_dist = 0 
         elif current_flag == const.head_missing: #퍼터 값이 없을 경우
             print("head missing")
-            # beep_sound = pygame.mixer.Sound("/sound/long_beep.wav")
-            # beep_sound.play()
-            # time.sleep(3)
+            beep_sound = pygame.mixer.Sound("opencv/sound/long_beep.wav")
+            beep_sound.play()
+            time.sleep(3)
             current_dist = 0
         elif current_flag == const.head_align: #정렬 되지 않은 경우
-            # print("no head align")
-            # beep_sound = pygame.mixer.Sound("/sound/low_beep.wav")
-            # beep_sound.play()
-            # time.sleep(3)
+            print("no head align")
+            beep_sound = pygame.mixer.Sound("opencv/sound/low_beep.wav")
+            beep_sound.play()
+            time.sleep(3)
             current_dist = 0
         elif current_flag == const.head_center_down:
             print("head down")
