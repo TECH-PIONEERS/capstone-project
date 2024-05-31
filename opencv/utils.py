@@ -12,6 +12,14 @@ from espeak import espeak
 global is_beeping
 is_beeping = False
 
+start_x = 8
+start_y = 101
+end_x = 600
+end_y = 174
+goal_x = 572
+
+cm = int(pixel_to_cm(end_y-start_y))
+
 # 원이 범위를 벗어나면 경고 문구 출력하는 함수
 def ballOutOfRangeAlert(x, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
     if x - r < (SCREEN_WIDTH // 5) * 2: # 카메라쪽
@@ -21,7 +29,7 @@ def ballOutOfRangeAlert(x, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
         print("Circle x is going out of screen boundary!")
         return True    
     else:
-		    return False
+		return False
 
 def test_head_align(output1):     
     head_x = 0
@@ -268,12 +276,7 @@ def generate_TTS(text):
         engine.say(str(text))
         engine.runAndWait()
         # time.sleep(1)
-        is_beeping = False
-
-import test_finial_code 
-end_x = 600
-end_y = 174
-cm = int(pixel_to_cm(end_y-start_y))
+        is_beeping = False 
 
 def get_distance_AB(A, B):
     dist = (abs(A-B) * cm / 10)
