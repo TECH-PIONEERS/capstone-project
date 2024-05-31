@@ -10,9 +10,7 @@ ball_shot = 8
 game_win = 9
 game_lose = 10
 
-dist_default = -999
-upper_ir = 380
-align_default = 888
+head_align_success = -888
 
 high4 = 1
 high3 = 2
