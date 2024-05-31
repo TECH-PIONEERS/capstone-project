@@ -159,23 +159,30 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                     calibration_x = 0.39
                 output1_cali_x = int(new_output[0]//4 * calibration_x)
                 if(len(output) > 3):
+                    calibration_y = 0.29
                     # head align
-                    calibration_y = 0.5
+                    # if output[0] > 560: 
+                    #     calibration_y = 0.28
+                    # elif output[0] < 538:
+                    #     calibration_y = 0.32
+                    # else:
+                    #     calibration_y = 0.3
                     diff_y = abs(output[0]-output[2])
-                    print(f"diff {diff_y} {36}")
-                    diff_limit = 80
+                    diff_limit = 100
                     if diff_y < diff_limit:
-                        offset = abs(diff_limit-diff_y)//9
+                        offset = abs(diff_limit-diff_y)
                     else:
                         offset = 0
                     output_cali_y1 = int((output[0])//4 * calibration_y - offset)
                     output_cali_y2 = int((output[2])//4 * calibration_y + offset)
+                    # output_cali_y1 = int((output[0])//4 * calibration_y - offset) 
+                    # output_cali_y2 = int((output[2])//4 * calibration_y + offset)
                     cv2.circle(frame,(output1_cali_x, output_cali_y1), 5, (0,0,255), -1)
                     cv2.circle(frame,(output1_cali_x, output_cali_y2), 5, (255,0,0), -1)
                     
                     if shot_flag.value == False :
                         #헤드 정렬 - 위치 판단
-                        is_head_align = utils.is_align((output_cali_y1+output_cali_y2)//2,2)
+                        is_head_align = utils.is_align((output_cali_y1+output_cali_y2)//2,1)
                         if ( is_head_align == 2 or is_head_align == 3) and tts_flag.value >= const.head_center_up:
                             if is_head_align == 2:
                                 tts_flag.value = const.head_center_up
@@ -213,7 +220,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 
                 # 공 정렬 판단
                 if isMoving.value == False:
-                    is_ball_aling = utils.is_align(center[1])
+                    is_ball_aling = utils.is_align(center[1],5)
                     if (is_ball_aling == 2 or is_ball_aling == 3) and tts_flag.value >= const.ball_align_bottom:
                         if is_ball_aling == 2:
                             tts_flag.value = const.ball_align_up
@@ -223,15 +230,15 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         tts_flag.value = 1003                 
                 # 헤드 정렬 판단
                 if len(new_output) == 4 and tts_flag.value >= const.head_align:
-                    const prevFlag = tts_flag.value
+                    prevFlag = tts_flag.value
                     tts_flag.value = utils.test_head_align(output1)
                     if prevFlag == const.head_align and tts_flag.value == const.default:
                         # tts_flag 값 변경
                         tts_flag.value = const.head_align_success
                         # 공과 골 사이 거리
-                        dist[0] = get_distance_AB(center[1],goal_x)
-                        # 공과 헤드 사이 거리
-                        dist[1] = get_distance_AB(center[1],int(glo_output[0]//4 * calibration))
+                        dist[0] = utils.get_distance_AB(center[1],goal_x)
+                        # # 공과 헤드 사이 거리
+                        dist[1] = utils.get_distance_AB(center[1],output1_cali_x)
 
             else: # ball_shot
                 print(f"ball shot true")
@@ -274,8 +281,8 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
     cv2.destroyAllWindows()
 
 def get_serial(conn, tts_flag,align_success, shot_flag):
-    myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
-    myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
+    myPort = serial.Serial('/dev/ttyUSB1', 9600,timeout=0.1)
+    myPort1 = serial.Serial('/dev/ttyUSB0', 9600, timeout=0.1)
     time.sleep(0.5) 
     myPort.reset_input_buffer()
     myPort1.reset_input_buffer()

@@ -18,7 +18,6 @@ end_x = 600
 end_y = 174
 goal_x = 572
 
-cm = int(pixel_to_cm(end_y-start_y))
 
 # 원이 범위를 벗어나면 경고 문구 출력하는 함수
 def ballOutOfRangeAlert(x, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
@@ -29,7 +28,7 @@ def ballOutOfRangeAlert(x, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
         print("Circle x is going out of screen boundary!")
         return True    
     else:
-		return False
+        return False
 
 def test_head_align(output1):     
     head_x = 0
@@ -103,12 +102,10 @@ def test_head_align(output1):
         return const.default
     elif distance < -30:
         print("CW")
-        # return const.head_align
-        return const.default
+        return const.head_align
     elif distance > 30:
         print("CCW")
-        # return const.head_align
-        return const.default
+        return const.head_align
     else:
         return const.head_align
 
@@ -173,7 +170,7 @@ def camera_calibration(image):
 
     return dst
 
-def pixel_to_cm(height):
+def pixel_to_mm(height):
     return 270/height
 
 def find_foot(a1, b1, a2, b2, a3, b3):
@@ -227,7 +224,7 @@ def is_align_x(x):
     else: # x align success
         return True
 
-def is_align(y, offset=5):
+def is_align(y, offset):
     goal_y = 36
     if(y >= (goal_y-offset) and y <= (goal_y+offset)):
         return True
@@ -268,16 +265,8 @@ def return_ball_direction_change(previous_pos, current_pos, threshold=30):
         elif previous_pos > current_pos:
             return 'up'
 
-def generate_TTS(text):
-    global is_beeping
-    if not is_beeping:
-        is_beeping = True  
-        engine = pyttsx3.init('espeak')
-        engine.say(str(text))
-        engine.runAndWait()
-        # time.sleep(1)
-        is_beeping = False 
+mm = int(pixel_to_mm(end_y-start_y))
 
 def get_distance_AB(A, B):
-    dist = (abs(A-B) * cm / 10)
+    dist = (abs(A-B) * mm / 10)
     return dist
