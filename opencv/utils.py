@@ -302,10 +302,19 @@ def goal(y):
     # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
     if(y >= (goal_y-10) and y < (goal_y+10)):
         # print("goal")
-        return Trueif
+        return True
     else:
         # print("miss")
         return False
+
+def is_align_x(x):
+    leftmost, rightmost = 97, 12
+    if x > leftmost:
+        return 2
+    elif x < rightmost:
+        return 3
+    else: # x align success
+        return True
 
 def is_align(y):
     goal_y = 36
@@ -362,4 +371,3 @@ def generate_TTS(text):
 def get_ball_head_distance(ball_pos, head_pos, cm):
     가로거리차이 = (abs(ball_pos[0]-head_pos) * cm / 10)
     return 가로거리차이
-

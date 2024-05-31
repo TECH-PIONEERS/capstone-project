@@ -81,13 +81,13 @@ def tts_process(tts_flag, dist):
             current_dist = 0 
         elif current_flag == const.head_missing: #퍼터 값이 없을 경우
             print("head missing")
-            beep_sound = pygame.mixer.Sound("opencv/sound/long_beep.wav")
+            beep_sound = pygame.mixer.Sound("opencv/sound/half_version/mid_beep_half.mp3")
             beep_sound.play()
             time.sleep(3)
             current_dist = 0
         elif current_flag == const.head_align: #정렬 되지 않은 경우
             print("no head align")
-            beep_sound = pygame.mixer.Sound("opencv/sound/low_beep.wav")
+            beep_sound = pygame.mixer.Sound("opencv/sound/half_version/low_beep_half.mp3")
             beep_sound.play()
             time.sleep(3)
             current_dist = 0
@@ -214,6 +214,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
             
             if tts_flag.value == const.ball_missing: 
                 tts_flag.value = const.default
+            
             # 공 정렬 판단
             is_ball_aling = utils.is_align(center[1])
             if (is_ball_aling == 2 or is_ball_aling == 3) and tts_flag.value >= const.ball_align_bottom:
@@ -250,9 +251,17 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist):
                 cv2.circle(frame, (int(x), int(y)), int(radius),
                     (255, 0, 0), 2)
                 cv2.circle(frame, center, 2, (255, 0, 0), -1)
-                # if x <= goal_y + 30:
-                #     utils.goal(y)
-            pts.appendleft(center)  
+                # if y <= goal_y + 30:
+                #     print(utils.goal(y))
+            pts.appendleft(center) 
+            # print(f"get_ball_dist : {(pts[0][0], pts[0][1], cm)}")
+            # for i in range(1, len(pts)):
+            #     if pts[i-1] is None or pts[i] is None:
+            #         continue
+
+                # thickness = int(np.sqrt(args["buffer"] / float(i+1))*2.5)
+                # cv2.line(frame, pts[i-1], pts[i], (255,255,255), thickness)
+
         else:
             tts_flag.value = const.ball_missing
 
@@ -300,7 +309,7 @@ def get_serial(conn, tts_flag,align_success):
                     tts_flag.value = const.head_missing  
 
 BALL_MOVEMENT_THRESHOLD = 10
-def check_movement(ball_pos, isMoving):
+def check_movement(tts_flag, ball_pos, isMoving):
     while True:
         initial_x = ball_pos[0]
         initial_y = ball_pos[1]
@@ -310,7 +319,13 @@ def check_movement(ball_pos, isMoving):
 
         if abs(current_x - initial_x) <= BALL_MOVEMENT_THRESHOLD and abs(current_y - initial_y) <= BALL_MOVEMENT_THRESHOLD:
             isMoving.value = False
+            
         else:
+            # print(tts_flag.value)
+            if current_x > 97 and (tts_flag.value == int(const.head_center_down) or tts_flag.value == int(const.head_center_up) or tts_flag.value == int(const.head_align)):
+                tts_flag = const.ball_shot
+                print("ball_shot")
+
             isMoving.value = True
 
 if __name__ == '__main__':
@@ -332,7 +347,7 @@ if __name__ == '__main__':
 
         p1 = Process(target=stream_opencv, args=(parent_conn,ball_position,tts_flag,isMoving,align_success,dist, ))
         p2 = Process(target=get_serial, args=(child_conn,tts_flag, align_success, ))
-        p3 = Process(target=check_movement,args=(ball_position,isMoving, ))
+        p3 = Process(target=check_movement,args=(tts_flag, ball_position,isMoving, ))
         p4 = Process(target=tts_process, args=(tts_flag,dist, ))
 
         p1.start()

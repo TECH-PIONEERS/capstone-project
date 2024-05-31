@@ -6,6 +6,7 @@ head_missing = 4
 head_center_up = 5
 head_center_down = 6
 head_align = 7
+ball_shot = 8
 
 dist_default = -999
 upper_ir = 380
