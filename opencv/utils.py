@@ -18,18 +18,6 @@ end_x = 600
 end_y = 174
 goal_x = 572
 
-
-# 원이 범위를 벗어나면 경고 문구 출력하는 함수
-def ballOutOfRangeAlert(x, radius, SCREEN_WIDTH, SCREEN_HEIGHT):
-    if x - r < (SCREEN_WIDTH // 5) * 2: # 카메라쪽
-        print("Circle x is going out of screen boundary!")
-        return True
-    elif x + r > (SCREEN_WIDTH // 5) * 3: # 바깥쪽
-        print("Circle x is going out of screen boundary!")
-        return True    
-    else:
-        return False
-
 def test_head_align(output1):     
     head_x = 0
     head_y = 0
@@ -50,30 +38,30 @@ def test_head_align(output1):
 
     if head_x < 263:
         tou_x = tou_x *  0.75
-    elif head_x >= 263 and head_x < 298: #done
-        tou_x = tou_x * 0.75
-    elif head_x >= 298 and head_x < 368: #done
-        tou_x = tou_x * 0.8
-    elif head_x >= 368 and head_x < 438: #done
-        tou_x = tou_x * 0.852
-    elif head_x >= 438 and head_x < 508: #done
-        tou_x = tou_x * 0.86
-    elif head_x >= 508 and head_x < 578: #done
-        tou_x = tou_x * 0.9
-    elif head_x >= 578 and head_x < 648: #done
-        tou_x = tou_x * 0.93
-    elif head_x >= 648 and head_x < 718: #done
-        tou_x = tou_x * 0.95
-    elif head_x >= 718 and head_x < 788: #done
-        tou_x = tou_x * 0.965
-    elif head_x >= 788 and head_x < 858: #done
+    elif head_x >= 263 and head_x < 298:
+        tou_x = tou_x * 0.74
+    elif head_x >= 298 and head_x < 368:
+        tou_x = tou_x * 0.785
+    elif head_x >= 368 and head_x < 438:
+        tou_x = tou_x * 0.84
+    elif head_x >= 438 and head_x < 508:
+        tou_x = tou_x * 0.88
+    elif head_x >= 508 and head_x < 578:
+        tou_x = tou_x * 0.925
+    elif head_x >= 578 and head_x < 648:
+        tou_x = tou_x * 0.939
+    elif head_x >= 648 and head_x < 718:
+        tou_x = tou_x * 0.957
+    elif head_x >= 718 and head_x < 788:
         tou_x = tou_x * 0.98
-    elif head_x >= 858 and head_x < 928: #done
-        tou_x = tou_x * 0.987
-    elif head_x >= 928 and head_x < 968: #done
-        tou_x = tou_x * 1.03
+    elif head_x >= 788 and head_x < 858:
+        tou_x = tou_x * 1.005
+    elif head_x >= 858 and head_x < 928:
+        tou_x = tou_x * 1.01
+    elif head_x >= 928 and head_x < 968:
+        tou_x = tou_x * 1.016
     else:
-        tou_x = tou_x * 1.04
+        tou_x = tou_x * 1.016
 
     distance = head_x - int(tou_x)
 
@@ -165,39 +153,11 @@ def camera_calibration(image):
 
     return dst
 
-def pixel_to_mm(height):
+def pixel_to_mm():
+    height = end_y-start_y
     return 270/height
 
-def find_foot(a1, b1, a2, b2, a3, b3):
-    # a1, b1 / a2, b2는 헤드 ir센서의 좌표
-    # a3, b3는 홀의 좌표
-     
-    # 직선 l의 기울기 계산
-    if a2 - a1 != 0:
-        m = (b2 - b1) / (a2 - a1)
-    else:
-        m = float('inf')  # Handle vertical lines
-
-    # Calculate perpendicular slope
-    if m != 0:
-        m_perpendicular = -1 / m
-    else:
-        m_perpendicular = float('inf')  # Handle vertical lines
-
-    # 수선의 발 계산
-    x_foot = (a3 + m * b3 - m * b1 + m * a1) / (m + 1/m)
-    y_foot = b3 + m_perpendicular * (x_foot - a3)
-
-    return x_foot, y_foot
-# x_foot, y_foot이 헤드 범위 밖이라면 정렬x로 판단
-
-# 좌표 예시
-# a1, b1 = 1, 2
-# a2, b2 = 4, 5
-# a3, b3 = 3, 3
-
-# x_foot, y_foot = find_foot(a1, b1, a2, b2, a3, b3)
-# print("Foot coordinates:", (x_foot, y_foot))
+mm = int(pixel_to_mm())
 
 def goal(x, y):
     goal_y = 36
@@ -260,11 +220,9 @@ def return_ball_direction(previous_pos, current_pos, threshold=30):
         elif previous_pos > current_pos:
             return 'up'
 
-mm = int(pixel_to_mm(end_y-start_y))
-
 def get_distance_AB(A, B):
     dist = (abs(A-B) * mm / 10)
     return dist
 
 def euclidean_distance(x1, y1, x2, y2):
-    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+    return (math.sqrt((x2 - x1)**2 + (y2 - y1)**2) * mm / 10)
