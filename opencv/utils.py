@@ -71,23 +71,19 @@ def test_head_align(output1):
     if distance >= -20 and distance <= 20:
         return const.default
     elif distance < -20: #CW (7.1 ~ 7.3)
-        #print("CW")
-        if distance < -50:
-            return 7.3
-        elif distance < -100:
+        if distance < -20 and distance > -50:
+            return 7.1
+        elif distance < -50 and distance > -100:
             return 7.2
         else:
-            return 7.1
-        #return const.head_align
+            return 7.3
     elif distance > 20: #CCW (7.4 ~ 7.6)
-        #print("CCW")
-        if distance > 50:
-            return 7.6
-        elif distance > 100:
+        if distance > 20 and distance < 50:
+            return 7.4
+        elif distance > 50 and distance < 100:
             return 7.5
         else:
-            return 7.4
-        #return const.head_align
+            return 7.6
 
 def generate_beep(case):
     global is_beeping

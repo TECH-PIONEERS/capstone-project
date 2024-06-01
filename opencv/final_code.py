@@ -70,12 +70,12 @@ def tts_process(tts_flag, dist):
         elif current_flag == const.head_align: #정렬 되지 않은 경우
             # 7.1 ~ 7.4: CW, 7.5 ~ 7.7: CCW
             if float_flag >= 7.1 and float_flag <= 7.3:
-                sleep_time = (float_flag - 7) * 6 # 7.1(0.5초), 7.2(1.0초), 7.3(1.5초)
+                sleep_time = (float_flag - 7) * 6 # 7.1(0.6초), 7.2(1.2초), 7.3(1.8초)
                 beep_sound = pygame.mixer.Sound("opencv/sound/half_version/low_beep_half.mp3")
                 beep_sound.play()
                 time.sleep(sleep_time)
             elif float_flag >= 7.4 and float_flag <= 7.6:
-                sleep_time = (float_flag - 7.3) * 6 # 7.4(0.5초), 7.5(1.0초), 7.6(1.5초)
+                sleep_time = (float_flag - 7.3) * 6 # 7.4(0.6초), 7.5(1.2초), 7.6(1.8초)
                 beep_sound = pygame.mixer.Sound("opencv/sound/half_version/high_1_beep_half.mp3")
                 beep_sound.play()
                 time.sleep(sleep_time)
