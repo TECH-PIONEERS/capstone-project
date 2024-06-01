@@ -242,9 +242,9 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         # tts_flag 값 변경
                         tts_flag.value = const.head_align_success
                         # 공과 골 사이 거리
-                        dist[0] = utils.get_distance_AB(center[1],goal_x)
+                        dist[0] = utils.get_distance_AB(center[0],goal_x) + 2
                         # # 공과 헤드 사이 거리
-                        dist[1] = utils.get_distance_AB(center[1],output1_cali_x)
+                        dist[1] = utils.get_distance_AB(center[0],output1_cali_x)
 
             else: # ball_shot
                 # print(f"ball shot true")
