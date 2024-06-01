@@ -49,7 +49,6 @@ def tts_process(tts_flag, dist):
     while True:
         current_flag = int(tts_flag.value)
         float_flag = tts_flag.value
-        # print(current_flag, " ", float_flag)
         if current_flag == const.ball_missing:
             print("ball missing")
             beep_sound = pygame.mixer.Sound("opencv/sound/high_1_beep.wav")
@@ -100,8 +99,7 @@ def tts_process(tts_flag, dist):
         elif current_flag == const.head_center_up:
             print("head up")            
             beep_sound = pygame.mixer.Sound("opencv/sound/up.mp3")
-            beep_sound.pl
-            
+            beep_sound.play()
             time.sleep(1)
         elif current_flag == const.head_align_success:
             print(f"dist {dist}")
@@ -110,6 +108,20 @@ def tts_process(tts_flag, dist):
             engine.say(str(int(dist[1]))) #TTS 공과 헤드 사이의 거리
             engine.runAndWait()
             tts_flag.value = const.default
+        elif current_flag == const.game_lose:
+            beep_sound = pygame.mixer.Sound("opencv/sound/lose.mp3")
+            beep_sound.play()
+            time.sleep(1)
+            engine.say(f"{dist[0]}") #TTS 공과 골 사이의 거리
+            engine.runAndWait()
+            engine.say(f"{str(int(dist[1]))}") #TTS 공과 골 사이의 거리
+            engine.runAndWait()
+            time.sleep(2)
+        elif current_flag == const.game_win:
+            beep_sound = pygame.mixer.Sound("opencv/sound/nice-shot.mp3")
+            beep_sound.play()
+            time.sleep(3)
+        
 
 def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, shot_flag, prev_ball_position):
     global previous_direction
@@ -228,16 +240,17 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                             tts_flag.value = const.ball_align_up
                         elif is_ball_aling == 3:
                             tts_flag.value = const.ball_align_bottom
-                    elif (is_ball_aling) and (tts_flag.value == const.ball_align_bottom or tts_flag.value == const.ball_align_up): 
+                    elif (is_ball_aling != 2 and is_ball_aling != 3): 
                         prev_ball_position[0] = center[0]
                         prev_ball_position[1] = center[1]
                         align_success.value = True
                         tts_flag.value = const.default                 
+                print(f"tts {tts_flag.value} {align_success.value}")
+                
                 # 헤드 정렬 판단
                 if len(new_output) == 4 and tts_flag.value >= const.head_align:
-                    prevFlag = tts_flag.value
                     tts_flag.value = utils.test_head_align(output1)
-                    if prevFlag == const.head_align and tts_flag.value == const.default:
+                    if tts_flag.value == const.default:
                         # tts_flag 값 변경
                         tts_flag.value = const.head_align_success
                         # 공과 골 사이 거리
@@ -256,13 +269,14 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         tts_flag.value = const.game_lose
                         # 공의 방향 공의 이동거리
                         shot_direction = utils.return_ball_direction(prev_ball_position[1], center[1])
+                        dist[0] = shot_direction
                         if shot_direction == 'down':
                             print("left")
                         else:
                             print("right")
                         shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
-                        print(f"game_lose {shot_dist}")
-                    time.sleep(2)
+                        dist[1] = shot_dist
+                    time.sleep(5)
                     shot_flag.value = False
                     align_success.value = False
                     tts_flag.value = const.default
@@ -341,7 +355,8 @@ def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success):
         is_ball_out = utils.is_align_x(ball_pos[0])
         if abs(current_x - initial_x) <= BALL_MOVEMENT_THRESHOLD and abs(current_y - initial_y) <= BALL_MOVEMENT_THRESHOLD:
             if isMoving.value == True and is_ball_out == 2:
-                # isMoving = true => false가 된 순간             
+                # isMoving = true => false가 된 순간  
+                print(f"align {align_success.value}")           
                 # 이를 align공 거리와 현재 공 측정 이때 pixel 값이 threshold 값보다 크면 shot.value = true
                 if abs(current_x-prev_ball_position[0]) >= threshold and align_success.value == True:
                     if shot_flag.value == False:
