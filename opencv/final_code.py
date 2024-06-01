@@ -48,7 +48,9 @@ def tts_process(tts_flag, dist):
     engine = pyttsx3.init('espeak')
 
     while True:
-        current_flag = tts_flag.value
+        current_flag = int(tts_flag.value)
+        float_flag = tts_flag.value
+        print(current_flag, " ", float_flag)
         if current_flag == const.ball_missing:
             print("ball missing")
             beep_sound = pygame.mixer.Sound("opencv/sound/high_1_beep.wav")
@@ -68,8 +70,27 @@ def tts_process(tts_flag, dist):
             beep_sound.play()
             time.sleep(3)
         elif current_flag == const.head_align: #정렬 되지 않은 경우
-            print("no head align")
-            beep_sound = pygame.mixer.Sound("opencv/sound/half_version/low_beep_half.mp3")
+            # 7.1 ~ 7.3: CW, 7.4 ~ 7.6: CCW
+            match float_flag:
+                case 7.1:
+                    #beep_sound = pygame.mixer.Sound("sound/high_4_beep.wav")
+                    print("7.1")
+                case 7.2:
+                    #beep_sound = pygame.mixer.Sound("sound/high_3_beep.wav")
+                    print("7.2")
+                case 7.3:
+                    #beep_sound = pygame.mixer.Sound("sound/high_2_beep.wav")
+                    print("7.3")
+                case 7.4:
+                    #beep_sound = pygame.mixer.Sound("sound/high_1_beep.wav")
+                    print("7.4")
+                case 7.5:
+                    #beep_sound = pygame.mixer.Sound("sound/mid_beep.wav")
+                    print("7.5")
+                case 7.6:
+                    #beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
+                    print("7.6")
+            #beep_sound = pygame.mixer.Sound("opencv/sound/half_version/low_beep_half.mp3")
             beep_sound.play()
             time.sleep(3)
         elif current_flag == const.head_center_down:

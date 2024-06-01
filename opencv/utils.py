@@ -95,13 +95,13 @@ def test_head_align(output1):
 
     distance = head_x - int(tou_x)
 
-    print("head : ", head_x, "tou: ", tou_x, "distance : ", distance)
+    #print("head : ", head_x, "tou: ", tou_x, "distance : ", distance)
 
     # 정렬 및 기울어짐 판별
     if distance > -30 and distance < 30:
         return const.default
     elif distance < -30: #CW
-        print("CW")
+        #print("CW")
         if distance < -50:
             return 7.1
         elif distance < -70:
@@ -111,7 +111,7 @@ def test_head_align(output1):
         #return const.head_align
     elif distance > 30: #CW
         # 7.4 ~ 7.6
-        print("CCW")
+        #print("CCW")
         if distance > 50:
             return 7.4
         elif distance > 70:
