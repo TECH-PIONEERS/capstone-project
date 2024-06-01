@@ -38,30 +38,30 @@ def test_head_align(output1):
 
     if head_x < 263:
         tou_x = tou_x *  0.75
-    elif head_x >= 263 and head_x < 298: #done
-        tou_x = tou_x * 0.75
-    elif head_x >= 298 and head_x < 368: #done
-        tou_x = tou_x * 0.8
-    elif head_x >= 368 and head_x < 438: #done
-        tou_x = tou_x * 0.852
-    elif head_x >= 438 and head_x < 508: #done
-        tou_x = tou_x * 0.86
-    elif head_x >= 508 and head_x < 578: #done
-        tou_x = tou_x * 0.9
-    elif head_x >= 578 and head_x < 648: #done
-        tou_x = tou_x * 0.93
-    elif head_x >= 648 and head_x < 718: #done
-        tou_x = tou_x * 0.95
-    elif head_x >= 718 and head_x < 788: #done
-        tou_x = tou_x * 0.965
-    elif head_x >= 788 and head_x < 858: #done
+    elif head_x >= 263 and head_x < 298:
+        tou_x = tou_x * 0.74
+    elif head_x >= 298 and head_x < 368:
+        tou_x = tou_x * 0.785
+    elif head_x >= 368 and head_x < 438:
+        tou_x = tou_x * 0.84
+    elif head_x >= 438 and head_x < 508:
+        tou_x = tou_x * 0.88
+    elif head_x >= 508 and head_x < 578:
+        tou_x = tou_x * 0.925
+    elif head_x >= 578 and head_x < 648:
+        tou_x = tou_x * 0.939
+    elif head_x >= 648 and head_x < 718:
+        tou_x = tou_x * 0.957
+    elif head_x >= 718 and head_x < 788:
         tou_x = tou_x * 0.98
-    elif head_x >= 858 and head_x < 928: #done
-        tou_x = tou_x * 0.987
-    elif head_x >= 928 and head_x < 968: #done
-        tou_x = tou_x * 1.03
+    elif head_x >= 788 and head_x < 858:
+        tou_x = tou_x * 1.005
+    elif head_x >= 858 and head_x < 928:
+        tou_x = tou_x * 1.01
+    elif head_x >= 928 and head_x < 968:
+        tou_x = tou_x * 1.016
     else:
-        tou_x = tou_x * 1.04
+        tou_x = tou_x * 1.016
 
     distance = head_x - int(tou_x)
 
