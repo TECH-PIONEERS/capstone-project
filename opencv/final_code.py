@@ -53,7 +53,7 @@ def tts_process(tts_flag, dist):
             print("ball missing")
             beep_sound = pygame.mixer.Sound("opencv/sound/high_1_beep.wav")
             beep_sound.play()
-            time.sleep(3)
+            time.sleep(2)
         elif current_flag == const.ball_align_bottom:
             print("ball bottom")
             engine.say("Down") #TTS
@@ -66,16 +66,16 @@ def tts_process(tts_flag, dist):
             print("head missing")
             beep_sound = pygame.mixer.Sound("opencv/sound/half_version/mid_beep_half.mp3")
             beep_sound.play()
-            time.sleep(3)
+            time.sleep(2)
         elif current_flag == const.head_align: #정렬 되지 않은 경우
             # 7.1 ~ 7.4: CW, 7.5 ~ 7.7: CCW
             if float_flag >= 7.1 and float_flag <= 7.3:
-                sleep_time = (float_flag - 7) * 5 # 7.1(0.5초), 7.2(1.0초), 7.3(1.5초)
+                sleep_time = (float_flag - 7) * 6 # 7.1(0.5초), 7.2(1.0초), 7.3(1.5초)
                 beep_sound = pygame.mixer.Sound("opencv/sound/half_version/low_beep_half.mp3")
                 beep_sound.play()
                 time.sleep(sleep_time)
             elif float_flag >= 7.4 and float_flag <= 7.6:
-                sleep_time = (float_flag - 7.3) * 5 # 7.4(0.5초), 7.5(1.0초), 7.6(1.5초)
+                sleep_time = (float_flag - 7.3) * 6 # 7.4(0.5초), 7.5(1.0초), 7.6(1.5초)
                 beep_sound = pygame.mixer.Sound("opencv/sound/half_version/high_1_beep_half.mp3")
                 beep_sound.play()
                 time.sleep(sleep_time)
@@ -91,10 +91,10 @@ def tts_process(tts_flag, dist):
             time.sleep(1)
         elif current_flag == const.head_align_success:
             print(f"dist {dist}")
-            engine.say(str(int(dist[0]))) #TTS 공과 골 사이의 거리
-            engine.runAndWait()
-            engine.say(str(int(dist[1]))) #TTS 공과 헤드 사이의 거리
-            engine.runAndWait()
+            # engine.say(str(int(dist[0]))) #TTS 공과 골 사이의 거리
+            # engine.runAndWait()
+            # engine.say(str(int(dist[1]))) #TTS 공과 헤드 사이의 거리
+            # engine.runAndWait()
             tts_flag.value = const.default
         elif current_flag == const.game_lose:
             beep_sound = pygame.mixer.Sound("opencv/sound/lose.mp3")
