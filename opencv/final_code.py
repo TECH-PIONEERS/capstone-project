@@ -21,7 +21,6 @@ myString1 = None
 golfball_size = 3
 previous_frame = None
 
-
 # red
 colorLower = (130, 210, 190) # setting for red
 colorUpper = (185, 255, 255) # BGR
@@ -148,7 +147,6 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             res = conn.recv()
             output = res[0]
             output1 = res[1]
-            #fix
             if len(output1) > 3:
                 if output1[1] > output1[3]:
                     new_output = [output1[2], output1[3], output1[0], output1[1]]
