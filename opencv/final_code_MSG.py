@@ -84,10 +84,10 @@ def tts_process(tts_flag, dist):
             time.sleep(1)
         elif current_flag == const.head_align_success:
             print(f"dist {dist}")
-            # engine.say(str(int(dist[0]))) #TTS 공과 골 사이의 거리
-            # engine.runAndWait()
-            # engine.say(str(int(dist[1]))) #TTS 공과 헤드 사이의 거리
-            # engine.runAndWait()
+            engine.say(str(int(dist[0]))) #TTS 공과 골 사이의 거리
+            engine.runAndWait()
+            engine.say(str(int(dist[1]))) #TTS 공과 헤드 사이의 거리
+            engine.runAndWait()
             tts_flag.value = const.default
 
 def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, shot_flag, prev_ball_position):
@@ -212,7 +212,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 
                 # 공 정렬 판단
                 if isMoving.value == False:
-                    is_ball_aling = utils.is_align(center[1],5)
+                    is_ball_aling = utils.is_align(center[1],3)
                     if (is_ball_aling == 2 or is_ball_aling == 3) and tts_flag.value >= const.ball_align_bottom:
                         if is_ball_aling == 2:
                             tts_flag.value = const.ball_align_up

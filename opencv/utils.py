@@ -233,6 +233,14 @@ def is_align(y, offset):
     elif y > (goal_y+offset):
         return 3
 
+def is_align2(y,ball_y, offset):
+    if(y >= (ball_y-offset) and y <= (ball_y+offset)):
+        return True
+    elif y < (ball_y-offset):
+        return 2
+    elif y > (ball_y+offset):
+        return 3
+
 def is_valid_string(input_string):
     before = ''
     num = ''

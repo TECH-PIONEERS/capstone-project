@@ -152,26 +152,17 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 output1_cali_x = int(new_output[0]//4 * calibration_x)
                 if(len(output) > 3):
                     calibration_y = 0.29
-                    # head align
-                    # if output[0] > 560: 
-                    #     calibration_y = 0.28
-                    # elif output[0] < 538:
-                    #     calibration_y = 0.32
-                    # else:
-                    #     calibration_y = 0.3
                     diff_y = abs(output[0]-output[2])
                     diff_limit = 100
                     if diff_y < diff_limit:
                         offset = abs(diff_limit-diff_y)
                     else:
                         offset = 0
-                    output_cali_y1 = int((output[0])//4 * calibration_y - offset)
-                    output_cali_y2 = int((output[2])//4 * calibration_y + offset)
-                    # output_cali_y1 = int((output[0])//4 * calibration_y - offset) 
-                    # output_cali_y2 = int((output[2])//4 * calibration_y + offset)
-                    cv2.circle(frame,(output1_cali_x, output_cali_y1), 5, (0,0,255), -1)
-                    cv2.circle(frame,(output1_cali_x, output_cali_y2), 5, (255,0,0), -1)
-                    
+                    output_cali_y1 = (output[0] / 4) * calibration_y - offset - 0.5
+                    output_cali_y2 = (output[2] / 4) * calibration_y + offset - 0.5
+                    print(output_cali_y1, output_cali_y2)
+                    cv2.circle(frame,(output1_cali_x, int(output_cali_y1)), 5, (0,0,255), -1)
+                    cv2.circle(frame,(output1_cali_x, int(output_cali_y2)), 5, (255,0,0), -1)
                     if shot_flag.value == False :
                         #헤드 정렬 - 위치 판단
                         is_head_align = utils.is_align((output_cali_y1+output_cali_y2)//2,1)
