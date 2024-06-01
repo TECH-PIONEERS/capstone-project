@@ -112,9 +112,9 @@ def test_head_align(output1):
     elif distance > 30: #CW
         # 7.4 ~ 7.6
         print("CCW")
-        if distance < 50:
+        if distance > 50:
             return 7.4
-        elif distance < 70:
+        elif distance > 70:
             return 7.5
         else:
             return 7.6
