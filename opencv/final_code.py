@@ -33,7 +33,7 @@ end_x = utils.end_x
 end_y = utils.end_y
 goal_x = utils.goal_x
 
-def tts_process(tts_flag, dist):
+def tts_process(tts_flag, dist, head_align_flag):
     # 함수 안에서 라이브러리 import, utils 함수 및 변수 안 쓰도록
     import utils
     import time
@@ -45,28 +45,32 @@ def tts_process(tts_flag, dist):
     pygame.init()
     pygame.mixer.init()
     engine = pyttsx3.init('espeak')
-
     while True:
         current_flag = int(tts_flag.value)
+        print(f"current {current_flag}")
         float_flag = tts_flag.value
         if current_flag == const.ball_missing:
             print("ball missing")
             beep_sound = pygame.mixer.Sound("opencv/sound/high_1_beep.wav")
             beep_sound.play()
             time.sleep(2)
+            head_align_flag.value = False
         elif current_flag == const.ball_align_bottom:
             print("ball bottom")
             engine.say("Down") #TTS
             engine.runAndWait()
+            head_align_flag.value = False
         elif current_flag == const.ball_align_up:
             print("ball up")
             engine.say("Up") #TTS
             engine.runAndWait()
+            head_align_flag.value = False
         elif current_flag == const.head_missing: #퍼터 값이 없을 경우
             print("head missing")
             beep_sound = pygame.mixer.Sound("opencv/sound/half_version/mid_beep_half.mp3")
             beep_sound.play()
             time.sleep(2)
+            head_align_flag.value = False
         elif current_flag == const.head_align: #정렬 되지 않은 경우
             # 7.1 ~ 7.4: CW, 7.5 ~ 7.7: CCW
             if float_flag >= 7.1 and float_flag <= 7.3:
@@ -79,23 +83,27 @@ def tts_process(tts_flag, dist):
                 beep_sound = pygame.mixer.Sound("opencv/sound/half_version/high_1_beep_half.mp3")
                 beep_sound.play()
                 time.sleep(sleep_time)
+            head_align_flag.value = False
         elif current_flag == const.head_center_down:
             print("head down")
             beep_sound = pygame.mixer.Sound("opencv/sound/down.mp3")
             beep_sound.play()
             time.sleep(1)
+            head_align_flag.value = False
         elif current_flag == const.head_center_up:
             print("head up")            
             beep_sound = pygame.mixer.Sound("opencv/sound/up.mp3")
             beep_sound.play()
             time.sleep(1)
+            head_align_flag.value = False
         elif current_flag == const.head_align_success:
             print(f"dist {dist}")
-            # engine.say(str(int(dist[0]))) #TTS 공과 골 사이의 거리
-            # engine.runAndWait()
-            # engine.say(str(int(dist[1]))) #TTS 공과 헤드 사이의 거리
-            # engine.runAndWait()
-            tts_flag.value = const.default
+            engine.say(str(int(dist[0]))) #TTS 공과 골 사이의 거리
+            engine.runAndWait()
+            engine.say(str(int(dist[1]))) #TTS 공과 헤드 사이의 거리
+            engine.runAndWait()
+            tts_flag.value = 1004
+            head_align_flag.value = True
         elif current_flag == const.game_lose:
             beep_sound = pygame.mixer.Sound("opencv/sound/lose.mp3")
             beep_sound.play()
@@ -111,7 +119,7 @@ def tts_process(tts_flag, dist):
             time.sleep(3)
         
 
-def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, shot_flag, prev_ball_position):
+def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, shot_flag, prev_ball_position, head_align_flag, ball_align_flag):
     global previous_direction
     global flag
     new_output = []
@@ -192,7 +200,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                             elif is_head_align == 3:
                                 tts_flag.value = const.head_center_down
                         elif is_head_align and (tts_flag.value == const.head_center_up or tts_flag.value == const.head_center_down):
-                            tts_flag.value = const.default
+                            tts_flag.value = 1002
 
         blurred = cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -218,7 +226,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 if is_ball_in == 2 or is_ball_in == 3:
                     tts_flag.value = const.ball_missing
                 elif (is_ball_in != 2 and is_ball_in != 3) and tts_flag.value == const.ball_missing:
-                    tts_flag.value = const.default
+                    tts_flag.value = 1003
                 
                 # 공 정렬 판단
                 if isMoving.value == False:
@@ -228,17 +236,19 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                             tts_flag.value = const.ball_align_up
                         elif is_ball_aling == 3:
                             tts_flag.value = const.ball_align_bottom
-                    elif (is_ball_aling != 2 and is_ball_aling != 3) and (is_ball_in != 2 and is_ball_in !=3): 
+                        ball_align_flag.value = False
+                    elif ball_align_flag.value == False and (is_ball_in != 2 and is_ball_in !=3): 
                         prev_ball_position[0] = center[0]
                         prev_ball_position[1] = center[1]
                         align_success.value = True
-                        tts_flag.value = const.default                 
-                print(f"tts {tts_flag.value} {align_success.value}")
+                        ball_align_flag.value = True
+                        tts_flag.value = 888                 
                 
+                print(f"tts {tts_flag.value}")
                 # 헤드 정렬 판단
                 if len(new_output) == 4 and tts_flag.value >= const.head_align:
                     tts_flag.value = utils.test_head_align(output1)
-                    if tts_flag.value == const.default:
+                    if tts_flag.value >= const.default and head_align_flag.value == False:
                         # tts_flag 값 변경
                         tts_flag.value = const.head_align_success
                         # 공과 골 사이 거리
@@ -267,6 +277,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                     time.sleep(5)
                     shot_flag.value = False
                     align_success.value = False
+                    head_align_flag.value = False
                     tts_flag.value = const.default
 
             if ball_position[0] == -999 or ball_position[1] == -999 : 
@@ -321,7 +332,7 @@ def get_serial(conn, tts_flag,align_success, shot_flag):
             if o1_bool or o2_bool:
                 if shot_flag.value == False:
                     if tts_flag.value == const.head_missing:
-                        tts_flag.value = const.default
+                        tts_flag.value = 1001
                     if len(output1) < 3 and tts_flag.value > const.head_align:
                         tts_flag.value = const.head_align
                 conn.send([output, output1])
@@ -344,7 +355,6 @@ def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success):
         if abs(current_x - initial_x) <= BALL_MOVEMENT_THRESHOLD and abs(current_y - initial_y) <= BALL_MOVEMENT_THRESHOLD:
             if isMoving.value == True and is_ball_out == 2:
                 # isMoving = true => false가 된 순간  
-                print(f"align {align_success.value}")           
                 # 이를 align공 거리와 현재 공 측정 이때 pixel 값이 threshold 값보다 크면 shot.value = true
                 if abs(current_x-prev_ball_position[0]) >= threshold and align_success.value == True:
                     if shot_flag.value == False:
@@ -368,7 +378,10 @@ if __name__ == '__main__':
         shot_flag.value = False
         isMoving = manager.Namespace()
         isMoving.value = True
-
+        head_align_flag = manager.Namespace()
+        head_align_flag.value = False
+        ball_align_flag = manager.Namespace()
+        ball_align_flag.value = False
 
         ball_position.append(-999)
         ball_position.append(-999)
@@ -377,10 +390,10 @@ if __name__ == '__main__':
         dist.append(0)
         dist.append(0)
 
-        p1 = Process(target=stream_opencv, args=(parent_conn,ball_position,tts_flag,isMoving,align_success,dist, shot_flag,prev_ball_position, ))
+        p1 = Process(target=stream_opencv, args=(parent_conn,ball_position,tts_flag,isMoving,align_success,dist, shot_flag,prev_ball_position,head_align_flag, ball_align_flag ))
         p2 = Process(target=get_serial, args=(child_conn,tts_flag, align_success,shot_flag, ))
         p3 = Process(target=check_movement,args=(tts_flag, ball_position,isMoving,shot_flag, align_success ))
-        p4 = Process(target=tts_process, args=(tts_flag,dist, ))
+        p4 = Process(target=tts_process, args=(tts_flag,dist,head_align_flag ))
 
         p1.start()
         p2.start()
