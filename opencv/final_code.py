@@ -50,7 +50,7 @@ def tts_process(tts_flag, dist):
     while True:
         current_flag = int(tts_flag.value)
         float_flag = tts_flag.value
-        print(current_flag, " ", float_flag)
+        # print(current_flag, " ", float_flag)
         if current_flag == const.ball_missing:
             print("ball missing")
             beep_sound = pygame.mixer.Sound("opencv/sound/high_1_beep.wav")
@@ -101,7 +101,8 @@ def tts_process(tts_flag, dist):
         elif current_flag == const.head_center_up:
             print("head up")            
             beep_sound = pygame.mixer.Sound("opencv/sound/up.mp3")
-            beep_sound.play()
+            beep_sound.pl
+            
             time.sleep(1)
         elif current_flag == const.head_align_success:
             print(f"dist {dist}")
@@ -181,7 +182,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         offset = 0
                     output_cali_y1 = (output[0] / 4) * calibration_y - offset - 0.5
                     output_cali_y2 = (output[2] / 4) * calibration_y + offset - 0.5
-                    print(output_cali_y1, output_cali_y2)
+                    # print(output_cali_y1, output_cali_y2)
                     cv2.circle(frame,(output1_cali_x, int(output_cali_y1)), 5, (0,0,255), -1)
                     cv2.circle(frame,(output1_cali_x, int(output_cali_y2)), 5, (255,0,0), -1)
                     if shot_flag.value == False :
