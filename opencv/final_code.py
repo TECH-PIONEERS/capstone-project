@@ -101,8 +101,7 @@ def tts_process(tts_flag, dist):
         elif current_flag == const.head_center_up:
             print("head up")            
             beep_sound = pygame.mixer.Sound("opencv/sound/up.mp3")
-            beep_sound.pl
-            
+            beep_sound.play()
             time.sleep(1)
         elif current_flag == const.head_align_success:
             print(f"dist {dist}")
@@ -254,6 +253,9 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                     if utils.goal(center[0], center[1]):
                         tts_flag.value = const.game_win
                         print("game_win")
+                        beep_sound = pygame.mixer.Sound("opencv/sound/nice-shot.mp3")
+                        beep_sound.play()
+                        time.sleep(3)
                     else:
                         tts_flag.value = const.game_lose
                         # 공의 방향 공의 이동거리
@@ -264,6 +266,8 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                             print("right")
                         shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
                         print(f"game_lose {shot_dist}")
+                        beep_sound = pygame.mixer.Sound("opencv/sound/lose.mp3")
+                        beep_sound.play()
                     time.sleep(2)
                     shot_flag.value = False
                     align_success.value = False

@@ -77,7 +77,7 @@ def test_head_align(output1):
 
     distance = head_x - int(tou_x)
 
-    print("head : ", head_x, "tou: ", tou_x, "distance : ", distance)
+    # print("head : ", head_x, "tou: ", tou_x, "distance : ", distance)
 
     # 정렬 및 기울어짐 판별
     if distance > -30 and distance < 30:
