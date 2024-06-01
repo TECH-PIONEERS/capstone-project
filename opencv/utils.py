@@ -219,6 +219,8 @@ def return_ball_direction(previous_pos, current_pos, threshold=30):
             return 'down'
         elif previous_pos > current_pos:
             return 'up'
+    else:
+        return 'straight'
 
 def get_distance_AB(A, B):
     dist = (abs(A-B) * mm / 10)
