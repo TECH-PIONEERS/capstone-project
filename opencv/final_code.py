@@ -228,7 +228,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                             tts_flag.value = const.ball_align_up
                         elif is_ball_aling == 3:
                             tts_flag.value = const.ball_align_bottom
-                    elif (is_ball_aling != 2 and is_ball_aling != 3): 
+                    elif (is_ball_aling != 2 and is_ball_aling != 3) and (is_ball_in != 2 and is_ball_in !=3): 
                         prev_ball_position[0] = center[0]
                         prev_ball_position[1] = center[1]
                         align_success.value = True
