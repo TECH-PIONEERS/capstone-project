@@ -84,10 +84,10 @@ def tts_process(tts_flag, dist):
             time.sleep(1)
         elif current_flag == const.head_align_success:
             print(f"dist {dist}")
-            engine.say(str(int(dist[0]))) #TTS 공과 골 사이의 거리
-            engine.runAndWait()
-            engine.say(str(int(dist[1]))) #TTS 공과 헤드 사이의 거리
-            engine.runAndWait()
+            # engine.say(str(int(dist[0]))) #TTS 공과 골 사이의 거리
+            # engine.runAndWait()
+            # engine.say(str(int(dist[1]))) #TTS 공과 헤드 사이의 거리
+            # engine.runAndWait()
             tts_flag.value = const.default
 
 def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, shot_flag, prev_ball_position):
@@ -165,13 +165,13 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         offset = abs(diff_limit-diff_y)
                     else:
                         offset = 0
-                    output_cali_y1 = int((output[0]) * calibration_y - offset) - 1
-                    output_cali_y2 = int((output[2]) * calibration_y + offset) - 1
+                    output_cali_y1 = (output[0] / 4) * calibration_y - offset - 0.5
+                    output_cali_y2 = (output[2] / 4) * calibration_y + offset - 0.5
                     # output_cali_y1 = int((output[0])//4 * calibration_y - offset) 
                     # output_cali_y2 = int((output[2])//4 * calibration_y + offset)
-                    print(int(output_cali_y1), int(output_cali_y2))
-                    cv2.circle(frame,(output1_cali_x, output_cali_y1//4), 5, (0,0,255), -1)
-                    cv2.circle(frame,(output1_cali_x, output_cali_y2//4), 5, (255,0,0), -1)
+                    print(output_cali_y1, output_cali_y2)
+                    cv2.circle(frame,(output1_cali_x, int(output_cali_y1)), 5, (0,0,255), -1)
+                    cv2.circle(frame,(output1_cali_x, int(output_cali_y2)), 5, (255,0,0), -1)
                     
                     if shot_flag.value == False :
                         #헤드 정렬 - 위치 판단
