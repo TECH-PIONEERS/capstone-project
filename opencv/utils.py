@@ -52,42 +52,24 @@ def test_head_align(output1):
         tou_x = tou_x *  0.75
     elif head_x >= 263 and head_x < 298: #done
         tou_x = tou_x * 0.75
-    elif head_x >= 298 and head_x < 333: #done
+    elif head_x >= 298 and head_x < 368: #done
         tou_x = tou_x * 0.8
-    elif head_x >= 333 and head_x < 368: #done
-        tou_x = tou_x * 0.82
-    elif head_x >= 368 and head_x < 403: #done
+    elif head_x >= 368 and head_x < 438: #done
         tou_x = tou_x * 0.852
-    elif head_x >= 403 and head_x < 438: #done
-        tou_x = tou_x * 0.888
-    elif head_x >= 438 and head_x < 473: #done
+    elif head_x >= 438 and head_x < 508: #done
         tou_x = tou_x * 0.86
-    elif head_x >= 473 and head_x < 508: #done
-        tou_x = tou_x * 0.87
-    elif head_x >= 508 and head_x < 543: #done
+    elif head_x >= 508 and head_x < 578: #done
         tou_x = tou_x * 0.9
-    elif head_x >= 543 and head_x < 578: #done
+    elif head_x >= 578 and head_x < 648: #done
         tou_x = tou_x * 0.93
-    elif head_x >= 578 and head_x < 613: #done
-        tou_x = tou_x * 0.93
-    elif head_x >= 613 and head_x < 648: #done
+    elif head_x >= 648 and head_x < 718: #done
         tou_x = tou_x * 0.95
-    elif head_x >= 648 and head_x < 683: #done
-        tou_x = tou_x * 0.95
-    elif head_x >= 683 and head_x < 718: #done
-        tou_x = tou_x * 0.95
-    elif head_x >= 718 and head_x < 753: #done
+    elif head_x >= 718 and head_x < 788: #done
         tou_x = tou_x * 0.965
-    elif head_x >= 753 and head_x < 788: #done
-        tou_x = tou_x * 0.969
-    elif head_x >= 788 and head_x < 823: #done
+    elif head_x >= 788 and head_x < 858: #done
         tou_x = tou_x * 0.98
-    elif head_x >= 823 and head_x < 858: #done
+    elif head_x >= 858 and head_x < 928: #done
         tou_x = tou_x * 0.987
-    elif head_x >= 858 and head_x < 893: #done
-        tou_x = tou_x * 0.987
-    elif head_x >= 893 and head_x < 928: #done
-        tou_x = tou_x * 0.995
     elif head_x >= 928 and head_x < 968: #done
         tou_x = tou_x * 1.03
     else:
@@ -95,7 +77,7 @@ def test_head_align(output1):
 
     distance = head_x - int(tou_x)
 
-    #print("head : ", head_x, "tou: ", tou_x, "distance : ", distance)
+    print("head : ", head_x, "tou: ", tou_x, "distance : ", distance)
 
     # 정렬 및 기울어짐 판별
     if distance > -30 and distance < 30:
@@ -231,14 +213,6 @@ def is_align(y, offset):
     elif y < (goal_y-offset):
         return 2
     elif y > (goal_y+offset):
-        return 3
-
-def is_align2(y,ball_y, offset):
-    if(y >= (ball_y-offset) and y <= (ball_y+offset)):
-        return True
-    elif y < (ball_y-offset):
-        return 2
-    elif y > (ball_y+offset):
         return 3
 
 def is_valid_string(input_string):
