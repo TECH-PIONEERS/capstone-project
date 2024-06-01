@@ -181,7 +181,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                             elif is_head_align == 3:
                                 tts_flag.value = const.head_center_down
                         elif is_head_align and (tts_flag.value == const.head_center_up or tts_flag.value == const.head_center_down):
-                            tts_flag.value = 1002
+                            tts_flag.value = const.default
 
         blurred = cv2.GaussianBlur(frame, (11, 11), 0)
         hsv = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
@@ -220,7 +220,8 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                     elif (is_ball_aling) and (tts_flag.value == const.ball_align_bottom or tts_flag.value == const.ball_align_up): 
                         prev_ball_position[0] = center[0]
                         prev_ball_position[1] = center[1]
-                        tts_flag.value = 1003                 
+                        align_success.value = True
+                        tts_flag.value = const.default                 
                 # 헤드 정렬 판단
                 if len(new_output) == 4 and tts_flag.value >= const.head_align:
                     prevFlag = tts_flag.value
@@ -252,6 +253,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         print(f"game_lose {shot_dist}")
                     time.sleep(2)
                     shot_flag.value = False
+                    align_success.value = False
                     tts_flag.value = const.default
 
             if ball_position[0] == -999 or ball_position[1] == -999 : 
@@ -306,7 +308,7 @@ def get_serial(conn, tts_flag,align_success, shot_flag):
             if o1_bool or o2_bool:
                 if shot_flag.value == False:
                     if tts_flag.value == const.head_missing:
-                        tts_flag.value = 1001
+                        tts_flag.value = const.default
                     if len(output1) < 3 and tts_flag.value > const.head_align:
                         tts_flag.value = const.head_align
                 conn.send([output, output1])
@@ -315,7 +317,7 @@ def get_serial(conn, tts_flag,align_success, shot_flag):
                     tts_flag.value = const.head_missing  
 
 BALL_MOVEMENT_THRESHOLD = 10
-def check_movement(tts_flag, ball_pos, isMoving, shot_flag):
+def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success):
     while True:
         initial_x = ball_pos[0]
         initial_y = ball_pos[1]
@@ -330,15 +332,12 @@ def check_movement(tts_flag, ball_pos, isMoving, shot_flag):
             if isMoving.value == True and is_ball_out == 2:
                 # isMoving = true => false가 된 순간             
                 # 이를 align공 거리와 현재 공 측정 이때 pixel 값이 threshold 값보다 크면 shot.value = true
-                if abs(current_x-prev_ball_position[0]) >= threshold:
+                if abs(current_x-prev_ball_position[0]) >= threshold and align_success.value == True:
                     if shot_flag.value == False:
                         shot_flag.value = True
             isMoving.value = False
         else:
             isMoving.value = True
-        
-        
-
 
 if __name__ == '__main__':
     import const
@@ -347,7 +346,7 @@ if __name__ == '__main__':
         ball_position = manager.list()
         prev_ball_position = manager.list()
         align_success = manager.Namespace()
-        align_success.value = -1
+        align_success.value = False
         dist = manager.list()
         tts_flag = manager.Namespace()
         tts_flag.value = const.default
@@ -355,6 +354,7 @@ if __name__ == '__main__':
         shot_flag.value = False
         isMoving = manager.Namespace()
         isMoving.value = True
+
 
         ball_position.append(-999)
         ball_position.append(-999)
@@ -365,7 +365,7 @@ if __name__ == '__main__':
 
         p1 = Process(target=stream_opencv, args=(parent_conn,ball_position,tts_flag,isMoving,align_success,dist, shot_flag,prev_ball_position, ))
         p2 = Process(target=get_serial, args=(child_conn,tts_flag, align_success,shot_flag, ))
-        p3 = Process(target=check_movement,args=(tts_flag, ball_position,isMoving,shot_flag, ))
+        p3 = Process(target=check_movement,args=(tts_flag, ball_position,isMoving,shot_flag, align_success ))
         p4 = Process(target=tts_process, args=(tts_flag,dist, ))
 
         p1.start()
