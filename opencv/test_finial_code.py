@@ -76,12 +76,12 @@ def tts_process(tts_flag, dist):
             print("head down")
             beep_sound = pygame.mixer.Sound("opencv/sound/down.mp3")
             beep_sound.play()
-            time.sleep(3)
+            time.sleep(1)
         elif current_flag == const.head_center_up:
             print("head up")            
             beep_sound = pygame.mixer.Sound("opencv/sound/up.mp3")
             beep_sound.play()
-            time.sleep(3)
+            time.sleep(1)
         elif current_flag == const.head_align_success:
             print(f"dist {dist}")
             engine.say(str(int(dist[0]))) #TTS 공과 골 사이의 거리
