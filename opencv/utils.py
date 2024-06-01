@@ -206,7 +206,7 @@ def is_valid_string(input_string):
         return True, arr
     else: return False, arr
 
-def return_ball_direction(previous_pos, current_pos, threshold=30):
+def return_ball_direction(previous_pos, current_pos, threshold=5):
     if abs(current_pos - previous_pos) >= threshold:
         if previous_pos < current_pos:
             return 'down'

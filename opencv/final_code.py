@@ -47,7 +47,6 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag):
     engine = pyttsx3.init('espeak')
     while True:
         current_flag = int(tts_flag.value)
-        print(f"current {current_flag}")
         float_flag = tts_flag.value
         if current_flag == const.ball_missing:
             print("ball missing")
@@ -242,9 +241,8 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         prev_ball_position[1] = center[1]
                         align_success.value = True
                         ball_align_flag.value = True
-                        tts_flag.value = 888                 
+                        tts_flag.value = const.default                 
                 
-                print(f"tts {tts_flag.value}")
                 # 헤드 정렬 판단
                 if len(new_output) == 4 and tts_flag.value >= const.head_align:
                     tts_flag.value = utils.test_head_align(output1)
@@ -278,6 +276,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                     shot_flag.value = False
                     align_success.value = False
                     head_align_flag.value = False
+                    ball_align_flag.value = False
                     tts_flag.value = const.default
 
             if ball_position[0] == -999 or ball_position[1] == -999 : 
@@ -340,7 +339,7 @@ def get_serial(conn, tts_flag,align_success, shot_flag):
                 if tts_flag.value > const.head_missing:
                     tts_flag.value = const.head_missing  
 
-BALL_MOVEMENT_THRESHOLD = 10
+BALL_MOVEMENT_THRESHOLD = 5
 def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success):
     while True:
         initial_x = ball_pos[0]
@@ -349,19 +348,23 @@ def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success):
         current_x = ball_pos[0]
         current_y = ball_pos[1]
 
-        threshold = 30
+        threshold = 10
         # is_aling_x가 true가 아닐때
+        not_move = abs(current_x - initial_x) <= BALL_MOVEMENT_THRESHOLD and abs(current_y - initial_y) <= BALL_MOVEMENT_THRESHOLD
         is_ball_out = utils.is_align_x(ball_pos[0])
-        if abs(current_x - initial_x) <= BALL_MOVEMENT_THRESHOLD and abs(current_y - initial_y) <= BALL_MOVEMENT_THRESHOLD:
+        if not_move:
             if isMoving.value == True and is_ball_out == 2:
                 # isMoving = true => false가 된 순간  
                 # 이를 align공 거리와 현재 공 측정 이때 pixel 값이 threshold 값보다 크면 shot.value = true
+                print(f"{align_success.value} {abs(current_x-prev_ball_position[0]) >= threshold}")
                 if abs(current_x-prev_ball_position[0]) >= threshold and align_success.value == True:
                     if shot_flag.value == False:
                         shot_flag.value = True
             isMoving.value = False
         else:
             isMoving.value = True
+        print(f"222 shot_Falg {shot_flag.value} ismove {not_move} isMoving {isMoving.value}")
+        
 
 if __name__ == '__main__':
     import const
