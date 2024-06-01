@@ -270,3 +270,6 @@ mm = int(pixel_to_mm(end_y-start_y))
 def get_distance_AB(A, B):
     dist = (abs(A-B) * mm / 10)
     return dist
+
+def euclidean_distance(x1, y1, x2, y2):
+    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)

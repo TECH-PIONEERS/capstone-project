@@ -242,6 +242,9 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
 
             else: # ball_shot
                 print(f"ball shot true")
+                if len(center) <= 0:
+                    tts_flag.value = const.game_lose
+                    print("out of range")
                 if isMoving.value == False :
                     #det goal
                     if utils.goal(center[0], center[1]):
@@ -249,7 +252,12 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         print("game_win")
                     else:
                         tts_flag.value = const.game_lose
-                        print("game_lose")
+                        # 공의 방향 공의 이동거리
+                        # shot_direction = utils.return_ball_direction_change(처음위치, 멈춘위치)
+                        # shot_dist = utils.euclidean_distance(처음x,처음y,마지막x,마지막y)
+                        print(f"game_lose {shot_direction} {shot_dist}")
+
+
 
             if ball_position[0] == -999 or ball_position[1] == -999 : 
                 ball_position[0] = center[0]
