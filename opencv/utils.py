@@ -70,27 +70,24 @@ def test_head_align(output1):
     # 정렬 및 기울어짐 판별
     if distance > -30 and distance < 30:
         return const.default
-    elif distance < -30: #CW
+    elif distance < -30: #CW (7.1 ~ 7.3)
         #print("CW")
-        if distance < -50:
+        if distance < -70:
             return 7.1
-        elif distance < -70:
+        elif distance < -100:
             return 7.2
         else:
             return 7.3
         #return const.head_align
-    elif distance > 30: #CW
-        # 7.4 ~ 7.6
+    elif distance > 30: #CCW (7.4 ~ 7.6)
         #print("CCW")
-        if distance > 50:
+        if distance > 70:
             return 7.4
-        elif distance > 70:
+        elif distance > 100:
             return 7.5
         else:
             return 7.6
         #return const.head_align
-    else:
-        return const.head_align
 
 def generate_beep(case):
     global is_beeping
