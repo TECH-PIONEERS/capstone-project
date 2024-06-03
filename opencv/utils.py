@@ -16,7 +16,8 @@ start_x = 8
 start_y = 101
 end_x = 600
 end_y = 174
-goal_x = 572
+goal_x = 578
+goal_y = 36
 
 def test_head_align(output1):     
     head_x = 0
@@ -85,34 +86,8 @@ def test_head_align(output1):
         else:
             return 7.6
 
-def generate_beep(case):
-    global is_beeping
-    if not is_beeping:
-        is_beeping = True 
-        pygame.init()
-        pygame.mixer.init()
-        match case:
-            case 1:
-                beep_sound = pygame.mixer.Sound("sound/high_4_beep.wav")
-            case 2:
-                beep_sound = pygame.mixer.Sound("sound/high_3_beep.wav")
-            case 3:
-                beep_sound = pygame.mixer.Sound("sound/high_2_beep.wav")
-            case 4:
-                beep_sound = pygame.mixer.Sound("sound/high_1_beep.wav")
-            case 5:
-                beep_sound = pygame.mixer.Sound("sound/mid_beep.wav")
-            case 6:
-                beep_sound = pygame.mixer.Sound("sound/long_beep.wav")
-            case 8:
-                beep_sound = pygame.mixer.Sound("sound/low_beep.wav")
-        beep_sound.play()
-        time.sleep(1)
-        is_beeping = False
-
-
+# 카메라 보정 함수 
 def camera_calibration(image):
-    # 카메라 보정 함수 
     # image는 picam2.capture_array()로 받아온 frame
     
     # 최종 버전: v6
@@ -153,8 +128,6 @@ def pixel_to_mm():
 mm = int(pixel_to_mm())
 
 def goal(x, y):
-    goal_y = 36
-    goal_x = 578
     # if 공의 y좌표가 40 ~ 80 사이면 골이라고 판단
     if(y >= (goal_y-10) and y < (goal_y+10)) and (x >= (goal_x-6) and x < (goal_x+6)):
         # print("goal")
@@ -180,6 +153,11 @@ def is_align(y, offset):
         return 2
     elif y > (goal_y+offset):
         return 3
+
+def is_within_goal(x,y):
+    threshold = 20
+    distance = math.sqrt((goal_x-x)**2 + (goal_y-x)**2)
+    return distance <= threshold
 
 def is_valid_string(input_string):
     before = ''

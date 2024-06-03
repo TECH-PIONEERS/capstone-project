@@ -33,7 +33,7 @@ end_x = utils.end_x
 end_y = utils.end_y
 goal_x = utils.goal_x
 
-def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, align_success):
+def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, align_success,is_direction_changed_flag):
     import utils
     import time
     import pygame
@@ -104,7 +104,10 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
                 tts_flag.value = 1004
                 head_align_flag.value = True
         else:
-            if current_flag == const.game_lose:
+            if is_direction_changed_flag.value == True:
+                engine.say(f"ball hit the wall")
+                engine.runAndWait()
+            elif current_flag == const.game_lose:
                 print("lose")
                 beep_sound = pygame.mixer.Sound("opencv/sound/lose.mp3")
                 beep_sound.play()
@@ -123,11 +126,12 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
             align_success.value = False
             head_align_flag.value = False
             ball_align_flag.value = False
+            is_direction_changed_flag.value = False
             tts_flag.value = const.default
             shot_flag.value = False
     
 
-def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, shot_flag, prev_ball_position, head_align_flag, ball_align_flag):
+def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, shot_flag, prev_ball_position, head_align_flag, ball_align_flag,is_direction_changed_flag):
     global previous_direction
     global flag
     new_output = []
@@ -285,8 +289,8 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                     previous_direction = utils.return_ball_direction(ball_position[1], center[1])
                 else:
                     current_direction = utils.return_ball_direction(ball_position[1], center[1])
-                    if previous_direction != current_direction:
-                        print('방향 바뀜')
+                    if previous_direction != current_direction and utils.is_align_x(center[0])== 2 and not utils.is_within_goal(center[0], center[1]):
+                        is_direction_changed_flag.value = True
                 current_direction = previous_direction
                 ball_position[0] = center[0]
                 ball_position[1] = center[1]
@@ -380,6 +384,9 @@ if __name__ == '__main__':
         head_align_flag.value = False
         ball_align_flag = manager.Namespace()
         ball_align_flag.value = False
+        is_direction_changed_flag = manager.Namespace()
+        is_direction_changed_flag.value = False
+
 
         ball_position.append(-999)
         ball_position.append(-999)
@@ -388,10 +395,10 @@ if __name__ == '__main__':
         dist.append(0)
         dist.append(0)
 
-        p1 = Process(target=stream_opencv, args=(parent_conn,ball_position,tts_flag,isMoving,align_success,dist, shot_flag,prev_ball_position,head_align_flag, ball_align_flag ))
+        p1 = Process(target=stream_opencv, args=(parent_conn,ball_position,tts_flag,isMoving,align_success,dist, shot_flag,prev_ball_position,head_align_flag, ball_align_flag,is_direction_changed_flag ))
         p2 = Process(target=get_serial, args=(child_conn,tts_flag, align_success,shot_flag, ))
         p3 = Process(target=check_movement,args=(tts_flag, ball_position,isMoving,shot_flag, align_success ))
-        p4 = Process(target=tts_process, args=(tts_flag,dist,head_align_flag, shot_flag,  ball_align_flag, align_success ))
+        p4 = Process(target=tts_process, args=(tts_flag,dist,head_align_flag, shot_flag,  ball_align_flag, align_success,is_direction_changed_flag ))
 
         p1.start()
         p2.start()
