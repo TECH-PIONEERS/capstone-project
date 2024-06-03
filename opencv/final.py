@@ -272,7 +272,8 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                     else:
                         tts_flag.value = const.game_lose
                         # 공의 방향 공의 이동거리
-                        shot_direction = utils.return_ball_direction(prev_ball_position[1], center[1])
+                        #shot_direction = utils.return_ball_direction(prev_ball_position[1], center[1])
+                        shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
                         dist[0] = shot_direction
                         shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
                         dist[1] = shot_dist
@@ -282,9 +283,11 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 ball_position[1] = center[1] 
             else:
                 if previous_direction == '':
-                    previous_direction = utils.return_ball_direction(ball_position[1], center[1])
+                    #previous_direction = utils.return_ball_direction(ball_position[1], center[1])
+                    previous_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction)
                 else:
-                    current_direction = utils.return_ball_direction(ball_position[1], center[1])
+                    #current_direction = utils.return_ball_direction(ball_position[1], center[1])
+                    current_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction)
                     if previous_direction != current_direction:
                         print('방향 바뀜')
                 current_direction = previous_direction

@@ -193,6 +193,20 @@ def is_valid_string(input_string):
         return True, arr
     else: return False, arr
 
+
+def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y, previous_direction, threshold=5):
+    if is_within_goal(previous_pos_x, previous_pos_y) is True and is_within_goal(current_pos_x, current_pos_y) is True:
+        print("공이 홀 안에 있음")
+        return previous_direction
+    
+    if abs(current_pos_y - previous_pos_y) >= threshold:
+        if previous_pos_y < current_pos_y:
+            return 'right'
+        elif previous_pos_y > current_pos_y:
+            return 'left'
+    else:
+        return 'straight'    
+
 def return_ball_direction(previous_pos, current_pos, threshold=5):
     if abs(current_pos - previous_pos) >= threshold:
         if previous_pos < current_pos:
