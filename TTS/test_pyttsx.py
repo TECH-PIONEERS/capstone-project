@@ -16,6 +16,8 @@ def generate_TTS(text, voice_id):
 
 def get_english_voice_id(gender='male'):
     engine = pyttsx3.init()
+    engine.setProperty('rate', 2)
+    print(engine.getProperty('rate'))
     voices = engine.getProperty('voices')
     for voice in voices:
         if 'EN-US' in voice.id or 'EN-US' in voice.name:
@@ -33,12 +35,7 @@ def get_english_voice_id(gender='male'):
 female_voice_id = get_english_voice_id(gender='female')
 male_voice_id = get_english_voice_id(gender='male')
 
-# Start the thread with text input for female voice
-beep_thread_female = threading.Thread(target=generate_TTS, args=("Hello, this is a female voice.", female_voice_id))
-beep_thread_female.start()
-beep_thread_female.join()
-
 # Start the thread with text input for male voice
-beep_thread_male = threading.Thread(target=generate_TTS, args=("Hello, this is a male voice.", male_voice_id))
+beep_thread_male = threading.Thread(target=generate_TTS, args=("Hello, this is voice.", male_voice_id))
 beep_thread_male.start()
 beep_thread_male.join()
