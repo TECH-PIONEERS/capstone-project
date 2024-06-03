@@ -16,8 +16,8 @@ start_x = 8
 start_y = 101
 end_x = 600
 end_y = 174
-goal_x = 578
-goal_y = 36
+goal_x = 576
+goal_y = 33
 
 def test_head_align(output1):     
     head_x = 0
@@ -155,9 +155,18 @@ def is_align(y, offset):
         return 3
 
 def is_within_goal(x,y):
-    threshold = 20
-    distance = math.sqrt((goal_x-x)**2 + (goal_y-x)**2)
-    return distance <= threshold
+    x_threshold = 8
+    y_threshold = 12
+
+    distance_x = abs(goal_x - x)
+    distance_y = abs(goal_y - y)
+
+    if distance_x > x_threshold:
+        return False
+    elif distance_y > y_threshold:
+        return False
+    else:
+        return True
 
 def is_valid_string(input_string):
     before = ''
