@@ -209,9 +209,9 @@ def is_valid_string(input_string):
 def return_ball_direction(previous_pos, current_pos, threshold=5):
     if abs(current_pos - previous_pos) >= threshold:
         if previous_pos < current_pos:
-            return 'down'
+            return 'right'
         elif previous_pos > current_pos:
-            return 'up'
+            return 'left'
     else:
         return 'straight'
 
