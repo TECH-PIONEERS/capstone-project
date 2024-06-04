@@ -33,7 +33,7 @@ end_x = utils.end_x
 end_y = utils.end_y
 goal_x = utils.goal_x
 
-def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, align_success, isMovingTime):
+def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, align_success, isMovingTime, is_direction_changed_flag):
     import utils
     import time
     import pygame
@@ -103,14 +103,17 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
                 tts_flag.value = 1004
                 head_align_flag.value = True
         else:
-            if current_flag == const.game_lose:
+            if is_direction_changed_flag.value == True:
+                engine.say(f"ball hit the wall")
+                engine.runAndWait()
+            elif current_flag == const.game_lose:
                 print("lose")
                 beep_sound = pygame.mixer.Sound("opencv/sound/lose.mp3")
                 beep_sound.play()
                 time.sleep(2)
-                engine.say(f"{dist[0]}") #TTS 공과 골 사이의 거리
+                engine.say(f"{dist[3]}") #TTS 공과 골 사이의 거리
                 engine.runAndWait()
-                engine.say(f"{str(int(dist[1]))}") #TTS 공과 골 사이의 거리
+                engine.say(f"{str(int(dist[4]))}") #TTS 공과 골 사이의 거리
                 engine.runAndWait()
             elif current_flag == const.game_win:
                 beep_sound = pygame.mixer.Sound("opencv/sound/nice-shot.mp3")
@@ -126,9 +129,11 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
             shot_flag.value = False
             isMovingTime[0] = 0
             isMovingTime[1] = False
+            is_direction_changed_flag.value = False
+            dist[0], dist[1], dist[3], dist[4] = 0,0,0,0
     
 
-def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, shot_flag, prev_ball_position, head_align_flag, ball_align_flag, isMovingTime):
+def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, shot_flag, prev_ball_position, head_align_flag, ball_align_flag, isMovingTime, is_direction_changed_flag):
     global previous_direction
     global flag
     new_output = []
@@ -280,9 +285,9 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                                 # 공의 방향 공의 이동거리
                                 #shot_direction = utils.return_ball_direction(prev_ball_position[1], center[1])
                                 shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
-                                dist[0] = shot_direction
+                                dist[3] = shot_direction
                                 shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
-                                dist[1] = shot_dist
+                                dist[4] = shot_dist
 
             if ball_position[0] == -999 or ball_position[1] == -999 : 
                 ball_position[0] = center[0]
@@ -294,8 +299,9 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 else:
                     #current_direction = utils.return_ball_direction(ball_position[1], center[1])
                     current_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction, 2.5)
-                    if previous_direction != current_direction:
+                    if previous_direction != current_direction and is_ball_in == 2 and align_success.value == True:
                         print('방향 바뀜')
+                        is_direction_changed_flag.value = True
                 current_direction = previous_direction
                 ball_position[0] = center[0]
                 ball_position[1] = center[1]
@@ -309,7 +315,6 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             if shot_flag.value == False:
                 tts_flag.value = const.ball_missing
             else:
-                print(f"ball shot true")
                 tts_flag.value = const.game_lose
                 print("out of range")
 
@@ -368,8 +373,6 @@ def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success, isMov
                             isMovingTime[0] = time.time()
                             isMovingTime[1] = True
             isMoving.value = False
-            
-           
         else:
             isMoving.value = True
         # print(f"shot_Flag {shot_flag.value} notmove {not_move} isMoving {isMoving.value}")
@@ -397,6 +400,8 @@ if __name__ == '__main__':
         isMovingTime = manager.list() #[time, boolean]
         isMovingTime.append(0)
         isMovingTime.append(False)
+        is_direction_changed_flag = manager.Namespace()
+        is_direction_changed_flag.value = False
 
 
         ball_position.append(-999)
@@ -405,11 +410,13 @@ if __name__ == '__main__':
         prev_ball_position.append(-999)
         dist.append(0)
         dist.append(0)
+        dist.append(0)
+        dist.append(0)
 
-        p1 = Process(target=stream_opencv, args=(parent_conn,ball_position,tts_flag,isMoving,align_success,dist, shot_flag,prev_ball_position,head_align_flag, ball_align_flag, isMovingTime ))
+        p1 = Process(target=stream_opencv, args=(parent_conn,ball_position,tts_flag,isMoving,align_success,dist, shot_flag,prev_ball_position,head_align_flag, ball_align_flag, isMovingTime, is_direction_changed_flag))
         p2 = Process(target=get_serial, args=(child_conn,tts_flag, align_success,shot_flag, ))
         p3 = Process(target=check_movement,args=(tts_flag, ball_position,isMoving,shot_flag, align_success, isMovingTime ))
-        p4 = Process(target=tts_process, args=(tts_flag,dist,head_align_flag, shot_flag,  ball_align_flag, align_success, isMovingTime ))
+        p4 = Process(target=tts_process, args=(tts_flag,dist,head_align_flag, shot_flag,  ball_align_flag, align_success, isMovingTime, is_direction_changed_flag))
 
         p1.start()
         p2.start()
