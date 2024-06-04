@@ -16,8 +16,8 @@ start_x = 8
 start_y = 101
 end_x = 600
 end_y = 174
-goal_x = 577
-goal_y = 33
+goal_x = 579
+goal_y = 36
 
 def test_head_align(output1):     
     head_x = 0
@@ -155,8 +155,8 @@ def is_align(y, offset):
         return 3
 
 def is_within_goal(x,y):
-    x_threshold = 10
-    y_threshold = 13
+    x_threshold = 16
+    y_threshold = 17
 
     distance_x = abs(goal_x - x)
     distance_y = abs(goal_y - y)
