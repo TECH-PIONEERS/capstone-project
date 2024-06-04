@@ -267,17 +267,20 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             else: # ball_shot
                 # print(f"ball shot true tts_flag {tts_flag.value}")
                 if isMoving.value == False:
-                    #det goal
-                    if utils.goal(center[0], center[1]):
-                        tts_flag.value = const.game_win
-                    else:
-                        tts_flag.value = const.game_lose
-                        # 공의 방향 공의 이동거리
-                        #shot_direction = utils.return_ball_direction(prev_ball_position[1], center[1])
-                        shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
-                        dist[0] = shot_direction
-                        shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
-                        dist[1] = shot_dist
+                    start = time.time()
+
+                    if start >= 3:
+                        #det goal
+                        if utils.goal(center[0], center[1]):
+                            tts_flag.value = const.game_win
+                        else:
+                            tts_flag.value = const.game_lose
+                            # 공의 방향 공의 이동거리
+                            #shot_direction = utils.return_ball_direction(prev_ball_position[1], center[1])
+                            shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
+                            dist[0] = shot_direction
+                            shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
+                            dist[1] = shot_dist
 
             if ball_position[0] == -999 or ball_position[1] == -999 : 
                 ball_position[0] = center[0]
