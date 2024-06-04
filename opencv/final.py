@@ -33,7 +33,7 @@ end_x = utils.end_x
 end_y = utils.end_y
 goal_x = utils.goal_x
 
-def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, align_success):
+def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, align_success, isMovingTime):
     import utils
     import time
     import pygame
@@ -52,8 +52,7 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
             beep_sound.play()
             time.sleep(2)
             head_align_flag.value = False
-
-        if shot_flag.value == False:
+        if shot_flag.value == False and isMovingTime[1] == False:
             if current_flag == const.ball_align_bottom:
                 # print("ball bottom")
                 engine.say("Down") #TTS
@@ -125,9 +124,11 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
             ball_align_flag.value = False
             tts_flag.value = const.default
             shot_flag.value = False
+            isMovingTime[0] = 0
+            isMovingTime[1] = False
     
 
-def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, shot_flag, prev_ball_position, head_align_flag, ball_align_flag):
+def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, shot_flag, prev_ball_position, head_align_flag, ball_align_flag, isMovingTime):
     global previous_direction
     global flag
     new_output = []
@@ -227,7 +228,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             M = cv2.moments(c)
             if M["m00"] == 0 : M["m00"] = 1
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-            print(f"center : {center}")
+            # print(f"center : {center}")
             
             # ball boundary
             if shot_flag.value == False:
@@ -267,20 +268,21 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             else: # ball_shot
                 # print(f"ball shot true tts_flag {tts_flag.value}")
                 if isMoving.value == False:
-                    start = time.time()
-
-                    if start >= 3:
-                        #det goal
-                        if utils.goal(center[0], center[1]):
-                            tts_flag.value = const.game_win
-                        else:
-                            tts_flag.value = const.game_lose
-                            # 공의 방향 공의 이동거리
-                            #shot_direction = utils.return_ball_direction(prev_ball_position[1], center[1])
-                            shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
-                            dist[0] = shot_direction
-                            shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
-                            dist[1] = shot_dist
+                    now = time.time()
+                    if isMovingTime[1] == True:
+                        timer = now - isMovingTime[0]
+                        if timer >= 3:
+                            #det goal
+                            if utils.goal(center[0], center[1]):
+                                tts_flag.value = const.game_win
+                            else:
+                                tts_flag.value = const.game_lose
+                                # 공의 방향 공의 이동거리
+                                #shot_direction = utils.return_ball_direction(prev_ball_position[1], center[1])
+                                shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
+                                dist[0] = shot_direction
+                                shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
+                                dist[1] = shot_dist
 
             if ball_position[0] == -999 or ball_position[1] == -999 : 
                 ball_position[0] = center[0]
@@ -343,7 +345,7 @@ def get_serial(conn, tts_flag,align_success, shot_flag):
                     tts_flag.value = const.head_missing  
 
 BALL_MOVEMENT_THRESHOLD = 10
-def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success):
+def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success, isMovingTime):
     while True:
         initial_x = ball_pos[0]
         initial_y = ball_pos[1]
@@ -362,7 +364,12 @@ def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success):
                 if abs(current_x-prev_ball_position[0]) >= threshold and align_success.value == True:
                     if shot_flag.value == False:
                         shot_flag.value = True
+                        if isMovingTime[1] == False:
+                            isMovingTime[0] = time.time()
+                            isMovingTime[1] = True
             isMoving.value = False
+            
+           
         else:
             isMoving.value = True
         # print(f"shot_Flag {shot_flag.value} notmove {not_move} isMoving {isMoving.value}")
@@ -387,6 +394,10 @@ if __name__ == '__main__':
         head_align_flag.value = False
         ball_align_flag = manager.Namespace()
         ball_align_flag.value = False
+        isMovingTime = manager.list() #[time, boolean]
+        isMovingTime.append(0)
+        isMovingTime.append(False)
+
 
         ball_position.append(-999)
         ball_position.append(-999)
@@ -395,10 +406,10 @@ if __name__ == '__main__':
         dist.append(0)
         dist.append(0)
 
-        p1 = Process(target=stream_opencv, args=(parent_conn,ball_position,tts_flag,isMoving,align_success,dist, shot_flag,prev_ball_position,head_align_flag, ball_align_flag ))
+        p1 = Process(target=stream_opencv, args=(parent_conn,ball_position,tts_flag,isMoving,align_success,dist, shot_flag,prev_ball_position,head_align_flag, ball_align_flag, isMovingTime ))
         p2 = Process(target=get_serial, args=(child_conn,tts_flag, align_success,shot_flag, ))
-        p3 = Process(target=check_movement,args=(tts_flag, ball_position,isMoving,shot_flag, align_success ))
-        p4 = Process(target=tts_process, args=(tts_flag,dist,head_align_flag, shot_flag,  ball_align_flag, align_success ))
+        p3 = Process(target=check_movement,args=(tts_flag, ball_position,isMoving,shot_flag, align_success, isMovingTime ))
+        p4 = Process(target=tts_process, args=(tts_flag,dist,head_align_flag, shot_flag,  ball_align_flag, align_success, isMovingTime ))
 
         p1.start()
         p2.start()
