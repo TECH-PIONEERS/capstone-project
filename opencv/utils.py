@@ -198,7 +198,7 @@ def is_valid_string(input_string):
 
 def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y, previous_direction, threshold=5):
     global start_y, end_y
-    wall_y_threshold = 10
+    wall_y_threshold = 5
 
     if is_within_goal(previous_pos_x, previous_pos_y) is True and is_within_goal(current_pos_x, current_pos_y) is True:
         #print("공이 홀 안에 있음")
