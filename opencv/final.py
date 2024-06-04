@@ -289,9 +289,9 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                                 #shot_direction = utils.return_ball_direction(prev_ball_position[1], center[1])
                                 shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
                                 if is_direction_changed_flag.value == False:
-                                    dist[3] = shot_direction
+                                    dist[2] = shot_direction
                                     shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
-                                    dist[4] = shot_dist
+                                    dist[3] = shot_dist
             if ball_position[0] == -999 or ball_position[1] == -999 : 
                 ball_position[0] = center[0]
                 ball_position[1] = center[1] 
@@ -320,6 +320,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 tts_flag.value = const.ball_missing
             else:
                 tts_flag.value = const.game_lose
+                print("out of range")
                 dist[3] = -999
 
         cv2.imshow('cap', frame)
