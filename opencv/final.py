@@ -227,6 +227,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             M = cv2.moments(c)
             if M["m00"] == 0 : M["m00"] = 1
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
+            print(f"center : {center}")
             
             # ball boundary
             if shot_flag.value == False:
@@ -273,7 +274,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         tts_flag.value = const.game_lose
                         # 공의 방향 공의 이동거리
                         #shot_direction = utils.return_ball_direction(prev_ball_position[1], center[1])
-                        shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
+                        shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction, 10)
                         dist[0] = shot_direction
                         shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
                         dist[1] = shot_dist
@@ -284,10 +285,10 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             else:
                 if previous_direction == '':
                     #previous_direction = utils.return_ball_direction(ball_position[1], center[1])
-                    previous_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction)
+                    previous_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction, 10)
                 else:
                     #current_direction = utils.return_ball_direction(ball_position[1], center[1])
-                    current_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction)
+                    current_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction, 10)
                     if previous_direction != current_direction:
                         print('방향 바뀜')
                 current_direction = previous_direction
