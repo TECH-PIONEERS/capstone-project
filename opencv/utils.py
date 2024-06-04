@@ -204,16 +204,22 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
         #print("공이 홀 안에 있음")
         return previous_direction
 
+    # 공이 벽 근처에 있을 때 
     if current_pos_y < start_y + wall_y_threshold or current_pos_y > end_y - wall_y_threshold:
         if abs(current_pos_y - previous_pos_y) >= threshold:
             if previous_pos_y < current_pos_y:
-                # return 'right'
-                return 'up'
+                return 'rw'
             elif previous_pos_y > current_pos_y:
-                return 'down'
-                # return 'left'
+                return 'lw'
+    else: # 공의 방향
+        if abs(current_pos_y - previous_pos_y) >= threshold:
+            if previous_pos_y < current_pos_y:
+                return 'right'
+            elif previous_pos_y > current_pos_y:
+                return 'left'
         else:
-            return 'straight'    
+            return 'straight'
+
 
 def return_ball_direction(previous_pos, current_pos, threshold=5):
     if abs(current_pos - previous_pos) >= threshold:

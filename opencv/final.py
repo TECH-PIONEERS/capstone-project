@@ -285,9 +285,11 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                                 # 공의 방향 공의 이동거리
                                 #shot_direction = utils.return_ball_direction(prev_ball_position[1], center[1])
                                 shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
-                                dist[3] = shot_direction
-                                shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
-                                dist[4] = shot_dist
+                                if is_direction_changed_flag.value == False:
+                                    dist[3] = shot_direction
+                                    shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
+                                    dist[4] = shot_dist
+
 
             if ball_position[0] == -999 or ball_position[1] == -999 : 
                 ball_position[0] = center[0]
@@ -299,9 +301,10 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 else:
                     #current_direction = utils.return_ball_direction(ball_position[1], center[1])
                     current_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction, 2.5)
-                    if previous_direction != current_direction and is_ball_in == 2 and align_success.value == True:
-                        print('방향 바뀜')
-                        is_direction_changed_flag.value = True
+                    if current_direction == 'rw' or current_direction == 'lw':
+                        if is_ball_in == 2 and align_success.value == True:
+                            print('방향 바뀜')
+                            is_direction_changed_flag.value = True
                 current_direction = previous_direction
                 ball_position[0] = center[0]
                 ball_position[1] = center[1]
