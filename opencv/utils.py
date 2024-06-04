@@ -16,7 +16,7 @@ start_x = 8
 start_y = 101
 end_x = 600
 end_y = 174
-goal_x = 567
+goal_x = 576
 goal_y = 33
 
 def test_head_align(output1):     
@@ -155,17 +155,11 @@ def is_align(y, offset):
         return 3
 
 def is_within_goal(x,y):
-    # x_threshold = 10
-    # y_threshold = 12
-
-    if x <= goal_x:
-        x_threshold = 14
-    else:
-        x_threshold = 5
-    if y <= goal_y:
-        y_threshold = 12
-    else:
-        y_threshold = 11
+    x_threshold = 10
+    y_threshold = 12
+    if x > goal_x:
+        x_threshold = 25
+    
 
     distance_x = abs(goal_x - x)
     distance_y = abs(goal_y - y)
@@ -205,7 +199,7 @@ def is_valid_string(input_string):
 
 def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y, previous_direction, threshold=5):
     if is_within_goal(previous_pos_x, previous_pos_y) is True and is_within_goal(current_pos_x, current_pos_y) is True:
-        print("공이 홀 안에 있음")
+        #print("공이 홀 안에 있음")
         return previous_direction
     
     if abs(current_pos_y - previous_pos_y) >= threshold:
