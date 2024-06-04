@@ -107,14 +107,17 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
                 engine.say(f"ball hit the wall")
                 engine.runAndWait()
             elif current_flag == const.game_lose:
-                print("lose")
                 beep_sound = pygame.mixer.Sound("opencv/sound/lose.mp3")
                 beep_sound.play()
                 time.sleep(2)
-                engine.say(f"{dist[3]}") #TTS 공과 골 사이의 거리
-                engine.runAndWait()
-                engine.say(f"{str(int(dist[4]))}") #TTS 공과 골 사이의 거리
-                engine.runAndWait()
+                if dist[3] == -999:
+                    engine.say(f"out of range") #TTS 공과 골 사이의 거리
+                    engine.runAndWait()    
+                else:
+                    engine.say(f"{dist[2]}") #TTS 공과 골 사이의 거리
+                    engine.runAndWait()
+                    engine.say(f"{str(int(dist[3]))}") #TTS 공과 골 사이의 거리
+                    engine.runAndWait()
             elif current_flag == const.game_win:
                 beep_sound = pygame.mixer.Sound("opencv/sound/nice-shot.mp3")
                 beep_sound.play()
@@ -130,7 +133,7 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
             isMovingTime[0] = 0
             isMovingTime[1] = False
             is_direction_changed_flag.value = False
-            dist[0], dist[1], dist[3], dist[4] = 0,0,0,0
+            dist[0], dist[1], dist[2], dist[3] = 0,0,0,0
     
 
 def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, shot_flag, prev_ball_position, head_align_flag, ball_align_flag, isMovingTime, is_direction_changed_flag):
@@ -289,8 +292,6 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                                     dist[3] = shot_direction
                                     shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
                                     dist[4] = shot_dist
-
-
             if ball_position[0] == -999 or ball_position[1] == -999 : 
                 ball_position[0] = center[0]
                 ball_position[1] = center[1] 
@@ -319,7 +320,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 tts_flag.value = const.ball_missing
             else:
                 tts_flag.value = const.game_lose
-                print("out of range")
+                dist[3] = -999
 
         cv2.imshow('cap', frame)
         key = cv2.waitKey(1) & 0xFF
