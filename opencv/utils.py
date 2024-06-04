@@ -160,7 +160,6 @@ def is_within_goal(x,y):
     if x > goal_x:
         x_threshold = 25
     
-
     distance_x = abs(goal_x - x)
     distance_y = abs(goal_y - y)
 
@@ -198,19 +197,23 @@ def is_valid_string(input_string):
 
 
 def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y, previous_direction, threshold=5):
+    global start_y, end_y
+    wall_y_threshold = 10
+
     if is_within_goal(previous_pos_x, previous_pos_y) is True and is_within_goal(current_pos_x, current_pos_y) is True:
         #print("공이 홀 안에 있음")
         return previous_direction
-    
-    if abs(current_pos_y - previous_pos_y) >= threshold:
-        if previous_pos_y < current_pos_y:
-            # return 'right'
-            return 'up'
-        elif previous_pos_y > current_pos_y:
-            return 'down'
-            # return 'left'
-    else:
-        return 'straight'    
+
+    if current_pos_y < start_y + wall_y_threshold or current_pos_y > end_y - wall_y_threshold:
+        if abs(current_pos_y - previous_pos_y) >= threshold:
+            if previous_pos_y < current_pos_y:
+                # return 'right'
+                return 'up'
+            elif previous_pos_y > current_pos_y:
+                return 'down'
+                # return 'left'
+        else:
+            return 'straight'    
 
 def return_ball_direction(previous_pos, current_pos, threshold=5):
     if abs(current_pos - previous_pos) >= threshold:
