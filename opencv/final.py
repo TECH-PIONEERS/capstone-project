@@ -362,15 +362,15 @@ def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success, isMov
         current_x = ball_pos[0]
         current_y = ball_pos[1]
 
-        threshold = 10
+        shot_threshold = 10
         not_move = abs(current_x - initial_x) <= BALL_MOVEMENT_THRESHOLD and abs(current_y - initial_y) <= BALL_MOVEMENT_THRESHOLD
         is_ball_out = utils.is_align_x(ball_pos[0])
         if not_move:
             if isMoving.value == True and is_ball_out == 2:
                 # isMoving = true => false가 된 순간  
                 # 이를 align공 거리와 현재 공 측정 이때 pixel 값이 threshold 값보다 크면 shot.value = true
-                print(f"{align_success.value} {abs(current_x-prev_ball_position[0]) >= threshold}")
-                if abs(current_x-prev_ball_position[0]) >= threshold and align_success.value == True:
+                print(f"{align_success.value} {abs(current_x-prev_ball_position[0]) >= shot_threshold}")
+                if abs(current_x-prev_ball_position[0]) >= shot_threshold and align_success.value == True:
                     if shot_flag.value == False:
                         shot_flag.value = True
                         if isMovingTime[1] == False:
