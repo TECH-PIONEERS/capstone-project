@@ -197,20 +197,23 @@ def is_valid_string(input_string):
 
 
 def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y, previous_direction, threshold=5):
-    global start_y, end_y
-    wall_y_threshold = 5
+    right_wall_y = 7 #7~15
+    left_wall_y  = 60 # 56~60
+    wall_threshold_y = 5
 
     if is_within_goal(previous_pos_x, previous_pos_y) is True and is_within_goal(current_pos_x, current_pos_y) is True:
         #print("공이 홀 안에 있음")
         return previous_direction
 
-    # 공이 벽 근처에 있을 때 
-    if current_pos_y < start_y + wall_y_threshold or current_pos_y > end_y - wall_y_threshold:
+    if current_pos_y < right_wall_y + wall_threshold_y: # 공이 right 벽 근처에 있을 때 
+        #print("here is rw")
         if abs(current_pos_y - previous_pos_y) >= threshold:
-            if previous_pos_y < current_pos_y:
-                return 'rw'
-            elif previous_pos_y > current_pos_y:
-                return 'lw'
+            return 'rw'
+    elif current_pos_y > left_wall_y - wall_threshold_y:# 공이 left 벽 근처에 있을 때 
+        #print("here is lw")
+        if abs(current_pos_y - previous_pos_y) >= threshold:
+            return 'lw'
+        return 'lw'
     else: # 공의 방향
         if abs(current_pos_y - previous_pos_y) >= threshold:
             if previous_pos_y < current_pos_y:

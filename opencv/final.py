@@ -240,6 +240,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             
             # ball boundary
             if shot_flag.value == False:
+                #print("x:", center[0], "y:", center[1])
                 is_ball_in = utils.is_align_x(center[0]) 
                 if is_ball_in == 2 or is_ball_in == 3:
                     tts_flag.value = const.ball_missing
@@ -274,6 +275,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         dist[1] = utils.get_distance_AB(center[0],output1_cali_x)
 
             else: # ball_shot
+                #print("x:", center[0], "y:", center[1])
                 # print(f"ball shot true tts_flag {tts_flag.value}")
                 if isMoving.value == False:
                     now = time.time()
@@ -281,7 +283,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         timer = now - isMovingTime[0]
                         if timer >= 3:
                             #det goal
-                            if utils.goal(center[0], center[1]):
+                            if utils.is_within_goal(center[0], center[1]):
                                 tts_flag.value = const.game_win
                             else:
                                 tts_flag.value = const.game_lose
@@ -304,7 +306,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                     current_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction, 2.5)
                     if current_direction == 'rw' or current_direction == 'lw':
                         if is_ball_in == 2 and align_success.value == True:
-                            print('방향 바뀜')
+                            print('방향 바뀜', current_direction)
                             is_direction_changed_flag.value = True
                 current_direction = previous_direction
                 ball_position[0] = center[0]
