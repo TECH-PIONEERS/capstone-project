@@ -354,7 +354,7 @@ def get_serial(conn, tts_flag,align_success, shot_flag):
                     tts_flag.value = const.head_missing  
 
 BALL_MOVEMENT_THRESHOLD = 10
-def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success, isMovingTime):
+def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success, isMovingTime, prev_ball_position):
     while True:
         initial_x = ball_pos[0]
         initial_y = ball_pos[1]
@@ -419,7 +419,7 @@ if __name__ == '__main__':
 
         p1 = Process(target=stream_opencv, args=(parent_conn,ball_position,tts_flag,isMoving,align_success,dist, shot_flag,prev_ball_position,head_align_flag, ball_align_flag, isMovingTime, is_direction_changed_flag))
         p2 = Process(target=get_serial, args=(child_conn,tts_flag, align_success,shot_flag, ))
-        p3 = Process(target=check_movement,args=(tts_flag, ball_position,isMoving,shot_flag, align_success, isMovingTime ))
+        p3 = Process(target=check_movement,args=(tts_flag, ball_position,isMoving,shot_flag, align_success, isMovingTime, prev_ball_position, ))
         p4 = Process(target=tts_process, args=(tts_flag,dist,head_align_flag, shot_flag,  ball_align_flag, align_success, isMovingTime, is_direction_changed_flag))
 
         p1.start()
