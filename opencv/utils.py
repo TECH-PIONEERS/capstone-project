@@ -205,7 +205,7 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
     right_wall_y = 5 #5~8
     left_wall_y  = 55 # 55~58
     wall_detect_threshold_y = 3
-    wall_threshold_y = 2.5
+    back_threshold_x = 3
     threshold  = 5
 
     if is_within_goal(previous_pos_x, previous_pos_y) is True and is_within_goal(current_pos_x, current_pos_y) is True:
@@ -213,11 +213,11 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
         return previous_direction
 
     if current_pos_y < right_wall_y + wall_detect_threshold_y: # 공이 right 벽 근처에 있을 때 
-        #if abs(current_pos_y - previous_pos_y) >= wall_threshold_y:
         return 'rw'
     elif current_pos_y > left_wall_y - wall_detect_threshold_y:# 공이 left 벽 근처에 있을 때 
-        #if abs(current_pos_y - previous_pos_y) >= wall_threshold_y:
         return 'lw'
+    elif previous_pos_x - back_threshold_x > current_pos_x: 
+        return 'uw'
     else: 
             # 그 외 범위 # 공의 방향
         if abs(current_pos_y - previous_pos_y) >= threshold:
