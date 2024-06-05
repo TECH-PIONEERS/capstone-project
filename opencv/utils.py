@@ -16,8 +16,8 @@ start_x = 8
 start_y = 101
 end_x = 600
 end_y = 174
-goal_x = 576
-goal_y = 33
+goal_x = 560 #576
+goal_y = 30 #33
 
 def test_head_align(output1):     
     head_x = 0
@@ -155,11 +155,16 @@ def is_align(y, offset):
         return 3
 
 def is_within_goal(x,y):
-    x_threshold = 10
-    y_threshold = 12
-    if x > goal_x:
-        x_threshold = 25
-    
+    #x_threshold = 10
+    #y_threshold = 12
+    #if x > goal_x:
+    #    x_threshold = 25
+    x_threshold = 15
+    if y <= goal_y:
+        y_threshold = 15
+    else:
+        y_threshold = 18
+
     distance_x = abs(goal_x - x)
     distance_y = abs(goal_y - y)
 
@@ -197,9 +202,9 @@ def is_valid_string(input_string):
 
 
 def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y, previous_direction):
-    right_wall_y = 7 #7 ~ 15
-    left_wall_y  = 60 # 56 ~ 60
-    wall_detect_threshold_y = 7
+    right_wall_y = 5 #5~8
+    left_wall_y  = 55 # 55~58
+    wall_detect_threshold_y = 3
     wall_threshold_y = 2.5
     threshold  = 5
 
@@ -208,22 +213,21 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
         return previous_direction
 
     if current_pos_y < right_wall_y + wall_detect_threshold_y: # 공이 right 벽 근처에 있을 때 
-        if abs(current_pos_y - previous_pos_y) >= wall_threshold_y:
-            return 'rw'
+        #if abs(current_pos_y - previous_pos_y) >= wall_threshold_y:
+        return 'rw'
     elif current_pos_y > left_wall_y - wall_detect_threshold_y:# 공이 left 벽 근처에 있을 때 
-        if abs(current_pos_y - previous_pos_y) >= wall_threshold_y:
-            return 'lw'
+        #if abs(current_pos_y - previous_pos_y) >= wall_threshold_y:
+        return 'lw'
     else: 
-        return previous_direction
-    
-    # 그 외 범위 # 공의 방향
-    if abs(current_pos_y - previous_pos_y) >= threshold:
-        if previous_pos_y < current_pos_y:
-            return 'right'
-        elif previous_pos_y > current_pos_y:
-            return 'left'
-    else:
-        return 'straight'
+            # 그 외 범위 # 공의 방향
+        if abs(current_pos_y - previous_pos_y) >= threshold:
+            if previous_pos_y < current_pos_y:
+                return 'right'
+            elif previous_pos_y > current_pos_y:
+                return 'left'
+        else:
+            return 'straight'
+
 
 
 def return_ball_direction(previous_pos, current_pos, threshold=5):

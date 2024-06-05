@@ -78,7 +78,7 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
                     time.sleep(sleep_time)
                 elif float_flag >= 7.4 and float_flag <= 7.6:
                     sleep_time = (float_flag - 7.3) * 6 # 7.4(0.6초), 7.5(1.2초), 7.6(1.8초)
-                    beep_sound = pygame.mixer.Sound("opencv/sound/half_version/high_1_beep_half.mp3")
+                    beep_sound = pygame.mixer.Sound("opencv/sound/half_version/high_2_beep_half.mp3")
                     beep_sound.play()
                     time.sleep(sleep_time)
                 head_align_flag.value = False
@@ -236,11 +236,10 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             M = cv2.moments(c)
             if M["m00"] == 0 : M["m00"] = 1
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-            # print(f"center : {center}")
+            #print(f"center : {center}")
             
             # ball boundary
             if shot_flag.value == False:
-                #print("x:", center[0], "y:", center[1])
                 is_ball_in = utils.is_align_x(center[0]) 
                 if is_ball_in == 2 or is_ball_in == 3:
                     tts_flag.value = const.ball_missing
@@ -275,13 +274,11 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         dist[1] = utils.get_distance_AB(center[0],output1_cali_x)
 
             else: # ball_shot
-                #print("x:", center[0], "y:", center[1])
-                # print(f"ball shot true tts_flag {tts_flag.value}")
                 if isMoving.value == False:
                     now = time.time()
                     if isMovingTime[1] == True:
                         timer = now - isMovingTime[0]
-                        if timer >= 3:
+                        if timer >= 2:
                             #det goal
                             if utils.is_within_goal(center[0], center[1]):
                                 tts_flag.value = const.game_win
@@ -303,7 +300,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                     previous_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction)
                 else:
                     #current_direction = utils.return_ball_direction(ball_position[1], center[1])
-                    current_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction, 2.5)
+                    current_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction)
                     if current_direction == 'rw' or current_direction == 'lw':
                         if is_ball_in == 2 and align_success.value == True:
                             print('방향 바뀜', current_direction)
@@ -382,7 +379,7 @@ def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success, isMov
             isMoving.value = False
         else:
             isMoving.value = True
-        # print(f"shot_Flag {shot_flag.value} notmove {not_move} isMoving {isMoving.value}")
+        print(f"shot_Flag {shot_flag.value} notmove {not_move} isMoving {isMoving.value}")
         
 
 if __name__ == '__main__':
