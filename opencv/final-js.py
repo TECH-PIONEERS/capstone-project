@@ -103,15 +103,15 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
                 tts_flag.value = 1004
                 head_align_flag.value = True
         else:
-            if is_direction_changed_flag.value == True:
-                engine.say(f"ball hit the wall")
-                engine.runAndWait()
-            elif current_flag == const.game_lose:
+            if current_flag == const.game_lose:
                 beep_sound = pygame.mixer.Sound("opencv/sound/lose.mp3")
                 beep_sound.play()
                 time.sleep(2)
-                if dist[3] == -999:
+                if dist[2] == -999:
                     engine.say(f"out of range") #TTS 공과 골 사이의 거리
+                    engine.runAndWait()    
+                elif dist[3] == -999:
+                    engine.say(f"ball hit the wall") #TTS 공과 골 사이의 거리
                     engine.runAndWait()    
                 else:
                     engine.say(f"{dist[2]}") #TTS 공과 골 사이의 거리
@@ -281,7 +281,6 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         if timer >= 2:
                             #det goal
                             if center[0] > 580:
-                                is_direction_changed_flag.value = False
                                 tts_flag.value = const.game_lose
                                 dist[3] = -999
                             elif utils.is_within_goal(center[0], center[1]):
@@ -289,12 +288,13 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                             else:
                                 tts_flag.value = const.game_lose
                                 # 공의 방향 공의 이동거리
-                                #shot_direction = utils.return_ball_direction(prev_ball_position[1], center[1])
                                 shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
                                 if is_direction_changed_flag.value == False:
                                     dist[2] = shot_direction
                                     shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
                                     dist[3] = shot_dist
+                                else:
+                                    dist[3] = -999
             if ball_position[0] == -999 or ball_position[1] == -999 : 
                 ball_position[0] = center[0]
                 ball_position[1] = center[1] 
@@ -309,6 +309,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         if center[0] < 581 and is_ball_in == 2 and align_success.value == True:
                             print('방향 바뀜', current_direction)
                             is_direction_changed_flag.value = True
+                            dist[3] = -999
                 current_direction = previous_direction
                 ball_position[0] = center[0]
                 ball_position[1] = center[1]
@@ -323,9 +324,8 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 tts_flag.value = const.ball_missing
             else:
                 tts_flag.value = const.game_lose
-                is_direction_changed_flag.value = False
                 print("out of range")
-                dist[3] = -999
+                dist[2] = -999
         print(f"align success {align_success.value}")
         cv2.imshow('cap', frame)
         key = cv2.waitKey(1) & 0xFF
