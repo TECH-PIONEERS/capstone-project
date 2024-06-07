@@ -204,7 +204,7 @@ def is_valid_string(input_string):
 def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y, previous_direction):
     right_wall_y = 10 #10~15
     left_wall_y  = 64 # 59~64
-    wall_detect_threshold_y = 5
+    wall_detect_threshold_y = 4
     back_threshold_x = 5
     threshold  = 5
 
