@@ -162,8 +162,7 @@ def is_out_of_range(ball_pos):
     center_y = int((point1[1] + point2[1]) / 2)
 
     distance = np.sqrt((ball_x - center_x) ** 2 + (ball_y - center_y) ** 2)
-    
-    if distance > radius or ball_y > center_y:
+    if (distance > 25 and ball_x > 560) or ball_x > 560:
         return True
     return False
 
