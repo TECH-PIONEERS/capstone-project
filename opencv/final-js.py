@@ -32,6 +32,7 @@ start_y = utils.start_y
 end_x = utils.end_x
 end_y = utils.end_y
 goal_x = utils.goal_x
+out_limit = 569
 
 def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, align_success, isMovingTime, is_direction_changed_flag):
     import utils
@@ -280,7 +281,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         timer = now - isMovingTime[0]
                         if timer >= 2:
                             #det goal
-                            if center[0] > 569:
+                            if center[0] > out_limit or utils.is_out_of_range((center[0],center[1])):
                                 tts_flag.value = const.game_lose
                                 dist[4] = -888
                             elif utils.is_within_goal(center[0], center[1]):
@@ -373,7 +374,7 @@ def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success, isMov
         current_x = ball_pos[0]
         current_y = ball_pos[1]
 
-        if current_x > 569:
+        if current_x > out_limit:
             BALL_MOVEMENT_THRESHOLD = 30
 
         not_move = abs(current_x - initial_x) <= BALL_MOVEMENT_THRESHOLD and abs(current_y - initial_y) <= BALL_MOVEMENT_THRESHOLD

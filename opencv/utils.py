@@ -153,6 +153,20 @@ def is_align(y, offset, goal_y=41):
     elif y > (goal_y+offset):
         return 3
 
+point1 = [549,8] #반원 처음
+point2 = [549,64] #반원 끝
+
+def is_out_of_range(ball_pos):
+    ball_x, ball_y = ball_pos
+    center_x = 549
+    center_y = int((point1[1] + point2[1]) / 2)
+
+    distance = np.sqrt((ball_x - center_x) ** 2 + (ball_y - center_y) ** 2)
+    
+    if distance > radius or ball_y > center_y:
+        return True
+    return False
+
 def is_within_goal(x,y):
     #x_threshold = 10
     #y_threshold = 12
