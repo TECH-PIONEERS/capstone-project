@@ -16,8 +16,8 @@ start_x = 8
 start_y = 101
 end_x = 600
 end_y = 174
-goal_x = 560 #576
-goal_y = 30 #33
+goal_x = 551#560 #576
+goal_y = 37#30 #33
 
 def test_head_align(output1):     
     head_x = 0
@@ -145,8 +145,7 @@ def is_align_x(x):
     else: # x align success
         return True
 
-def is_align(y, offset):
-    goal_y = 36
+def is_align(y, offset, goal_y=41):
     if(y >= (goal_y-offset) and y <= (goal_y+offset)):
         return True
     elif y < (goal_y-offset):
@@ -173,11 +172,12 @@ def is_within_goal(x,y):
     #y_threshold = 12
     #if x > goal_x:
     #    x_threshold = 25
-    x_threshold = 15
-    if y <= goal_y:
-        y_threshold = 15
-    else:
-        y_threshold = 18
+    x_threshold = 10 #15
+    y_threshold = 12
+    # if y <= goal_y:
+    #     y_threshold = 16
+    # else:
+    #     y_threshold = 7
 
     distance_x = abs(goal_x - x)
     distance_y = abs(goal_y - y)
@@ -216,9 +216,9 @@ def is_valid_string(input_string):
 
 
 def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y, previous_direction):
-    right_wall_y = 5 #5~8
-    left_wall_y  = 55 # 55~58
-    wall_detect_threshold_y = 3
+    right_wall_y = 10 #10~15
+    left_wall_y  = 64 # 59~64
+    wall_detect_threshold_y = 5
     back_threshold_x = 5
     threshold  = 5
 
@@ -236,9 +236,9 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
             # 그 외 범위 # 공의 방향
         if abs(current_pos_y - previous_pos_y) >= threshold:
             if previous_pos_y < current_pos_y:
-                return 'right'
+                return 'up' #'right'
             elif previous_pos_y > current_pos_y:
-                return 'left'
+                return 'down' #'left'
         else:
             return 'straight'
 
