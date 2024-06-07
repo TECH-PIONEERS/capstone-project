@@ -84,13 +84,13 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
                 head_align_flag.value = False
             elif current_flag == const.head_center_down:
                 # print("head down")
-                beep_sound = pygame.mixer.Sound("opencv/sound/down.mp3")
+                beep_sound = pygame.mixer.Sound("opencv/sound/down1_5.mp3")
                 beep_sound.play()
                 time.sleep(1)
                 head_align_flag.value = False
             elif current_flag == const.head_center_up:
                 # print("head up")            
-                beep_sound = pygame.mixer.Sound("opencv/sound/up.mp3")
+                beep_sound = pygame.mixer.Sound("opencv/sound/up1_5.mp3")
                 beep_sound.play()
                 time.sleep(1)
                 head_align_flag.value = False
