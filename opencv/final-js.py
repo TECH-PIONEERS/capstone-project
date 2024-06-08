@@ -95,7 +95,7 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
                 beep_sound.play()
                 time.sleep(1)
                 head_align_flag.value = False
-            elif current_flag == const.head_align_success:
+            elif current_flag == const.head_align_success and head_align_flag.value == False:
                 # print(f"dist {dist}")
                 engine.say(str(int(dist[0]))) #TTS 공과 골 사이의 거리
                 engine.runAndWait()
@@ -237,7 +237,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             M = cv2.moments(c)
             if M["m00"] == 0 : M["m00"] = 1
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-            # print(f"center : {center}")
+            print(f"center : {center}")
             
             # ball boundary
             if shot_flag.value == False:
@@ -281,7 +281,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         timer = now - isMovingTime[0]
                         if timer >= 2:
                             #det goal
-                            if center[0] > out_limit or utils.is_out_of_range((center[0], center[1])):
+                            if utils.is_out_of_range((center[0], center[1])):
                                 tts_flag.value = const.game_lose
                                 dist[4] = -888
                             elif utils.is_within_goal(center[0], center[1]):

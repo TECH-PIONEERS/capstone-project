@@ -16,8 +16,8 @@ start_x = 8
 start_y = 101
 end_x = 600
 end_y = 174
-goal_x = 551#560 #576
-goal_y = 37#30 #33
+goal_x = 547#551 #560 #576
+goal_y = 35#30 #33
 
 def test_head_align(output1):     
     head_x = 0
@@ -215,9 +215,9 @@ def is_valid_string(input_string):
 
 
 def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y, previous_direction):
-    right_wall_y = 10 #10~15
-    left_wall_y  = 64 # 59~64
-    wall_detect_threshold_y = 4
+    right_wall_y = 9 #10~14
+    left_wall_y  = 64 # 60~64
+    wall_detect_threshold_y = 5
     back_threshold_x = 5
     threshold  = 5
 
