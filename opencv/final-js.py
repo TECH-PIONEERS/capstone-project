@@ -169,6 +169,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
         frame = cap[start_y:end_y, start_x:end_x]
         SCREEN_WIDTH = end_x - start_x
         SCREEN_HEIGHT = end_y - start_y
+        new_output = []
 
         if conn.poll():
             res = conn.recv()
@@ -291,7 +292,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                                 if is_direction_changed_flag.value == True:
                                     tts_flag.value = const.game_lose
                                     dist[4] = -999
-                                    shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
+                                    shot_direction = utils.return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1])
                                     dist[2] = shot_direction
                                     shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
                                     dist[3] = shot_dist
@@ -305,7 +306,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                                     dist[4] = -999
                                 if dist[4] == -888:
                                     dist[4] = 0
-                                shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
+                                shot_direction = utils.return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1])
                                 dist[2] = shot_direction
                                 shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
                                 dist[3] = shot_dist
