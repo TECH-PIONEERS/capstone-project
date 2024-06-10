@@ -263,18 +263,22 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
             right_wall_y = 61
             wall_detect_threshold_y = 1
         #print('section 4')
+    else:
+        left_wall_y = 0
+        right_wall_y = 100
+
     
-
-
     if is_within_goal(previous_pos_x, previous_pos_y) is True and is_within_goal(current_pos_x, current_pos_y) is True:
-        # print("공이 홀 안에 있음")
+        print("공이 홀 안에 있음")
+        return previous_direction
+    elif left_wall_y == 0 and right_wall_y == 100:
         return previous_direction
 
     if current_pos_y <= goal_y and current_pos_y <= left_wall_y + wall_detect_threshold_y: # 공이 left 벽 근처에 있을 때 
-        print('lw: ', current_pos_x, current_pos_y);
+        print('lw: ', current_pos_x, current_pos_y)
         return 'lw'
     elif current_pos_y > goal_y and current_pos_y >= right_wall_y - wall_detect_threshold_y:# 공이 right 벽 근처에 있을 때 
-        print('rw: ', current_pos_x, current_pos_y);
+        print('rw: ', current_pos_x, current_pos_y)
         return 'rw'
     #elif previous_pos_x - back_threshold_x > current_pos_x: 
     #    return 'uw'
