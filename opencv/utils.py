@@ -270,7 +270,7 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
     #elif previous_pos_x - back_threshold_x > current_pos_x: 
     #    return 'uw'
     else: 
-            # 그 외 범위 # 공의 방향
+        # 그 외 범위 # 공의 방향
         if abs(current_pos_y - previous_pos_y) >= threshold:
             if previous_pos_y < current_pos_y:
                 return 'up' #'right'
@@ -279,16 +279,22 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
         else:
             return 'straight'
 
-
-
-def return_ball_direction(previous_pos, current_pos, threshold=5):
-    if abs(current_pos - previous_pos) >= threshold:
-        if previous_pos < current_pos:
-            return 'right'
-        elif previous_pos > current_pos:
-            return 'left'
+def return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y):
+    if is_within_goal(current_pos_x, current_pos_y) is False:
+        print(f"before {current_pos_y} {previous_pos_y}")
+        current_pos_y += 7 - abs(previous_pos_y-45)
+        print(f"after {current_pos_y} ")
+        if abs(current_pos_y - previous_pos_y) >= 5:
+            if previous_pos_y < current_pos_y:
+                return 'up' #'right'
+            elif previous_pos_y > current_pos_y:
+                return 'down' #'left'
+        else:
+            return 'straight'
     else:
-        return 'straight'
+        return 'hole'
+
+
 
 def get_distance_AB(A, B):
     dist = (abs(A-B) * mm / 10)
