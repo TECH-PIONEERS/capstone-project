@@ -215,52 +215,52 @@ def is_valid_string(input_string):
 
 
 def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y, previous_direction):
-    right_wall_y = 9 #10~14
-    left_wall_y  = 64 # 60~64
-    wall_detect_threshold_y = 5
+    right_wall_y = 0#9 #10~14
+    left_wall_y  = 0#64 # 60~64
+    wall_detect_threshold_y = 0#5
     back_threshold_x = 5
     threshold  = 5
 
+    print(current_pos_x, current_pos_y)
+
     if current_pos_x >= 99 and current_pos_x < 131:
         if current_pos_y <= goal_y:
-            left_wall_y = 67
+            left_wall_y = 11
             wall_detect_threshold_y = 3
         else :
-            right_wall_y = 11
+            right_wall_y = 67
             wall_detect_threshold_y = 3
-        #print('section 1')
-
+        #print('section 0')
     elif current_pos_x >= 131 and current_pos_x < 215:
         if current_pos_y <= goal_y:
-            left_wall_y = 61
+            left_wall_y = 12
             wall_detect_threshold_y = 3
         else :
-            right_wall_y = 12
+            right_wall_y = 61
             wall_detect_threshold_y = 3
         #print('section 1')
-
     elif current_pos_x >= 215 and current_pos_x < 295:
         if current_pos_y <= goal_y:
-            left_wall_y = 61
-            wall_detect_threshold_y = 3
-        else :
-            right_wall_y = 10
+            left_wall_y = 10
             wall_detect_threshold_y = 2
+        else :
+            right_wall_y = 61
+            wall_detect_threshold_y = 3
         #print('section 2')
     elif current_pos_x >= 295 and current_pos_x < 457:
         if current_pos_y <= goal_y:
-            left_wall_y = 61
-            wall_detect_threshold_y = 3
-        else :
-            right_wall_y = 10
+            left_wall_y = 10
             wall_detect_threshold_y = 1
+        else :
+            right_wall_y = 61
+            wall_detect_threshold_y = 3
         #print('section 3')
     elif current_pos_x >= 457 and current_pos_x < 521:
         if current_pos_y <= goal_y:
-            left_wall_y = 61
+            left_wall_y = 10
             wall_detect_threshold_y = 1
         else :
-            right_wall_y = 10
+            right_wall_y = 61
             wall_detect_threshold_y = 1
         #print('section 4')
     
@@ -270,12 +270,12 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
         # print("공이 홀 안에 있음")
         return previous_direction
 
-    if current_pos_y < right_wall_y + wall_detect_threshold_y: # 공이 right 벽 근처에 있을 때 
-        print('rw: ', current_pos_x, current_pos_y);
-        return 'rw'
-    elif current_pos_y > left_wall_y - wall_detect_threshold_y:# 공이 left 벽 근처에 있을 때 
+    if current_pos_y <= goal_y and current_pos_y <= left_wall_y + wall_detect_threshold_y: # 공이 left 벽 근처에 있을 때 
         print('lw: ', current_pos_x, current_pos_y);
         return 'lw'
+    elif current_pos_y > goal_y and current_pos_y >= right_wall_y - wall_detect_threshold_y:# 공이 right 벽 근처에 있을 때 
+        print('rw: ', current_pos_x, current_pos_y);
+        return 'rw'
     #elif previous_pos_x - back_threshold_x > current_pos_x: 
     #    return 'uw'
     else: 

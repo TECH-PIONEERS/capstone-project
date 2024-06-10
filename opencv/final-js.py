@@ -238,7 +238,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             M = cv2.moments(c)
             if M["m00"] == 0 : M["m00"] = 1
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-            # print(f"center : {center}")
+            #print(f"center : {center}")
             
             # ball boundary
             if shot_flag.value == False:
