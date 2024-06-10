@@ -237,7 +237,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             M = cv2.moments(c)
             if M["m00"] == 0 : M["m00"] = 1
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
-            print(f"center : {center}")
+            # print(f"center : {center}")
             
             # ball boundary
             if shot_flag.value == False:
@@ -281,9 +281,13 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         timer = now - isMovingTime[0]
                         if timer >= 2:
                             #det goal
-                            if utils.is_out_of_range((center[0], center[1])):
+
+                            # out of range
+                            
+                            if center[0] >= 521 and  utils.is_out_of_range((center[0], center[1])):
                                 tts_flag.value = const.game_lose
                                 dist[4] = -888
+                            # goal 
                             elif utils.is_within_goal(center[0], center[1]):
                                 if is_direction_changed_flag.value == True:
                                     tts_flag.value = const.game_lose
@@ -295,10 +299,13 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                                 else:
                                     tts_flag.value = const.game_win
                             else:
+                                #game lose
                                 tts_flag.value = const.game_lose
                                 # 공의 방향 공의 이동거리
                                 if is_direction_changed_flag.value == True:
                                     dist[4] = -999
+                                if dist[4] == -888:
+                                    dist[4] = 0
                                 shot_direction = utils.temp_return_ball_direction(prev_ball_position[0], prev_ball_position[1], center[0], center[1], previous_direction)
                                 dist[2] = shot_direction
                                 shot_dist = utils.euclidean_distance(prev_ball_position[0],prev_ball_position[1],center[0],center[1])
@@ -352,6 +359,7 @@ def get_serial(conn, tts_flag,align_success, shot_flag):
         if myString or myString1:
             o1_bool, output = utils.is_valid_string(myString)
             o2_bool, output1 = utils.is_valid_string(myString1)
+            print(f"output {output} output1: {output1}")
             if o1_bool or o2_bool:
                 if shot_flag.value == False:
                     if tts_flag.value == const.head_missing:
@@ -392,7 +400,7 @@ def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success, isMov
             isMoving.value = False
         else:
             isMoving.value = True
-        # print(f"shot_Flag {shot_flag.value} notmove {not_move} isMoving {isMoving.value} align {align_success.value}")
+        print(f"shot_Flag {shot_flag.value} notmove {not_move} isMoving {isMoving.value} align {align_success.value}")
         
 
 if __name__ == '__main__':
