@@ -1,0 +1,980 @@
+center : (213, 65)
+section 1
+lw
+center : (213, 65)
+section 1
+lw
+center : (212, 62)
+section 1
+lw
+center : (210, 62)
+section 1
+lw
+center : (215, 62)
+section 2
+center : (219, 63)
+section 2
+lw
+center : (220, 69)
+section 2
+lw
+center : (213, 62)
+section 1
+lw
+center : (211, 62)
+section 1
+lw
+center : (216, 62)
+section 2
+center : (216, 62)
+section 2
+center : (220, 63)
+section 2
+lw
+center : (214, 62)
+section 1
+lw
+center : (217, 62)
+section 2
+center : (217, 62)
+section 2
+center : (221, 63)
+section 2
+lw
+center : (218, 62)
+section 2
+center : (216, 62)
+section 2
+center : (219, 62)
+section 2
+center : (214, 62)
+section 1
+lw
+center : (0, 0)
+rw
+center : (220, 62)
+section 2
+center : (215, 62)
+section 2
+center : (220, 62)
+section 2
+center : (225, 63)
+section 2
+lw
+center : (221, 62)
+section 2
+center : (221, 62)
+section 2
+center : (216, 62)
+section 2
+center : (0, 0)
+rw
+center : (217, 62)
+section 2
+center : (217, 62)
+section 2
+center : (227, 69)
+section 2
+lw
+center : (218, 62)
+section 2
+center : (0, 0)
+rw
+center : (226, 65)
+section 2
+lw
+center : (219, 62)
+section 2
+center : (219, 62)
+section 2
+center : (219, 62)
+section 2
+center : (0, 0)
+rw
+center : (226, 66)
+section 2
+lw
+center : (220, 62)
+section 2
+center : (220, 62)
+section 2
+center : (220, 62)
+section 2
+center : (220, 62)
+section 2
+center : (221, 62)
+section 2
+center : (221, 62)
+section 2
+center : (0, 0)
+rw
+center : (222, 62)
+section 2
+center : (231, 62)
+section 2
+center : (223, 62)
+section 2
+center : (228, 62)
+section 2
+center : (224, 62)
+section 2
+center : (224, 62)
+section 2
+center : (229, 62)
+section 2
+center : (229, 62)
+section 2
+center : (230, 62)
+section 2
+center : (230, 62)
+section 2
+center : (230, 62)
+section 2
+center : (230, 62)
+section 2
+center : (226, 62)
+section 2
+center : (235, 62)
+section 2
+center : (231, 62)
+section 2
+center : (231, 62)
+section 2
+center : (226, 62)
+section 2
+center : (0, 0)
+rw
+center : (236, 62)
+section 2
+center : (232, 62)
+section 2
+center : (232, 62)
+section 2
+center : (227, 62)
+section 2
+center : (233, 62)
+section 2
+center : (233, 62)
+section 2
+center : (228, 62)
+section 2
+center : (228, 62)
+section 2
+center : (238, 62)
+section 2
+center : (234, 62)
+section 2
+center : (229, 66)
+section 2
+lw
+center : (235, 62)
+section 2
+center : (235, 62)
+section 2
+center : (230, 62)
+section 2
+center : (236, 62)
+section 2
+center : (240, 62)
+section 2
+center : (231, 62)
+section 2
+center : (231, 62)
+section 2
+center : (237, 62)
+section 2
+center : (232, 62)
+section 2
+center : (242, 62)
+section 2
+center : (239, 62)
+section 2
+center : (234, 62)
+section 2
+center : (244, 66)
+section 2
+lw
+center : (235, 62)
+section 2
+center : (245, 62)
+section 2
+center : (246, 62)
+section 2
+center : (237, 69)
+section 2
+lw
+center : (247, 62)
+section 2
+center : (238, 62)
+section 2
+center : (248, 66)
+section 2
+lw
+center : (249, 62)
+section 2
+center : (240, 62)
+section 2
+center : (250, 61)
+section 2
+center : (241, 69)
+section 2
+lw
+center : (241, 62)
+section 2
+center : (251, 66)
+section 2
+lw
+center : (0, 0)
+rw
+center : (245, 65)
+section 2
+lw
+center : (252, 61)
+section 2
+center : (243, 69)
+section 2
+lw
+center : (253, 64)
+section 2
+lw
+center : (248, 63)
+section 2
+lw
+center : (254, 61)
+section 2
+center : (255, 61)
+section 2
+center : (256, 61)
+section 2
+center : (251, 67)
+section 2
+lw
+center : (255, 61)
+section 2
+center : (252, 67)
+section 2
+lw
+center : (257, 61)
+section 2
+center : (249, 69)
+section 2
+lw
+center : (252, 65)
+section 2
+lw
+center : (250, 69)
+section 2
+lw
+center : (252, 70)
+section 2
+lw
+center : (252, 69)
+section 2
+lw
+center : (257, 66)
+section 2
+lw
+center : (261, 70)
+section 2
+lw
+center : (256, 65)
+section 2
+lw
+center : (257, 65)
+section 2
+lw
+center : (257, 65)
+section 2
+lw
+center : (263, 65)
+section 2
+lw
+center : (258, 65)
+section 2
+lw
+center : (257, 63)
+section 2
+lw
+center : (264, 61)
+section 2
+center : (0, 0)
+rw
+center : (259, 65)
+section 2
+lw
+center : (260, 66)
+section 2
+lw
+center : (260, 65)
+section 2
+lw
+center : (266, 61)
+section 2
+center : (260, 63)
+section 2
+lw
+center : (260, 70)
+section 2
+lw
+center : (264, 66)
+section 2
+lw
+center : (265, 67)
+section 2
+lw
+center : (265, 70)
+section 2
+lw
+center : (265, 65)
+section 2
+lw
+center : (266, 67)
+section 2
+lw
+center : (264, 65)
+section 2
+lw
+center : (263, 65)
+section 2
+lw
+center : (266, 67)
+section 2
+lw
+center : (267, 67)
+section 2
+lw
+center : (267, 67)
+section 2
+lw
+center : (265, 65)
+section 2
+lw
+center : (267, 67)
+section 2
+lw
+center : (268, 67)
+section 2
+lw
+center : (265, 65)
+section 2
+lw
+center : (266, 65)
+section 2
+lw
+center : (268, 65)
+section 2
+lw
+center : (266, 67)
+section 2
+lw
+center : (266, 63)
+section 2
+lw
+center : (267, 66)
+section 2
+lw
+center : (269, 65)
+section 2
+lw
+center : (269, 65)
+section 2
+lw
+center : (268, 66)
+section 2
+lw
+center : (268, 65)
+section 2
+lw
+center : (270, 65)
+section 2
+lw
+center : (270, 65)
+section 2
+lw
+center : (270, 65)
+section 2
+lw
+center : (269, 66)
+section 2
+lw
+center : (268, 65)
+section 2
+lw
+center : (270, 65)
+section 2
+lw
+center : (271, 65)
+section 2
+lw
+center : (271, 65)
+section 2
+lw
+center : (272, 67)
+section 2
+lw
+center : (271, 65)
+section 2
+lw
+center : (272, 65)
+section 2
+lw
+center : (272, 65)
+section 2
+lw
+center : (272, 65)
+section 2
+lw
+center : (270, 63)
+section 2
+lw
+center : (272, 65)
+section 2
+lw
+center : (273, 65)
+section 2
+lw
+center : (273, 64)
+section 2
+lw
+center : (273, 65)
+section 2
+lw
+center : (273, 65)
+section 2
+lw
+center : (273, 65)
+section 2
+lw
+center : (272, 66)
+section 2
+lw
+center : (273, 65)
+section 2
+lw
+center : (274, 65)
+section 2
+lw
+center : (274, 64)
+section 2
+lw
+center : (272, 63)
+section 2
+lw
+center : (273, 63)
+section 2
+lw
+center : (275, 64)
+section 2
+lw
+center : (275, 65)
+section 2
+lw
+center : (276, 64)
+section 2
+lw
+center : (277, 65)
+section 2
+lw
+center : (273, 64)
+section 2
+lw
+center : (276, 65)
+section 2
+lw
+center : (276, 65)
+section 2
+lw
+center : (277, 65)
+section 2
+lw
+center : (277, 63)
+section 2
+lw
+center : (277, 64)
+section 2
+lw
+center : (277, 64)
+section 2
+lw
+center : (278, 64)
+section 2
+lw
+center : (278, 65)
+section 2
+lw
+center : (278, 65)
+section 2
+lw
+center : (278, 64)
+section 2
+lw
+center : (279, 64)
+section 2
+lw
+center : (279, 64)
+section 2
+lw
+center : (279, 64)
+section 2
+lw
+center : (279, 64)
+section 2
+lw
+center : (280, 64)
+section 2
+lw
+center : (280, 65)
+section 2
+lw
+center : (280, 65)
+section 2
+lw
+center : (280, 65)
+section 2
+lw
+center : (280, 64)
+section 2
+lw
+center : (281, 64)
+section 2
+lw
+center : (281, 65)
+section 2
+lw
+center : (281, 64)
+section 2
+lw
+center : (281, 64)
+section 2
+lw
+center : (281, 64)
+section 2
+lw
+center : (282, 64)
+section 2
+lw
+center : (282, 64)
+section 2
+lw
+center : (282, 64)
+section 2
+lw
+center : (282, 64)
+section 2
+lw
+center : (282, 64)
+section 2
+lw
+center : (282, 64)
+section 2
+lw
+center : (279, 64)
+section 2
+lw
+center : (282, 64)
+section 2
+lw
+center : (281, 65)
+section 2
+lw
+center : (282, 64)
+section 2
+lw
+center : (282, 64)
+section 2
+lw
+center : (282, 64)
+section 2
+lw
+center : (283, 64)
+section 2
+lw
+center : (283, 64)
+section 2
+lw
+center : (283, 64)
+section 2
+lw
+center : (280, 64)
+section 2
+lw
+center : (283, 64)
+section 2
+lw
+center : (284, 65)
+section 2
+lw
+center : (284, 64)
+section 2
+lw
+center : (284, 64)
+section 2
+lw
+center : (283, 64)
+section 2
+lw
+center : (284, 64)
+section 2
+lw
+center : (284, 64)
+section 2
+lw
+center : (285, 64)
+section 2
+lw
+center : (285, 64)
+section 2
+lw
+center : (285, 64)
+section 2
+lw
+center : (285, 64)
+section 2
+lw
+center : (286, 64)
+section 2
+lw
+center : (286, 64)
+section 2
+lw
+center : (286, 64)
+section 2
+lw
+center : (286, 64)
+section 2
+lw
+center : (286, 64)
+section 2
+lw
+center : (286, 64)
+section 2
+lw
+center : (287, 64)
+section 2
+lw
+center : (287, 64)
+section 2
+lw
+center : (287, 64)
+section 2
+lw
+center : (287, 64)
+section 2
+lw
+center : (288, 64)
+section 2
+lw
+center : (288, 64)
+section 2
+lw
+center : (288, 64)
+section 2
+lw
+center : (288, 64)
+section 2
+lw
+center : (289, 64)
+section 2
+lw
+center : (289, 64)
+section 2
+lw
+center : (289, 64)
+section 2
+lw
+center : (290, 64)
+section 2
+lw
+center : (291, 64)
+section 2
+lw
+center : (291, 64)
+section 2
+lw
+center : (291, 64)
+section 2
+lw
+center : (291, 64)
+section 2
+lw
+center : (291, 64)
+section 2
+lw
+center : (291, 64)
+section 2
+lw
+center : (292, 64)
+section 2
+lw
+center : (292, 64)
+section 2
+lw
+center : (292, 64)
+section 2
+lw
+center : (292, 64)
+section 2
+lw
+center : (292, 64)
+section 2
+lw
+center : (292, 64)
+section 2
+lw
+center : (292, 64)
+section 2
+lw
+center : (292, 64)
+section 2
+lw
+center : (293, 64)
+section 2
+lw
+center : (293, 64)
+section 2
+lw
+center : (294, 64)
+section 2
+lw
+center : (294, 64)
+section 2
+lw
+center : (294, 64)
+section 2
+lw
+center : (295, 64)
+section 3
+lw
+center : (295, 64)
+section 3
+lw
+center : (295, 64)
+section 3
+lw
+center : (296, 64)
+section 3
+lw
+center : (296, 64)
+section 3
+lw
+center : (296, 64)
+section 3
+lw
+center : (296, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (297, 64)
+section 3
+lw
+center : (298, 63)
+section 3
+center : (298, 63)
+section 3
+center : (298, 63)
+section 3
+center : (298, 63)
+section 3
+center : (298, 64)
+section 3
+lw
+center : (298, 64)
+section 3
+lw
+center : (298, 64)
+section 3
+lw
+center : (298, 64)
+section 3
+lw
+center : (298, 64)
+section 3
+lw
+center : (297, 63)
+section 3
+center : (297, 62)
+section 3
+center : (297, 61)
+section 3
+center : (296, 58)
+section 3
+center : (296, 56)
+section 3
+center : (296, 52)
+section 3
+center : (295, 48)
+section 3
+center : (294, 45)
+section 2
+center : (292, 43)
+section 2
+center : (291, 39)
+section 2
+center : (288, 36)
+section 2
+center : (285, 33)
+section 2
+center : (282, 30)
+section 2
+center : (279, 29)
+section 2
+center : (277, 29)
+section 2
+center : (274, 30)
+section 2
+center : (270, 30)
+section 2
+center : (265, 31)
+section 2
+center : (258, 32)
+section 2
+center : (252, 34)
+section 2
+center : (247, 35)
+section 2
+center : (245, 36)
+section 2
+center : (244, 36)
+section 2
+center : (243, 36)
+section 2
+center : (242, 35)
+section 2
+center : (241, 33)
+section 2
+center : (239, 31)
+section 2
+center : (239, 29)
+section 2
+center : (238, 28)
+section 2
+center : (238, 27)
+section 2
+center : (238, 26)
+section 2
+center : (237, 25)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 25)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 24)
+section 2
+center : (237, 25)
+section 2
+center : (237, 24)
+section 2

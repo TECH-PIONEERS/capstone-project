@@ -16,7 +16,7 @@ start_x = 8
 start_y = 101
 end_x = 600
 end_y = 174
-goal_x = 547#551 #560 #576
+goal_x = 551 #560 #576
 goal_y = 35#30 #33
 
 def test_head_align(output1):     
@@ -221,13 +221,51 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
     back_threshold_x = 5
     threshold  = 5
 
+    if current_pos_x >= 131 and current_pos_x < 215:
+        if current_pos_y <= goal_y:
+            left_wall_y = 61
+            wall_detect_threshold_y = 3
+        else :
+            right_wall_y = 12
+            wall_detect_threshold_y = 3
+        print('section 1')
+
+    elif current_pos_x >= 215 and current_pos_x < 295:
+        if current_pos_y <= goal_y:
+            left_wall_y = 61
+            wall_detect_threshold_y = 3
+        else :
+            right_wall_y = 10
+            wall_detect_threshold_y = 2
+        print('section 2')
+    elif current_pos_x >= 295 and current_pos_x < 457:
+        if current_pos_y <= goal_y:
+            left_wall_y = 61
+            wall_detect_threshold_y = 3
+        else :
+            right_wall_y = 10
+            wall_detect_threshold_y = 1
+        print('section 3')
+    elif current_pos_x >= 457 and current_pos_x < 521:
+        if current_pos_y <= goal_y:
+            left_wall_y = 61
+            wall_detect_threshold_y = 1
+        else :
+            right_wall_y = 10
+            wall_detect_threshold_y = 1
+        print('section 4')
+    
+
+
     if is_within_goal(previous_pos_x, previous_pos_y) is True and is_within_goal(current_pos_x, current_pos_y) is True:
-        #print("공이 홀 안에 있음")
+        # print("공이 홀 안에 있음")
         return previous_direction
 
     if current_pos_y < right_wall_y + wall_detect_threshold_y: # 공이 right 벽 근처에 있을 때 
+        print('rw')
         return 'rw'
     elif current_pos_y > left_wall_y - wall_detect_threshold_y:# 공이 left 벽 근처에 있을 때 
+        print('lw')
         return 'lw'
     #elif previous_pos_x - back_threshold_x > current_pos_x: 
     #    return 'uw'

@@ -120,7 +120,7 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
                     engine.say(f"{str(int(dist[3]))}") #TTS 공과 골 사이의 거리
                     engine.runAndWait()
             elif current_flag == const.game_win:
-                beep_sound = pygame.mixer.Sound("opencv/sound/nice-shot2_5.mp3")
+                beep_sound = pygame.mixer.Sound("opencv/sound/nice-shot2.mp3")
                 beep_sound.play()
             else:
                 continue
@@ -340,8 +340,8 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
     cv2.destroyAllWindows()
 
 def get_serial(conn, tts_flag,align_success, shot_flag):
-    myPort = serial.Serial('/dev/ttyUSB1', 9600,timeout=0.1)
-    myPort1 = serial.Serial('/dev/ttyUSB0', 9600, timeout=0.1)
+    myPort = serial.Serial('/dev/ttyUSB0', 9600,timeout=0.1)
+    myPort1 = serial.Serial('/dev/ttyUSB1', 9600, timeout=0.1)
     time.sleep(0.5) 
     myPort.reset_input_buffer()
     myPort1.reset_input_buffer()
