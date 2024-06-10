@@ -120,7 +120,7 @@ def tts_process(tts_flag, dist, head_align_flag, shot_flag, ball_align_flag, ali
                     engine.say(f"{str(int(dist[3]))}") #TTS 공과 골 사이의 거리
                     engine.runAndWait()
             elif current_flag == const.game_win:
-                beep_sound = pygame.mixer.Sound("opencv/sound/nice-shot.mp3")
+                beep_sound = pygame.mixer.Sound("opencv/sound/nice-shot2_5.mp3")
                 beep_sound.play()
             else:
                 continue
