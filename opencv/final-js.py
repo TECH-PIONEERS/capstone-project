@@ -249,7 +249,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 
                 # 공 정렬 판단
                 if isMoving.value == False:
-                    is_ball_aling = utils.is_align(center[1],1)
+                    is_ball_aling = utils.is_align(center[1],2)
                     if (is_ball_aling == 2 or is_ball_aling == 3) and tts_flag.value >= const.ball_align_bottom:
                         if is_ball_aling == 2:
                             tts_flag.value = const.ball_align_up
@@ -266,6 +266,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 # 헤드 정렬 판단
                 if len(new_output) == 4 and tts_flag.value >= const.head_align:
                     tts_flag.value = utils.test_head_align(output1)
+                    print(f"{utils.test_head_align(output1)}")
                     if tts_flag.value >= const.default and head_align_flag.value == False:
                         # tts_flag 값 변경
                         tts_flag.value = const.head_align_success
@@ -281,9 +282,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                         timer = now - isMovingTime[0]
                         if timer >= 2:
                             #det goal
-
                             # out of range
-                            
                             if center[0] >= 521 and  utils.is_out_of_range((center[0], center[1])):
                                 tts_flag.value = const.game_lose
                                 dist[4] = -888
@@ -357,18 +356,37 @@ def get_serial(conn, tts_flag,align_success, shot_flag):
         myString1 = myPort1.readline().decode("latin-1").rstrip()
 
         if myString or myString1:
-            o1_bool, output = utils.is_valid_string(myString)
-            o2_bool, output1 = utils.is_valid_string(myString1)
+            _, output = utils.is_valid_string(myString)
+            _, output1 = utils.is_valid_string(myString1)
+        
+            if len(output) == 4:
+                o1_bool = True
+            else:
+                o1_bool = False
+            
+            if len(output1) == 4:
+                o2_bool = True
+            else:
+                o2_bool = False
+            
+            # print(f"{output}") # 250 ~ 750
 
-            if o2_bool and output1[1] > 350 and tts_flag.value >= const.head_missing:
-                tts_flag.value = const.head_missing
-            elif o1_bool or o2_bool:
-                if shot_flag.value == False:
-                    if tts_flag.value == const.head_missing:
-                        tts_flag.value = 1001
-                    if len(output1) < 3 and tts_flag.value > const.head_align:
-                        tts_flag.value = const.head_align
-                conn.send([output, output1])
+            if o2_bool:
+                if output1[1] < output1[3]:
+                    check_float = output1[1]
+                else:
+                    check_float = output1[3]
+                    
+            if o1_bool and o2_bool:
+                if check_float > 340 and tts_flag.value >= const.head_missing:
+                    tts_flag.value = const.head_missing
+                elif o1_bool and o2_bool:
+                    if shot_flag.value == False:
+                        if tts_flag.value == const.head_missing:
+                            tts_flag.value = 1001
+                        if len(output1) < 3 and tts_flag.value > const.head_align:
+                            tts_flag.value = const.head_align
+                    conn.send([output, output1])
             else:
                 if tts_flag.value > const.head_missing and shot_flag.value == False:
                     tts_flag.value = const.head_missing  
