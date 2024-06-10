@@ -237,7 +237,8 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
             if M["m00"] == 0 : M["m00"] = 1
             center = (int(M["m10"] / M["m00"]), int(M["m01"] / M["m00"]))
             #print(f"center : {center}")
-            
+            print(center)
+
             # ball boundary
             if shot_flag.value == False:
                 is_ball_in = utils.is_align_x(center[0]) 
@@ -303,7 +304,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                     current_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction)
                     if current_direction == 'rw' or current_direction == 'lw' or current_direction == 'uw':
                         if is_ball_in == 2 and align_success.value == True:
-                            print('방향 바뀜', current_direction)
+                            #print('방향 바뀜', current_direction)
                             is_direction_changed_flag.value = True
                 current_direction = previous_direction
                 ball_position[0] = center[0]

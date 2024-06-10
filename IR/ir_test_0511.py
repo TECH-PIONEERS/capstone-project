@@ -62,7 +62,7 @@ def draw():
                     y4 = output1[3]  # Assuming x1, y1, x2, y2
                 
                 # Create a black image
-                img = np.zeros((800, 800, 3), dtype=np.uint8)
+                img = np.zeros((2000, 2900, 3), dtype=np.uint8)
                 # Draw circles on the image
                 if x1 and y1:
                     cv2.circle(img, (x1, y1), 10, (0, 0, 255), -1)  # Red circle at (x1, y1)

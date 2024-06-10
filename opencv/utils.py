@@ -160,7 +160,7 @@ def is_out_of_range(ball_pos):
     ball_x, ball_y = ball_pos
     center_x = 549
     center_y = int((point1[1] + point2[1]) / 2)
-
+    print("out of range")
     distance = np.sqrt((ball_x - center_x) ** 2 + (ball_y - center_y) ** 2)
     if (distance > 25 and ball_x > 560) or ball_x > 560:
         return True
@@ -228,7 +228,7 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
         else :
             right_wall_y = 12
             wall_detect_threshold_y = 3
-        print('section 1')
+        #print('section 1')
 
     elif current_pos_x >= 215 and current_pos_x < 295:
         if current_pos_y <= goal_y:
@@ -237,7 +237,7 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
         else :
             right_wall_y = 10
             wall_detect_threshold_y = 2
-        print('section 2')
+        #print('section 2')
     elif current_pos_x >= 295 and current_pos_x < 457:
         if current_pos_y <= goal_y:
             left_wall_y = 61
@@ -245,7 +245,7 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
         else :
             right_wall_y = 10
             wall_detect_threshold_y = 1
-        print('section 3')
+        #print('section 3')
     elif current_pos_x >= 457 and current_pos_x < 521:
         if current_pos_y <= goal_y:
             left_wall_y = 61
@@ -253,7 +253,7 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
         else :
             right_wall_y = 10
             wall_detect_threshold_y = 1
-        print('section 4')
+        #print('section 4')
     
 
 
@@ -262,10 +262,10 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
         return previous_direction
 
     if current_pos_y < right_wall_y + wall_detect_threshold_y: # 공이 right 벽 근처에 있을 때 
-        print('rw')
+        #print('rw')
         return 'rw'
     elif current_pos_y > left_wall_y - wall_detect_threshold_y:# 공이 left 벽 근처에 있을 때 
-        print('lw')
+        #print('lw')
         return 'lw'
     #elif previous_pos_x - back_threshold_x > current_pos_x: 
     #    return 'uw'
