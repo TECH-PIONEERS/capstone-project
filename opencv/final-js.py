@@ -359,8 +359,10 @@ def get_serial(conn, tts_flag,align_success, shot_flag):
         if myString or myString1:
             o1_bool, output = utils.is_valid_string(myString)
             o2_bool, output1 = utils.is_valid_string(myString1)
-            print(f"output {output} output1: {output1}")
-            if o1_bool or o2_bool:
+
+            if o2_bool and output1[1] > 350 and tts_flag.value >= const.head_missing:
+                tts_flag.value = const.head_missing
+            elif o1_bool or o2_bool:
                 if shot_flag.value == False:
                     if tts_flag.value == const.head_missing:
                         tts_flag.value = 1001
@@ -400,7 +402,7 @@ def check_movement(tts_flag, ball_pos, isMoving, shot_flag, align_success, isMov
             isMoving.value = False
         else:
             isMoving.value = True
-        print(f"shot_Flag {shot_flag.value} notmove {not_move} isMoving {isMoving.value} align {align_success.value}")
+        # print(f"shot_Flag {shot_flag.value} notmove {not_move} isMoving {isMoving.value} align {align_success.value}")
         
 
 if __name__ == '__main__':
