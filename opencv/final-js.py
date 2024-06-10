@@ -377,9 +377,9 @@ def get_serial(conn, tts_flag,align_success, shot_flag):
                     check_float = output1[1]
                 else:
                     check_float = output1[3]
-                    
+                
             if o1_bool and o2_bool:
-                if check_float > 340 and tts_flag.value >= const.head_missing:
+                if check_float > 350 and tts_flag.value >= const.head_missing:
                     tts_flag.value = const.head_missing
                 elif o1_bool and o2_bool:
                     if shot_flag.value == False:

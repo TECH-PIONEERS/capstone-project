@@ -281,9 +281,7 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
 
 def return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y):
     if is_within_goal(current_pos_x, current_pos_y) is False:
-        print(f"before {current_pos_y} {previous_pos_y}")
         current_pos_y += 7 - abs(previous_pos_y-45)
-        print(f"after {current_pos_y} ")
         if abs(current_pos_y - previous_pos_y) >= 5:
             if previous_pos_y < current_pos_y:
                 return 'up' #'right'
