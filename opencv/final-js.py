@@ -320,7 +320,7 @@ def stream_opencv(conn, ball_position, tts_flag, isMoving, align_success, dist, 
                 else:
                     #current_direction = utils.return_ball_direction(ball_position[1], center[1])
                     current_direction = utils.temp_return_ball_direction(ball_position[0], ball_position[1], center[0], center[1], previous_direction)
-                    if current_direction == 'rw' or current_direction == 'lw' or current_direction == 'uw':
+                    if current_direction == 'rw' or current_direction == 'lw':
                         if center[0] < 581 and is_ball_in == 2 and align_success.value == True:
                             # print('방향 바뀜', current_direction)
                             is_direction_changed_flag.value = True

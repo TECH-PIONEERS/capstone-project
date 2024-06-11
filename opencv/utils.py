@@ -221,7 +221,17 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
     back_threshold_x = 5
     threshold  = 5
 
+
     if current_pos_x >= 131 and current_pos_x < 215:
+        if current_pos_y <= goal_y:
+            left_wall_y = 61
+            wall_detect_threshold_y = 3
+        else :
+            right_wall_y = 12
+            wall_detect_threshold_y = 3
+        #print('section 1')
+
+    elif current_pos_x >= 131 and current_pos_x < 215:
         if current_pos_y <= goal_y:
             left_wall_y = 61
             wall_detect_threshold_y = 3
