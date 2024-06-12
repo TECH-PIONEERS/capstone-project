@@ -236,7 +236,7 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
             left_wall_y = 12
             wall_detect_threshold_y = 3
         else :
-            right_wall_y = 61
+            right_wall_y = 63 #61
             wall_detect_threshold_y = 3
         #print('section 1')
     elif current_pos_x >= 215 and current_pos_x < 295:
@@ -245,7 +245,7 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
             wall_detect_threshold_y = 2
         else :
             right_wall_y = 61
-            wall_detect_threshold_y = 3
+            wall_detect_threshold_y = 2 #3
         #print('section 2')
     elif current_pos_x >= 295 and current_pos_x < 457:
         if current_pos_y <= goal_y:
@@ -295,13 +295,13 @@ def temp_return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, cu
 def return_ball_direction(previous_pos_x, previous_pos_y, current_pos_x, current_pos_y):
     if is_within_goal(current_pos_x, current_pos_y) is False:
         #print(f"before {current_pos_y} {previous_pos_y}")
-        if abs(previous_pos_y-45) > 1:
+        if abs(previous_pos_y-45) > 2:
             current_pos_y += 4 - abs(previous_pos_y-45)
         else:
             current_pos_y += 7 - abs(previous_pos_y-45)
 
         #print(f"after {current_pos_y} ")
-        if abs(current_pos_y - previous_pos_y) >= 5:
+        if abs(current_pos_y - previous_pos_y) >= 6:
             if previous_pos_y < current_pos_y:
                 return 'up' #'right'
             elif previous_pos_y > current_pos_y:
