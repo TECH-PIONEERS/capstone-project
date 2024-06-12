@@ -171,8 +171,8 @@ def is_within_goal(x,y):
     #y_threshold = 12
     #if x > goal_x:
     #    x_threshold = 25
-    x_threshold = 10 #15
-    y_threshold = 12
+    x_threshold = 12 #15
+    y_threshold = 13
     # if y <= goal_y:
     #     y_threshold = 16
     # else:
