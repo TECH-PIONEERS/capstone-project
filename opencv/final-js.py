@@ -365,12 +365,13 @@ def get_serial(conn, tts_flag,align_success, shot_flag):
             else:
                 o1_bool = False
             
-            if len(output1) == 4:
+            if len(output1) >= 4:
+                output1 = [output1[0], output1[1], output1[2], output1[3]]
                 o2_bool = True
             else:
                 o2_bool = False
             
-            # print(f"{output}") # 250 ~ 750
+            print(f"{output} {output1}") # 250 ~ 750
 
             if o2_bool:
                 if output1[1] < output1[3]:
