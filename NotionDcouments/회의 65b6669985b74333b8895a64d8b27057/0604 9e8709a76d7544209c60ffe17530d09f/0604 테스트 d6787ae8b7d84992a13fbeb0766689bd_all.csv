@@ -1,0 +1,24 @@
+﻿이름,실제,결과,방향
+1,win,win,빙글빙글 도는 경우
+2,win,win,빙글빙글 도는 경우
+3,win,win,빙글빙글 도는 경우
+4,lose,lose,straight
+5,win,lose,
+6,win,lose,
+7,win,win,
+8,벽 맞음,lose,
+9,벽 맞음,lose,
+10,벽 맞음,win,
+11,outofrange,lose,
+12,벽 맞음,lose,
+13,outofrange,ballmissing,
+14,벽 맞음,lose,
+15,공이 밖으로 나감,lose,
+16,win,lose,
+17,lose,lose,
+18,lose,lose,
+19,lose,미판정,
+20,win,win,
+21,,,
+22,,,
+,,,

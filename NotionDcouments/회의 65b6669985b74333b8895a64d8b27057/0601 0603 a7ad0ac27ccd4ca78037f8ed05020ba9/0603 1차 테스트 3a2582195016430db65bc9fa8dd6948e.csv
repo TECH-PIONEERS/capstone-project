@@ -1,0 +1,22 @@
+﻿이름,실제,결과,방향
+1,win,win,
+2,win,win,
+3,lose,lose,left
+4,win,win,
+5,lose,lose,
+6,lose,lose,
+7,lose,lose,
+8,win,win,
+9,lose,lose,
+10,lose,lose,
+11,win,win,
+12,lose,lose,
+13,공이 밖으로 나감,골 판단x,
+14,lose,lose,
+15,공이 밖으로 나감,골 판단x,
+16,공이 밖으로 나감,lose,
+17,공이 밖으로 나감,lose,
+18,공이 밖으로 나감,lose,
+19,win,win,
+20,lose,lose,left
+,,,

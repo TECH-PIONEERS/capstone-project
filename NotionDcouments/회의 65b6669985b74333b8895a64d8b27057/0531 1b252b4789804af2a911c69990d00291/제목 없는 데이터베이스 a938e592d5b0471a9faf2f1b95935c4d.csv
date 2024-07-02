@@ -1,0 +1,15 @@
+﻿tts_flag,Name,beep.wav / mp3
+,공과 헤드 사이의 거리,TTS
+1,ball missing,high_1_beep
+2,ball_align - bottom,TTS
+3,ball_align - up,TTS
+4,head_missing,mid_beep_half
+5,head_center_up,up
+6,head_center_down,down
+7,head_align,low_beep_half
+,헤드 정렬이 된 경우,
+,공과 홀 사이의 거리,TTS
+,game_win,nice-shot
+,game_lose,lose
+,헤드가 오른쪽(시계)으로 기울어졌을 때,low_beep_half
+,헤드가 왼쪽(반시계)으로 기울어졌을 때,high_1_beep_half
